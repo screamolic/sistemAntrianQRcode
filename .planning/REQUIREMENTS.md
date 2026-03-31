@@ -50,9 +50,9 @@
 
 ### Notifications
 
-**US-11: SMS Notification**
-- As a user, I want to receive SMS when I'm next in line so I can be ready
-- Acceptance: Trigger SMS at position 3, rate limiting, Twilio integration
+**US-11: WhatsApp Notification**
+- As a user, I want to receive WhatsApp message when I'm next in line so I can be ready
+- Acceptance: Trigger WhatsApp at position 3, rate limiting, Evolution-API integration, message template support
 
 **US-12: Daily Queue Reset**
 - As a system, I want to auto-delete old queues daily so data stays current
@@ -85,11 +85,14 @@
 - PNG format with download option
 - Dynamic date validation
 
-### FR-5: SMS Integration
-- Twilio API integration
-- Template: "Be ready you are next in queue at [queueName]"
-- Rate limiting: max 1 SMS per user per 5 minutes
-- Cost tracking per admin
+### FR-5: WhatsApp Integration
+- Evolution-API self-hosted instance
+- WhatsApp Business API connection
+- Template messages for queue notifications
+- Message: "Be ready you are next in queue at [queueName]"
+- Rate limiting: max 1 message per user per 5 minutes
+- Message delivery status tracking
+- Fallback handling for failed deliveries
 
 ### FR-6: Real-time Updates
 - Server-Sent Events (SSE) or React Query polling

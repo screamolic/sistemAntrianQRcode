@@ -48,7 +48,7 @@ Enable businesses to manage physical queues digitally through QR code scanning, 
 - PostgreSQL + Prisma ORM
 - Tailwind CSS + shadcn/ui
 - NextAuth.js (email/password + OAuth ready)
-- Twilio SMS (with rate limiting)
+- Evolution-API (self-hosted WhatsApp gateway)
 - Vercel deployment
 - Vitest + Playwright (testing)
 
@@ -73,6 +73,7 @@ Enable businesses to manage physical queues digitally through QR code scanning, 
 | PostgreSQL + Prisma | Better relational data integrity, Prisma provides type-safe queries | Migrate from MongoDB |
 | NextAuth.js | Production-ready auth with OAuth support, secure sessions | Replace cookie-based auth |
 | Vercel deployment | Optimized for Next.js, zero-config deployments, edge functions | Primary deployment target |
+| Evolution-API over Twilio SMS | WhatsApp has higher open rates, self-hosted = no per-message costs, better for Indonesia market | Self-hosted WhatsApp gateway |
 
 ## Requirements
 
@@ -84,7 +85,7 @@ Enable businesses to manage physical queues digitally through QR code scanning, 
 - ✓ System generates QR codes for queue access — existing (to be reimplemented)
 - ✓ Users can register via QR code scan — existing (to be reimplemented)
 - ✓ Queue displays in FIFO order — existing (to be reimplemented)
-- ✓ SMS sent when user is next in line — existing (to be reimplemented)
+- ✓ WhatsApp notification sent when user is next in line — existing (to be reimplemented)
 - ✓ Queue resets daily — existing (to be reimplemented)
 
 ### Active
@@ -93,7 +94,7 @@ Enable businesses to manage physical queues digitally through QR code scanning, 
 - [ ] Role-based access control (Admin, Super Admin)
 - [ ] QR code generation with unique queue URLs
 - [ ] Real-time queue updates (Server-Sent Events or WebSockets)
-- [ ] SMS notifications with rate limiting
+- [ ] WhatsApp notifications via Evolution-API (self-hosted)
 - [ ] Daily automated queue cleanup (cron job)
 - [ ] Mobile-responsive UI with accessibility (WCAG 2.1 AA)
 - [ ] Input validation and sanitization (Zod schemas)
@@ -107,7 +108,8 @@ Enable businesses to manage physical queues digitally through QR code scanning, 
 - OAuth integration (Google, Facebook) — Phase 2 consideration
 - Multi-language support (i18n) — Not required for initial launch
 - Analytics dashboard — Phase 2 consideration
-- Email notifications — SMS only for MVP
+- Email notifications — WhatsApp only for MVP
+- SMS notifications — Replaced by WhatsApp (Evolution-API)
 - Native mobile apps — PWA consideration for Phase 2
 
 ## Evolution

@@ -89,27 +89,29 @@
 
 ## Phase 4: Notifications & Automation
 
-**Goal:** Implement SMS notifications and daily queue cleanup automation
+**Goal:** Implement WhatsApp notifications via Evolution-API and daily queue cleanup automation
 
 ### Plans
-1. **4.1** — Integrate Twilio SMS API
-2. **4.2** — Implement SMS trigger logic (position 3)
-3. **4.3** — Add rate limiting for SMS (prevent abuse)
+1. **4.1** — Set up Evolution-API self-hosted instance (Docker)
+2. **4.2** — Implement WhatsApp notification service with queue integration
+3. **4.3** — Add rate limiting for WhatsApp messages (prevent abuse)
 4. **4.4** — Create Vercel cron job for daily cleanup
-5. **4.5** — Build notification preferences UI
+4. **4.5** — Build notification preferences UI
 
 ### Must-Haves
-- [ ] Twilio integration working
-- [ ] SMS sent when user reaches position 3
-- [ ] Rate limiting: 1 SMS per 5 minutes per user
+- [ ] Evolution-API running (Docker container)
+- [ ] WhatsApp connection established
+- [ ] Message sent when user reaches position 3
+- [ ] Rate limiting: 1 message per 5 minutes per user
 - [ ] Daily cron deletes expired queues
-- [ ] Error handling for SMS failures
-- [ ] SMS cost tracking per admin
+- [ ] Error handling for failed deliveries
+- [ ] Message delivery status tracking
 
 ### Research Questions
-- What's the optimal cron schedule for queue cleanup?
-- How to handle SMS delivery failures gracefully?
-- What rate limiting strategy prevents abuse?
+- What's the optimal Evolution-API deployment strategy (local vs cloud VPS)?
+- How to handle WhatsApp message template approval?
+- What rate limiting strategy prevents abuse while ensuring delivery?
+- How to handle connection failures and message queue retries?
 
 ---
 
