@@ -3,6 +3,7 @@
 import { db } from '@/lib/prisma';
 import { joinQueueSchema } from '@/lib/schemas/queue';
 import { revalidatePath } from 'next/cache';
+import { WhatsAppService } from '@/lib/services/whatsapp-service';
 
 export async function joinQueueAction(formData: FormData) {
   const rawData = {
@@ -71,6 +72,15 @@ export async function joinQueueAction(formData: FormData) {
         status: 'WAITING',
       },
     });
+
+    // Send welcome notification (non-blocking, don't fail join if notification fails)
+    WhatsAppService.sendWelcomeMessage(
+      queue.name,
+      position,
+      phone,
+      queueId,
+      entry.id
+    ).catch((error) => console.error('Failed to send welcome notification:', error));
 
     revalidatePath(`/queue/${queueId}`);
 
