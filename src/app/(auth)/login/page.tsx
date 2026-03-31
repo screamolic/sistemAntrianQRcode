@@ -42,18 +42,18 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4" role="main">
+      <Card className="w-full max-w-md" aria-labelledby="login-title">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Sign In</CardTitle>
+          <CardTitle id="login-title" className="text-2xl font-bold">Sign In</CardTitle>
           <CardDescription>
             Enter your email and password to access your account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" aria-label="Login form">
             {error && (
-              <Alert variant="destructive">
+              <Alert variant="destructive" role="alert" aria-live="assertive">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -67,6 +67,9 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
+                autoComplete="email"
+                aria-required="true"
+                aria-describedby={error ? "email-error" : undefined}
               />
             </div>
             <div className="space-y-2">
@@ -78,10 +81,17 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
+                autoComplete="current-password"
+                aria-required="true"
+                aria-describedby={error ? "password-error" : undefined}
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign In"}
+            <Button type="submit" className="w-full" disabled={isLoading} aria-busy={isLoading}>
+              {isLoading ? (
+                <span aria-live="polite">Signing in...</span>
+              ) : (
+                "Sign In"
+              )}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">

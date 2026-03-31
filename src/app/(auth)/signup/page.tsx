@@ -68,18 +68,18 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center p-4" role="main">
+      <Card className="w-full max-w-md" aria-labelledby="signup-title">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold">Create Account</CardTitle>
+          <CardTitle id="signup-title" className="text-2xl font-bold">Create Account</CardTitle>
           <CardDescription>
             Enter your details to create a new account
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" aria-label="Signup form">
             {error && (
-              <Alert variant="destructive">
+              <Alert variant="destructive" role="alert" aria-live="assertive">
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
@@ -92,6 +92,7 @@ export default function SignupPage() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 disabled={isLoading}
+                autoComplete="name"
               />
             </div>
             <div className="space-y-2">
@@ -104,6 +105,8 @@ export default function SignupPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 disabled={isLoading}
+                autoComplete="email"
+                aria-required="true"
               />
             </div>
             <div className="space-y-2">
@@ -115,7 +118,13 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 disabled={isLoading}
+                autoComplete="new-password"
+                aria-required="true"
+                aria-describedby="password-requirements"
               />
+              <p id="password-requirements" className="text-xs text-muted-foreground">
+                Must be at least 8 characters
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirmPassword">Confirm Password</Label>
@@ -126,10 +135,16 @@ export default function SignupPage() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 disabled={isLoading}
+                autoComplete="new-password"
+                aria-required="true"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Creating account..." : "Create Account"}
+            <Button type="submit" className="w-full" disabled={isLoading} aria-busy={isLoading}>
+              {isLoading ? (
+                <span aria-live="polite">Creating account...</span>
+              ) : (
+                "Create Account"
+              )}
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">

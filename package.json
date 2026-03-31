@@ -9,6 +9,16 @@
     "lint": "eslint",
     "format": "prettier --write .",
     "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "lighthouse": "lhci autorun",
+    "lighthouse:desktop": "lhci autorun --settings.preset=desktop",
+    "lighthouse:mobile": "lhci autorun --settings.preset=mobile",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -45,19 +55,29 @@
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@lhci/cli": "^0.15.1",
+    "@lhci/server": "^0.15.1",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.0.1",
     "dotenv": "^17.3.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "eslint-config-prettier": "^10.1.8",
+    "happy-dom": "^20.8.9",
     "husky": "^9.1.7",
+    "jsdom": "^29.0.1",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.2"
   }
 }
