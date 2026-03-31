@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// User model for authentication
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  role      Role     @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  queues    Queue[]
+
+  @@index([email])
+}
+
+enum Role {
+  ADMIN
+  SUPER_ADMIN
+}
+
+// Queue model for queue management
+model Queue {
+  id         String        @id @default(cuid())
+  name       String
+  adminId    String
+  admin      User          @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  isActive   Boolean       @default(true)
+  expiresAt  DateTime?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  entries    QueueEntry[]
+
+  @@index([adminId])
+  @@index([isActive])
+}
+
+// Queue entry model for people in queue
+model QueueEntry {
+  id          String      @id @default(cuid())
+  queueId     String
+  queue       Queue       @relation(fields: [queueId], references: [id], onDelete: Cascade)
+  phoneNumber String
+  name        String?
+  position    Int
+  status      EntryStatus @default(WAITING)
+  notifiedAt  DateTime?
+  servedAt    DateTime?
+  createdAt   DateTime    @default(now())
+
+  @@index([queueId])
+  @@index([phoneNumber])
+  @@index([queueId, status])
+  @@index([createdAt])
+}
+
+enum EntryStatus {
+  WAITING
+  SERVED
+  NO_SHOW
+}

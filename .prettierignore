@@ -1,0 +1,9 @@
+node_modules
+.planning
+.next
+out
+build
+legacy
+*.log
+.vscode
+*.tsbuildinfo
