@@ -179,4 +179,55 @@
 
 ---
 
-*Last updated: 31 March 2026 — Initial requirements from legacy system audit*
+## Traceability — Milestone v2.0
+
+### Requirements to Phase Mapping
+
+| Requirement | Phase | Title |
+|-------------|-------|-------|
+| AUTH-01 | Phase 1 | Project Foundation & Auth |
+| AUTH-02 | Phase 1 | Project Foundation & Auth |
+| SEC-01 | Phase 1 | Project Foundation & Auth |
+| SEC-02 | Phase 2 | Database Schema & Drizzle Setup |
+| QUEUE-01 | Phase 3 | QR Code & Queue Entry |
+| QUEUE-02 | Phase 3 | QR Code & Queue Entry |
+| UI-01 | Phase 3 | QR Code & Queue Entry |
+| QUEUE-03 | Phase 4 | Staff Dashboard & Queue Management |
+| STAFF-01 | Phase 4 | Staff Dashboard & Queue Management |
+| STAFF-02 | Phase 4 | Staff Dashboard & Queue Management |
+| STAFF-03 | Phase 4 | Staff Dashboard & Queue Management |
+| STAFF-04 | Phase 4 | Staff Dashboard & Queue Management |
+| UI-02 | Phase 4 | Staff Dashboard & Queue Management |
+| WA-01 | Phase 5 | Evolution-API WhatsApp Integration |
+| WA-02 | Phase 5 | Evolution-API WhatsApp Integration |
+| WA-03 | Phase 5 | Evolution-API WhatsApp Integration |
+| WA-04 | Phase 5 | Evolution-API WhatsApp Integration |
+| WA-05 | Phase 5 | Evolution-API WhatsApp Integration |
+| QUEUE-04 | Phase 6 | Real-time Updates & Queue Display |
+| QUEUE-05 | Phase 7 | Automation & Daily Reset |
+| TEST-01 | Phase 8 | Testing & Deployment |
+| TEST-02 | Phase 8 | Testing & Deployment |
+
+**Coverage:** 22/22 Active requirements (100%)
+
+### User Stories to Phase Mapping
+
+| User Story | Primary Phase | Related Phases |
+|------------|---------------|----------------|
+| US-1: Admin Login | Phase 1 | - |
+| US-2: Admin Signup | Phase 1 | - |
+| US-3: Super Admin Access | Phase 1 | - |
+| US-4: Logout | Phase 1 | - |
+| US-5: Create Queue | Phase 3 | - |
+| US-6: View Queue | Phase 4 | Phase 6 |
+| US-7: Call Next Person | Phase 4 | Phase 5 |
+| US-9: Scan QR to Join | Phase 3 | - |
+| US-10: Queue Position Updates | Phase 3 | Phase 6 |
+| US-11: WhatsApp Notification | Phase 5 | - |
+| US-12: Daily Queue Reset | Phase 7 | - |
+
+**Coverage:** 11/11 User Stories (100%)
+
+---
+
+*Last updated: 1 April 2026 — Added traceability for Milestone v2.0*

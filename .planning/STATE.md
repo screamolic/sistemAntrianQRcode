@@ -1,111 +1,64 @@
-# QueueAutomation Modernization — State
+# State — Milestone v2.0
 
 ## Current Status
 
-**Milestone:** 1 (MVP Launch) — ✅ COMPLETE
-**Current Phase:** All phases complete
-**Last Activity:** 31 March 2026 — All 6 phases implemented
+**Milestone:** v2.0  
+**Status:** Planning Complete  
+**Current Phase:** None (Ready to start Phase 1)  
+**Last Updated:** 1 April 2026
 
 ---
 
-## Project Health
+## Phase Status
 
-| Dimension | Status | Notes |
-|-----------|--------|-------|
-| Planning | ✅ Complete | PROJECT.md, REQUIREMENTS.md, ROADMAP.md |
-| Codebase Map | ✅ Complete | 7 documents in `.planning/codebase/` |
-| Config | ✅ Complete | YOLO mode, Standard granularity, Parallel execution |
-| Phase 1 | ✅ Complete | Project Foundation |
-| Phase 2 | ✅ Complete | Database & Authentication |
-| Phase 3 | ✅ Complete | Queue Core Functionality |
-| Phase 4 | ✅ Complete | WhatsApp Notifications |
-| Phase 5 | ✅ Complete | UI/UX Polish & Accessibility |
-| Phase 6 | ✅ Complete | Testing, CI/CD & Deployment |
-
----
-
-## Implementation Summary
-
-### Phase 1: Project Foundation ✅
-- Next.js 16, TypeScript, Tailwind CSS
-- shadcn/ui (9 components)
-- ESLint, Prettier, Husky
-
-### Phase 2: Database & Authentication ✅
-- Prisma schema (User, Queue, QueueEntry)
-- NextAuth.js v5 with Credentials provider
-- Login/Signup pages
-- Role-based access control
-
-### Phase 3: Queue Core Functionality ✅
-- Queue generation with cuid2 IDs
-- QR code display with download
-- Public join form with Zod validation
-- Admin dashboard with real-time updates
-- FIFO algorithm with Prisma transactions
-- React Query polling (5s)
-
-### Phase 4: WhatsApp Notifications ✅
-- Evolution-API Docker setup
-- WhatsApp service integration
-- Rate limiting (5 msg/5 min)
-- Automatic triggers at position 3
-- Vercel cron jobs for cleanup
-- Notification preferences UI
-
-### Phase 5: UI/UX Polish & Accessibility ✅
-- Mobile-responsive navigation
-- Loading skeletons (multiple variants)
-- Error boundaries
-- Empty states
-- ARIA labels, keyboard navigation
-- Form accessibility
-
-### Phase 6: Testing, CI/CD & Deployment ✅
-- Vitest unit tests (70% coverage)
-- Playwright E2E tests
-- GitHub Actions CI/CD pipeline
-- Vercel deployment config
-- Lighthouse targets (90+)
+| Phase | Title | Status | Started | Completed |
+|-------|-------|--------|---------|-----------|
+| 1 | Project Foundation & Auth | Pending | - | - |
+| 2 | Database Schema & Drizzle Setup | Pending | - | - |
+| 3 | QR Code & Queue Entry | Pending | - | - |
+| 4 | Staff Dashboard & Queue Management | Pending | - | - |
+| 5 | Evolution-API WhatsApp Integration | Pending | - | - |
+| 6 | Real-time Updates & Queue Display | Pending | - | - |
+| 7 | Automation & Daily Reset | Pending | - | - |
+| 8 | Testing & Deployment | Pending | - | - |
 
 ---
 
-## Next Steps
+## Active Context
 
-1. **Database Setup:**
-   ```bash
-   docker compose up -d
-   npx prisma migrate dev --name init
-   npx prisma generate
-   ```
-
-2. **Evolution-API Setup:**
-   ```bash
-   ./scripts/setup-evolution.sh
-   # Pair WhatsApp via http://localhost:8080/manager
-   ```
-
-3. **Run Tests:**
-   ```bash
-   npm run test:run
-   npm run test:e2e
-   ```
-
-4. **Deploy to Vercel:**
-   - Push to main branch
-   - Vercel auto-deploys
-   - Configure environment variables
+**No active phase work.**
 
 ---
 
-## Evolution Log
+## Recent Actions
 
-| Date | Event | Outcome |
-|------|-------|---------|
-| 31 Mar 2026 | Project initialized | GSD workflow set up |
-| 31 Mar 2026 | Codebase mapped | 7 documents analyzing legacy |
-| 31 Mar 2026 | All phases complete | Milestone 1 ready for audit |
+- [1 April 2026] Created ROADMAP.md with 8 phases for v2.0 milestone
+- [1 April 2026] Mapped all 22 Active requirements to phases (100% coverage)
+- [1 April 2026] Defined success criteria for each phase (2-5 criteria per phase)
 
 ---
 
-*Last updated: 31 March 2026 — All phases complete, Milestone 1 ready for audit*
+## Next Action
+
+**Ready to begin:** Phase 1 - Project Foundation & Auth
+
+**Suggested command:** `/gsd-plan-phase 1` or `/gsd-next`
+
+---
+
+## Blockers
+
+None
+
+---
+
+## Notes
+
+- Milestone v2.0 is a greenfield build with modern stack (Next.js 15, Drizzle ORM, Evolution-API)
+- All requirements derived from PROJECT.md Active list
+- Standard granularity: 8 phases total
+- Mode: YOLO (auto-advance enabled)
+
+---
+
+*Created: 1 April 2026*
