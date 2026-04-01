@@ -1,116 +1,101 @@
-# QueueAutomation Modernization
+# QueueAutomation - Service Center Queue System
 
 ## What This Is
 
-A **full rewrite** of the QueueAutomation QR Code-based Queue Management System — modernizing from Next.js 12 (Pages Router) to Next.js 15 (App Router) with TypeScript, Tailwind CSS + shadcn/ui, PostgreSQL + Prisma ORM, and NextAuth.js for authentication.
+A **greenfield build** of a QR Code-based Queue Management System for service centers — built with Next.js 15 (App Router), TypeScript, Tailwind CSS + shadcn/ui, PostgreSQL + Drizzle ORM, NextAuth.js for authentication, and Evolution-API for WhatsApp notifications.
 
 ## Core Value
 
-Enable businesses to manage physical queues digitally through QR code scanning, automated SMS notifications, and real-time queue management — with enterprise-grade security, performance, and developer experience.
+Enable service center customers to join queues via QR code scan and receive automated WhatsApp notifications at every step — reducing wait times, improving customer experience, and giving staff complete queue control.
 
 ## Context
 
-### Current State (Legacy System)
+### Build Approach
 
-**Stack:**
-- Next.js 12.0.7 (Pages Router)
-- React 17.0.2
-- MongoDB 4.x (no ORM)
-- Bootstrap + Semantic UI + MDB (overlapping frameworks)
-- Twilio SMS API
-- Cookie-based session (admin `_id` stored in browser)
+**Greenfield Development:**
+- Building from scratch with modern best practices
+- No legacy code constraints
+- Clean architecture from day one
 
-**Critical Issues Identified:**
-1. Plain text password storage in MongoDB
-2. No API authentication — all endpoints publicly accessible
-3. Cookie sessions without security flags (XSS/CSRF vulnerable)
-4. SMS API without rate limiting (financial exposure)
-5. No input sanitization (NoSQL injection risk)
-6. Hardcoded super admin ID throughout codebase
-7. 0% test coverage
-8. Outdated dependencies (3+ years behind)
-
-**Existing Features:**
-- Admin authentication (login/signup)
-- Queue creation with QR code generation
-- User registration via QR scan
-- FIFO queue management
-- SMS notifications ("You are next")
-- Daily queue auto-reset
-- Super admin panel
-
-### Target State (Modernized System)
-
-**Stack:**
+**Target Stack:**
 - Next.js 15 (App Router, Server Components, Server Actions)
 - React 19
 - TypeScript (strict mode)
-- PostgreSQL + Prisma ORM
+- PostgreSQL + Drizzle ORM (type-safe queries)
 - Tailwind CSS + shadcn/ui
 - NextAuth.js (email/password + OAuth ready)
 - Evolution-API (self-hosted WhatsApp gateway)
+- Supabase (PostgreSQL hosting)
 - Vercel deployment
 - Vitest + Playwright (testing)
 
-**Improvements:**
-- Type-safe full-stack development
-- Secure authentication with NextAuth.js
-- Database migrations with Prisma
-- Modern UI/UX with accessible components
-- API route handlers with proper validation
-- Server-side rendering and streaming
-- Comprehensive test coverage
-- CI/CD pipeline with automated checks
+**Key Features:**
+- QR code scanning for queue entry
+- WhatsApp notifications via Evolution-API (join confirmation, queue updates, completion, feedback)
+- Multi-counter support for staff
+- Single location focus
+- Real-time queue display
+- Automated queue management
+
+### Deployment Target
+
+- **Frontend**: Vercel (optimized for Next.js)
+- **Database**: Supabase (PostgreSQL with realtime features)
+- **WhatsApp Gateway**: Evolution-API self-hosted on VPS
+- **Environment**: Production-ready with CI/CD
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Full rewrite vs incremental | Security vulnerabilities too extensive; incremental would take 8-10 weeks vs 2-3 weeks for rewrite | Complete rewrite with modern stack |
-| Next.js 15 App Router | Industry standard, better performance, Server Components reduce client bundle | Migrate from Pages Router |
-| TypeScript | Type safety catches bugs early, better DX, self-documenting code | Full TypeScript conversion |
-| Tailwind + shadcn/ui | Lightweight, customizable, modern design system | Replace Bootstrap/Semantic UI/MDB |
-| PostgreSQL + Prisma | Better relational data integrity, Prisma provides type-safe queries | Migrate from MongoDB |
-| NextAuth.js | Production-ready auth with OAuth support, secure sessions | Replace cookie-based auth |
+| Greenfield build vs modernization | Existing code is Next.js 12 with Prisma; building fresh with Drizzle and clean architecture | Complete new implementation |
+| Drizzle ORM over Prisma | Lighter weight, better TypeScript inference, SQL-like queries, faster runtime | Primary ORM for database |
+| Next.js 15 App Router | Industry standard, Server Components reduce client bundle, better performance | Modern React patterns |
+| Supabase for PostgreSQL | Managed hosting, realtime features, easy integration with Drizzle | Database hosting |
+| Evolution-API over Twilio | WhatsApp has higher open rates in Indonesia, self-hosted = no per-message costs | Self-hosted WhatsApp gateway |
 | Vercel deployment | Optimized for Next.js, zero-config deployments, edge functions | Primary deployment target |
-| Evolution-API over Twilio SMS | WhatsApp has higher open rates, self-hosted = no per-message costs, better for Indonesia market | Self-hosted WhatsApp gateway |
+| Multi-counter support | Service centers need parallel service points with separate queues | Core feature from Phase 1 |
+| All WhatsApp notifications | Complete customer journey: join confirmation, queue position updates, completion, feedback | Better customer experience |
 
 ## Requirements
 
 ### Validated
 
-(None yet — these are hypotheses from legacy system to be validated during rewrite)
-
-- ✓ Admin can create and manage queues — existing (to be reimplemented)
-- ✓ System generates QR codes for queue access — existing (to be reimplemented)
-- ✓ Users can register via QR code scan — existing (to be reimplemented)
-- ✓ Queue displays in FIFO order — existing (to be reimplemented)
-- ✓ WhatsApp notification sent when user is next in line — existing (to be reimplemented)
-- ✓ Queue resets daily — existing (to be reimplemented)
+(None yet — ship to validate)
 
 ### Active
 
-- [ ] Secure authentication with NextAuth.js (email/password, session management)
-- [ ] Role-based access control (Admin, Super Admin)
-- [ ] QR code generation with unique queue URLs
-- [ ] Real-time queue updates (Server-Sent Events or WebSockets)
-- [ ] WhatsApp notifications via Evolution-API (self-hosted)
-- [ ] Daily automated queue cleanup (cron job)
-- [ ] Mobile-responsive UI with accessibility (WCAG 2.1 AA)
-- [ ] Input validation and sanitization (Zod schemas)
-- [ ] API rate limiting and protection
-- [ ] Comprehensive test coverage (80%+ unit, E2E critical paths)
-- [ ] CI/CD pipeline with automated testing
-- [ ] Performance optimization (Lighthouse 90+ scores)
+- [ ] **AUTH-01**: Staff can authenticate with email/password (NextAuth.js)
+- [ ] **AUTH-02**: Role-based access control (Admin, Staff)
+- [ ] **QUEUE-01**: Admin can create service counters with unique QR codes
+- [ ] **QUEUE-02**: Customer scans QR code to join queue via mobile web
+- [ ] **QUEUE-03**: Queue displays in FIFO order per counter
+- [ ] **QUEUE-04**: Real-time queue updates (Server-Sent Events)
+- [ ] **QUEUE-05**: Daily automated queue reset
+- [ ] **WA-01**: WhatsApp notification when customer joins queue (confirmation)
+- [ ] **WA-02**: WhatsApp notification when turn is approaching (2-3 people ahead)
+- [ ] **WA-03**: WhatsApp notification when it's customer's turn
+- [ ] **WA-04**: WhatsApp notification when service is completed
+- [ ] **WA-05**: WhatsApp feedback request after completion
+- [ ] **STAFF-01**: Staff dashboard to view assigned counter queue
+- [ ] **STAFF-02**: Staff can call next customer
+- [ ] **STAFF-03**: Staff can mark customer as served
+- [ ] **STAFF-04**: Staff can transfer customer to different counter
+- [ ] **UI-01**: Mobile-responsive customer queue view
+- [ ] **UI-02**: Accessible staff dashboard (WCAG 2.1 AA)
+- [ ] **SEC-01**: Input validation with Zod schemas
+- [ ] **SEC-02**: API rate limiting
+- [ ] **TEST-01**: Unit tests for critical logic (80%+ coverage)
+- [ ] **TEST-02**: E2E tests for critical user paths
 
 ### Out of Scope
 
-- OAuth integration (Google, Facebook) — Phase 2 consideration
-- Multi-language support (i18n) — Not required for initial launch
-- Analytics dashboard — Phase 2 consideration
+- Multi-location support — Single location focus for MVP
+- OAuth integration — Phase 2 consideration
 - Email notifications — WhatsApp only for MVP
-- SMS notifications — Replaced by WhatsApp (Evolution-API)
-- Native mobile apps — PWA consideration for Phase 2
+- Native mobile apps — Mobile web PWA sufficient
+- Analytics dashboard — Phase 2 consideration
+- Appointment scheduling — Walk-in queue only for MVP
 
 ## Evolution
 
