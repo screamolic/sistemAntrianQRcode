@@ -1,5 +1,21 @@
 # QueueAutomation - Service Center Queue System
 
+## Current Milestone: v2.0 Service Center Queue System with Drizzle + Evolution-API
+
+**Goal:** Build a greenfield Service Center Queue Management System with QR code entry, comprehensive WhatsApp notifications via Evolution-API, multi-counter support, and Drizzle ORM for database operations.
+
+**Target features:**
+- QR code scanning for queue entry (customer joins via mobile web)
+- WhatsApp notifications via Evolution-API (join confirmation, queue position updates, turn called, service completed, feedback request)
+- Multi-counter support with separate queues per counter
+- Staff dashboard for queue management (call next, mark served, transfer)
+- Real-time queue updates
+- Daily automated queue reset
+- NextAuth.js authentication with role-based access control
+- Drizzle ORM for type-safe database operations
+- Supabase PostgreSQL hosting
+- Vercel deployment
+
 ## What This Is
 
 A **greenfield build** of a QR Code-based Queue Management System for service centers — built with Next.js 15 (App Router), TypeScript, Tailwind CSS + shadcn/ui, PostgreSQL + Drizzle ORM, NextAuth.js for authentication, and Evolution-API for WhatsApp notifications.
@@ -116,4 +132,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-*Last updated: 31 March 2026 after initialization*
+*Last updated: 1 April 2026 after v2.0 milestone planning*
