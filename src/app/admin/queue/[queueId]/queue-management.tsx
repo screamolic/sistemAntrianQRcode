@@ -1,73 +1,86 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { callNextEntry, getQueueEntries, removeQueueEntry } from '@/lib/queue-entries';
-import { Users, CheckCircle, UserX } from 'lucide-react';
-import { QueueEntryCard } from '@/components/queue/queue-entry-card';
+import { useState } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { callNextEntry, getQueueEntries, removeQueueEntry } from '@/lib/queue-entries'
+import { Users, CheckCircle } from 'lucide-react'
+import { QueueEntryCard } from '@/components/queue/queue-entry-card'
+import { useQueueUpdates } from '@/hooks/use-queue-updates'
+
+interface QueueEntry {
+  id: string
+  name: string | null
+  phoneNumber: string
+  position: number
+}
 
 interface QueueManagementProps {
   queue: {
-    id: string;
-    name: string;
-    entries: Array<{
-      id: string;
-      name: string | null;
-      phoneNumber: string;
-      position: number;
-    }>;
-  };
+    id: string
+    name: string
+    entries: QueueEntry[]
+  }
 }
 
 export function QueueManagement({ queue: initialQueue }: QueueManagementProps) {
-  const queryClient = useQueryClient();
-  const [isCalling, setIsCalling] = useState(false);
-  const [removingId, setRemovingId] = useState<string | null>(null);
+  const queryClient = useQueryClient()
+  const [isCalling, setIsCalling] = useState(false)
+  const [removingId, setRemovingId] = useState<string | null>(null)
 
-  // Fetch queue entries with polling
-  const { data: entries, isLoading, error } = useQuery({
+  // Fetch queue entries - NO polling, manual refresh via SSE
+  const { data: entries, error } = useQuery<QueueEntry[]>({
     queryKey: ['queue-entries', initialQueue.id],
     queryFn: () => getQueueEntries(initialQueue.id),
     initialData: initialQueue.entries,
-    refetchInterval: 5000, // Poll every 5 seconds
-  });
+    refetchInterval: false, // Disable polling, use SSE instead
+  })
+
+  // REAL-TIME: Listen to SSE updates
+  useQueueUpdates({
+    queueId: initialQueue.id,
+    enabled: true,
+    onUpdate: (update) => {
+      console.log('Real-time update received:', update)
+      // Invalidate query to refetch fresh data
+      queryClient.invalidateQueries({ queryKey: ['queue-entries', initialQueue.id] })
+    },
+  })
 
   // Call next entry mutation
   const callNextMutation = useMutation({
     mutationFn: () => callNextEntry(initialQueue.id),
     onMutate: () => setIsCalling(true),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['queue-entries', initialQueue.id] });
+      queryClient.invalidateQueries({ queryKey: ['queue-entries', initialQueue.id] })
     },
     onSettled: () => setIsCalling(false),
-  });
+  })
 
   // Remove entry mutation
   const removeMutation = useMutation({
     mutationFn: (entryId: string) => removeQueueEntry(entryId),
     onMutate: (entryId) => setRemovingId(entryId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['queue-entries', initialQueue.id] });
+      queryClient.invalidateQueries({ queryKey: ['queue-entries', initialQueue.id] })
     },
     onSettled: () => setRemovingId(null),
-  });
+  })
 
   const handleCallNext = async () => {
     if (!entries || entries.length === 0) {
-      alert('No one is in queue');
-      return;
+      alert('No one is in queue')
+      return
     }
-    await callNextMutation.mutateAsync();
-  };
+    await callNextMutation.mutateAsync()
+  }
 
   const handleRemove = async (entryId: string) => {
     if (confirm('Remove this person from queue?')) {
-      await removeMutation.mutateAsync(entryId);
+      await removeMutation.mutateAsync(entryId)
     }
-  };
+  }
 
   if (error) {
     return (
@@ -76,7 +89,7 @@ export function QueueManagement({ queue: initialQueue }: QueueManagementProps) {
           Failed to load queue entries. Please refresh the page.
         </CardContent>
       </Card>
-    );
+    )
   }
 
   return (
@@ -85,15 +98,9 @@ export function QueueManagement({ queue: initialQueue }: QueueManagementProps) {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Users className="h-5 w-5" />
-          <span className="font-semibold">
-            {entries?.length || 0} Waiting
-          </span>
+          <span className="font-semibold">{entries?.length || 0} Waiting</span>
         </div>
-        <Button
-          onClick={handleCallNext}
-          disabled={entries?.length === 0 || isCalling}
-          size="lg"
-        >
+        <Button onClick={handleCallNext} disabled={entries?.length === 0 || isCalling} size="lg">
           <CheckCircle className="h-4 w-4 mr-2" />
           {isCalling ? 'Calling...' : 'Call Next'}
         </Button>
@@ -101,7 +108,7 @@ export function QueueManagement({ queue: initialQueue }: QueueManagementProps) {
 
       {/* Queue List */}
       <div className="grid gap-4">
-        {entries?.map((entry: any) => (
+        {entries?.map((entry) => (
           <QueueEntryCard
             key={entry.id}
             entry={{
@@ -127,5 +134,5 @@ export function QueueManagement({ queue: initialQueue }: QueueManagementProps) {
         )}
       </div>
     </div>
-  );
+  )
 }
