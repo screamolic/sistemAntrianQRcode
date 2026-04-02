@@ -1,0 +1,17 @@
+name: Daily Queue Cleanup
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC (9 AM WIB)
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  daily-cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger daily-cleanup endpoint
+        run: |
+          curl -X POST https://sistem-antrian-qr.vercel.app/api/cron/daily-cleanup \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "Content-Type: application/json"
