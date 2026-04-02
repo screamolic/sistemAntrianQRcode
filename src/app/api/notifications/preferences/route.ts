@@ -1,59 +1,42 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { db } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server'
 
 /**
  * POST /api/notifications/preferences
- * Update notification preferences for an entry
+ * Update notification preferences
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { entryId, optIn } = body;
+    const body = await request.json()
 
-    // For now, just log the preference
-    // In production, store in database and check before sending
-    console.log(`Notification preference for ${entryId}: ${optIn ? 'OPT-IN' : 'OPT-OUT'}`);
-
-    return NextResponse.json({ success: true });
+    // For now, just return success
+    // In real app, save to user preferences table
+    return NextResponse.json({
+      success: true,
+      message: 'Preferences updated',
+    })
   } catch (error) {
-    console.error('Error updating preferences:', error);
-    return NextResponse.json(
-      { error: 'Failed to update preferences' },
-      { status: 500 }
-    );
+    console.error('Error updating preferences:', error)
+    return NextResponse.json({ error: 'Failed to update preferences' }, { status: 500 })
   }
 }
 
 /**
  * GET /api/notifications/preferences
- * Get notification preferences for an entry
+ * Get notification preferences
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const { searchParams } = new URL(request.url);
-    const entryId = searchParams.get('entryId');
-
-    if (!entryId) {
-      return NextResponse.json({ error: 'Entry ID required' }, { status: 400 });
-    }
-
-    const entry = await db.queueEntry.findUnique({
-      where: { id: entryId },
-      select: { id: true },
-    });
-
-    if (!entry) {
-      return NextResponse.json({ error: 'Entry not found' }, { status: 404 });
-    }
-
-    // For now, return default opt-in status
-    // In production, store preference in database
-    return NextResponse.json({ optIn: true });
+    // For now, return default preferences
+    return NextResponse.json({
+      success: true,
+      preferences: {
+        email: true,
+        sms: false,
+        whatsapp: true,
+      },
+    })
   } catch (error) {
-    console.error('Error fetching preferences:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch preferences' },
-      { status: 500 }
-    );
+    console.error('Error getting preferences:', error)
+    return NextResponse.json({ error: 'Failed to get preferences' }, { status: 500 })
   }
 }

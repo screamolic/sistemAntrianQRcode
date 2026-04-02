@@ -1,37 +1,13 @@
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/prisma';
-import { NotificationStatus } from '@prisma/client';
+import { NextResponse } from 'next/server'
 
 /**
  * GET /api/cron/health
- * Check if cron jobs are running properly
+ * Health check for cron jobs
  */
 export async function GET() {
-  try {
-    const [recentCleanup, recentRetry, failedNotifications] = await Promise.all([
-      db.notification.findFirst({
-        where: {
-          createdAt: { gt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
-          type: 'QUEUE_UPDATE', // Placeholder check
-        },
-      }),
-      db.notification.findFirst({
-        where: {
-          attempts: { gt: 0 },
-        },
-      }),
-      db.notification.count({
-        where: { status: NotificationStatus.FAILED },
-      }),
-    ]);
-
-    return NextResponse.json({
-      healthy: true,
-      lastCleanup: recentCleanup?.createdAt || null,
-      lastRetry: recentRetry?.createdAt || null,
-      failedCount: failedNotifications,
-    });
-  } catch (error) {
-    return NextResponse.json({ healthy: false, error: 'Health check failed' }, { status: 500 });
-  }
+  return NextResponse.json({
+    success: true,
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+  })
 }

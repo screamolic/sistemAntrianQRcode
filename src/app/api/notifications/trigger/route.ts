@@ -1,65 +1,46 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
-import { WhatsAppService } from '@/lib/services/whatsapp-service';
-import { createRateLimitedNotification } from '@/lib/rate-limiter';
-import { db } from '@/lib/prisma';
-import { NotificationType } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server'
+import { WhatsAppService } from '@/lib/services/whatsapp-service'
+import { createRateLimitedNotification } from '@/lib/rate-limiter'
 
 /**
  * POST /api/notifications/trigger
- * Trigger notification based on queue event
+ * Trigger WhatsApp notification with rate limiting
  */
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth();
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const body = await request.json()
+    const { queueId, entryId, type, phone, message } = body
+
+    // Check rate limit
+    const rateLimitResult = await createRateLimitedNotification(
+      queueId,
+      entryId,
+      type,
+      phone,
+      message
+    )
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json({
+        success: false,
+        error: 'Rate limit exceeded',
+      })
     }
 
-    const body = await request.json();
-    const { entryId, queueId, type } = body;
+    // Send notification
+    const result = await WhatsAppService.sendNotification({
+      queueId,
+      entryId,
+      type,
+      phone,
+      message,
+    })
 
-    // Get entry details
-    const entry = await db.queueEntry.findUnique({
-      where: { id: entryId },
-      include: {
-        queue: true,
-      },
-    });
-
-    if (!entry) {
-      return NextResponse.json({ error: 'Entry not found' }, { status: 404 });
-    }
-
-    // Rate limit check
-    const rateLimit = createRateLimitedNotification(entry.phoneNumber);
-    if (!rateLimit.allowed) {
-      console.warn('Rate limit exceeded:', entry.phoneNumber);
-      return NextResponse.json(
-        { skipped: true, reason: rateLimit.reason },
-        { status: 429 }
-      );
-    }
-
-    // Send appropriate notification
-    let result;
-    if (type === 'QUEUE_NEXT') {
-      result = await WhatsAppService.sendNextNotification(
-        entry.queue.name,
-        entry.phoneNumber,
-        queueId,
-        entryId
-      );
-    } else {
-      return NextResponse.json({ error: 'Invalid notification type' }, { status: 400 });
-    }
-
-    return NextResponse.json(result);
+    return NextResponse.json({
+      success: result.success,
+    })
   } catch (error) {
-    console.error('Error triggering notification:', error);
-    return NextResponse.json(
-      { error: 'Failed to trigger notification' },
-      { status: 500 }
-    );
+    console.error('Error triggering notification:', error)
+    return NextResponse.json({ error: 'Failed to trigger notification' }, { status: 500 })
   }
 }

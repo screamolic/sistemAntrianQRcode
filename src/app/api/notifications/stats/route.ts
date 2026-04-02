@@ -1,49 +1,30 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/prisma';
-import { NotificationStatus } from '@prisma/client';
+import { NextRequest, NextResponse } from 'next/server'
+import { db } from '@/lib/db'
+import { notifications } from '@/lib/db/schema'
+import { eq, count } from 'drizzle-orm'
 
 /**
  * GET /api/notifications/stats
  * Get notification statistics
  */
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
-    const session = await auth();
-    if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { searchParams } = new URL(request.url);
-    const queueId = searchParams.get('queueId');
-
-    const [pending, sent, failed, total] = await Promise.all([
-      db.notification.count({
-        where: { queueId, status: NotificationStatus.PENDING },
-      }),
-      db.notification.count({
-        where: { queueId, status: NotificationStatus.SENT },
-      }),
-      db.notification.count({
-        where: { queueId, status: NotificationStatus.FAILED },
-      }),
-      db.notification.count({
-        where: { queueId },
-      }),
-    ]);
+    const [totalResult, sentResult, failedResult] = await Promise.all([
+      db.select({ count: count() }).from(notifications),
+      db.select({ count: count() }).from(notifications).where(eq(notifications.status, 'SENT')),
+      db.select({ count: count() }).from(notifications).where(eq(notifications.status, 'FAILED')),
+    ])
 
     return NextResponse.json({
-      pending,
-      sent,
-      failed,
-      total,
-      successRate: total > 0 ? ((sent / total) * 100).toFixed(2) : '0',
-    });
+      success: true,
+      stats: {
+        total: Number(totalResult[0]?.count || 0),
+        sent: Number(sentResult[0]?.count || 0),
+        failed: Number(failedResult[0]?.count || 0),
+      },
+    })
   } catch (error) {
-    console.error('Error fetching notification stats:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch stats' },
-      { status: 500 }
-    );
+    console.error('Error getting stats:', error)
+    return NextResponse.json({ error: 'Failed to get stats' }, { status: 500 })
   }
 }
