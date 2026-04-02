@@ -10,3 +10,14 @@ export type { Queue, NewQueue } from './queues'
 
 export { queueEntries, queueEntriesRelations, entryStatusEnum } from './queue-entries'
 export type { QueueEntry, NewQueueEntry } from './queue-entries'
+
+export {
+  notifications,
+  notificationsRelations,
+  notificationTypeEnum,
+  notificationStatusEnum,
+} from './notifications'
+export type { Notification, NewNotification } from './notifications'
+
+export { jobLogs, jobStatusEnum } from './job-logs'
+export type { JobLog, NewJobLog } from './job-logs'

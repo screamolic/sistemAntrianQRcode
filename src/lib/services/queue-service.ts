@@ -1,174 +1,173 @@
-import { db } from '@/lib/prisma';
-import { EntryStatus } from '@prisma/client';
+import { db } from '@/lib/db'
+import { queueEntries, queues } from '@/lib/db/schema'
+import { and, eq, gt, asc, sql } from 'drizzle-orm'
 
 export class QueueService {
   /**
    * Join queue with atomic position calculation
    */
   static async joinQueue(data: {
-    queueId: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
+    queueId: string
+    firstName: string
+    lastName: string
+    phone: string
   }) {
-    return db.$transaction(async (tx: any) => {
-      // Verify queue exists and not expired
-      const queue = await tx.queue.findUnique({
-        where: { id: data.queueId },
-      });
+    // Get queue
+    const [queue] = await db.select().from(queues).where(eq(queues.id, data.queueId)).limit(1)
 
-      if (!queue) {
-        throw new Error('Queue not found');
-      }
+    if (!queue) {
+      throw new Error('Queue not found')
+    }
 
-      if (queue.expiresAt && queue.expiresAt < new Date()) {
-        throw new Error('Queue has expired');
-      }
+    if (queue.expiresAt && queue.expiresAt < new Date()) {
+      throw new Error('Queue has expired')
+    }
 
-      // Check for duplicate
-      const existing = await tx.queueEntry.findFirst({
-        where: {
-          phoneNumber: data.phone,
-          queueId: data.queueId,
-          status: EntryStatus.WAITING,
-        },
-      });
+    // Check for duplicate
+    const [existing] = await db
+      .select()
+      .from(queueEntries)
+      .where(
+        and(
+          eq(queueEntries.queueId, data.queueId),
+          eq(queueEntries.customerPhone, data.phone),
+          eq(queueEntries.status, 'WAITING')
+        )
+      )
+      .limit(1)
 
-      if (existing) {
-        throw new Error('Already in queue');
-      }
+    if (existing) {
+      throw new Error('Already in queue')
+    }
 
-      // Calculate position atomically
-      const count = await tx.queueEntry.count({
-        where: {
-          queueId: data.queueId,
-          status: EntryStatus.WAITING,
-        },
-      });
+    // Calculate position
+    const [countResult] = await db
+      .select({ count: sql<number>`count(*)` })
+      .from(queueEntries)
+      .where(and(eq(queueEntries.queueId, data.queueId), eq(queueEntries.status, 'WAITING')))
 
-      const position = count + 1;
+    const position = (countResult?.count || 0) + 1
 
-      // Create entry
-      return tx.queueEntry.create({
-        data: {
-          queueId: data.queueId,
-          phoneNumber: data.phone,
-          name: `${data.firstName} ${data.lastName}`.trim(),
-          position,
-          status: EntryStatus.WAITING,
-        },
-      });
-    });
+    // Create entry
+    const [entry] = await db
+      .insert(queueEntries)
+      .values({
+        queueId: data.queueId,
+        customerPhone: data.phone,
+        position,
+        status: 'WAITING',
+      })
+      .returning()
+
+    return entry
   }
 
   /**
    * Call next person in queue
    */
   static async callNext(queueId: string) {
-    return db.$transaction(async (tx: any) => {
-      // Get first waiting entry
-      const nextEntry = await tx.queueEntry.findFirst({
-        where: {
-          queueId,
-          status: EntryStatus.WAITING,
-        },
-        orderBy: [
-          { position: 'asc' },
-          { createdAt: 'asc' },
-        ],
-      });
+    // Get first waiting entry
+    const [nextEntry] = await db
+      .select()
+      .from(queueEntries)
+      .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING')))
+      .orderBy(asc(queueEntries.position), asc(queueEntries.createdAt))
+      .limit(1)
 
-      if (!nextEntry) {
-        throw new Error('No waiting entries');
-      }
+    if (!nextEntry) {
+      throw new Error('No waiting entries')
+    }
 
-      // Mark as served
-      await tx.queueEntry.update({
-        where: { id: nextEntry.id },
-        data: {
-          status: EntryStatus.SERVED,
-          servedAt: new Date(),
-        },
-      });
+    // Mark as served
+    const [updatedEntry] = await db
+      .update(queueEntries)
+      .set({
+        status: 'SERVED',
+        servedAt: new Date(),
+      })
+      .where(eq(queueEntries.id, nextEntry.id))
+      .returning()
 
-      // Decrement positions of remaining entries
-      await tx.queueEntry.updateMany({
-        where: {
-          queueId,
-          position: { gt: nextEntry.position },
-          status: EntryStatus.WAITING,
-        },
-        data: {
-          position: { decrement: 1 },
-        },
-      });
+    // Decrement positions of remaining entries
+    await db
+      .update(queueEntries)
+      .set({
+        position: sql`${queueEntries.position} - 1`,
+      })
+      .where(
+        and(
+          eq(queueEntries.queueId, queueId),
+          gt(queueEntries.position, nextEntry.position),
+          eq(queueEntries.status, 'WAITING')
+        )
+      )
 
-      return nextEntry;
-    });
+    return updatedEntry
   }
 
   /**
    * Remove entry from queue (admin action)
    */
   static async removeEntry(entryId: string) {
-    return db.$transaction(async (tx: any) => {
-      const entry = await tx.queueEntry.findUnique({
-        where: { id: entryId },
-      });
+    // Get the entry
+    const [entry] = await db
+      .select()
+      .from(queueEntries)
+      .where(eq(queueEntries.id, entryId))
+      .limit(1)
 
-      if (!entry) {
-        throw new Error('Entry not found');
-      }
+    if (!entry) {
+      throw new Error('Entry not found')
+    }
 
-      // Delete the entry
-      await tx.queueEntry.delete({
-        where: { id: entryId },
-      });
+    const queueId = entry.queueId
+    const position = entry.position
 
-      // Decrement positions of entries after this one
-      await tx.queueEntry.updateMany({
-        where: {
-          queueId: entry.queueId,
-          position: { gt: entry.position },
-          status: EntryStatus.WAITING,
-        },
-        data: {
-          position: { decrement: 1 },
-        },
-      });
+    // Delete the entry
+    await db.delete(queueEntries).where(eq(queueEntries.id, entryId))
 
-      return entry;
-    });
+    // Decrement positions of entries after this one
+    await db
+      .update(queueEntries)
+      .set({
+        position: sql`${queueEntries.position} - 1`,
+      })
+      .where(
+        and(
+          eq(queueEntries.queueId, queueId),
+          gt(queueEntries.position, position),
+          eq(queueEntries.status, 'WAITING')
+        )
+      )
+
+    return entry
   }
 
   /**
    * Get waiting entries in FIFO order
    */
   static async getWaitingEntries(queueId: string) {
-    return db.queueEntry.findMany({
-      where: {
-        queueId,
-        status: EntryStatus.WAITING,
-      },
-      orderBy: [
-        { position: 'asc' },
-        { createdAt: 'asc' },
-      ],
-    });
+    return db
+      .select()
+      .from(queueEntries)
+      .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING')))
+      .orderBy(asc(queueEntries.position), asc(queueEntries.createdAt))
   }
 
   /**
    * Get entry position
    */
   static async getEntryPosition(entryId: string) {
-    const entry = await db.queueEntry.findUnique({
-      where: { id: entryId },
-    });
+    const [entry] = await db
+      .select()
+      .from(queueEntries)
+      .where(eq(queueEntries.id, entryId))
+      .limit(1)
 
-    if (!entry || entry.status !== EntryStatus.WAITING) {
-      return null;
+    if (!entry || entry.status !== 'WAITING') {
+      return null
     }
 
-    return entry.position;
+    return entry.position
   }
 }
