@@ -1,51 +1,44 @@
-import { notFound, redirect } from 'next/navigation';
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/prisma';
-import { QueueManagement } from './queue-management';
-import { QueueShareDialog } from '@/components/queue/queue-share-dialog';
-import { formatQueueUrl } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { notFound, redirect } from 'next/navigation'
+import { auth } from '@/lib/auth'
+import { db } from '@/lib/db'
+import { queues, queueEntries, entryStatusEnum } from '@/lib/db/schema'
+import { eq, and, sql } from 'drizzle-orm'
+import { QueueManagement } from './queue-management'
+import { QueueShareDialog } from '@/components/queue/queue-share-dialog'
+import { formatQueueUrl } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
 
-export default async function AdminQueuePage({
-  params,
-}: {
-  params: Promise<{ queueId: string }>;
-}) {
-  const { queueId } = await params;
-  
-  const session = await auth();
+export default async function AdminQueuePage({ params }: { params: Promise<{ queueId: string }> }) {
+  const { queueId } = await params
+
+  const session = await auth()
   if (!session?.user) {
-    redirect('/login');
+    redirect('/login')
   }
 
-  const queue = await db.queue.findUnique({
-    where: { id: queueId },
-    include: {
-      entries: {
-        where: { status: 'WAITING' },
-        orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
-      },
-      _count: {
-        select: {
-          entries: {
-            where: { status: 'WAITING' },
-          },
-        },
-      },
-    },
-  });
+  // Get queue with entries count
+  const [queueResult, entriesCountResult] = await Promise.all([
+    db.select().from(queues).where(eq(queues.id, queueId)).limit(1),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(queueEntries)
+      .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING'))),
+  ])
+
+  const queue = queueResult[0]
+  const entriesCount = Number(entriesCountResult[0]?.count || 0)
 
   if (!queue) {
-    notFound();
+    notFound()
   }
 
   // Verify ownership
   if (queue.adminId !== session.user.id && session.user.role !== 'SUPER_ADMIN') {
-    redirect('/unauthorized');
+    redirect('/unauthorized')
   }
 
-  const queueUrl = formatQueueUrl(queueId);
+  const queueUrl = formatQueueUrl(queueId)
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -57,14 +50,12 @@ export default async function AdminQueuePage({
         </Button>
         <div className="flex-1">
           <h1 className="text-3xl font-bold">{queue.name}</h1>
-          <p className="text-muted-foreground">
-            {queue._count.entries} people waiting
-          </p>
+          <p className="text-muted-foreground">{entriesCount} people waiting</p>
         </div>
         <QueueShareDialog queueId={queue.id} queueUrl={queueUrl} />
       </div>
 
-      <QueueManagement queue={queue} />
+      <QueueManagement queue={{ ...queue, entries: [] }} />
     </div>
-  );
+  )
 }

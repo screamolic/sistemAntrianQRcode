@@ -1,157 +1,161 @@
-import { db } from './prisma'
-import { EntryStatus } from '@prisma/client'
+import { db } from './db'
+import { queueEntries, queues, entryStatusEnum } from '@/lib/db/schema'
+import { eq, and, gt, asc, desc, sql } from 'drizzle-orm'
 import { broadcastQueueUpdate } from '@/app/api/sse/queue-updates/route'
 
 /**
  * Get all waiting queue entries for a specific queue
  */
 export async function getQueueEntries(queueId: string) {
-  return db.queueEntry.findMany({
-    where: {
-      queueId,
-      status: EntryStatus.WAITING,
-    },
-    orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
-  })
+  return db
+    .select()
+    .from(queueEntries)
+    .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING')))
+    .orderBy(asc(queueEntries.position), asc(queueEntries.createdAt))
 }
 
 /**
  * Get queue entries with total count
  */
 export async function getQueueEntriesWithCount(queueId: string) {
-  const [entries, count] = await Promise.all([
+  const [entries, countResult] = await Promise.all([
     getQueueEntries(queueId),
-    db.queueEntry.count({
-      where: { queueId, status: EntryStatus.WAITING },
-    }),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(queueEntries)
+      .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING'))),
   ])
 
-  return { entries, count }
+  return { entries, count: Number(countResult[0]?.count || 0) }
 }
 
 /**
  * Call next entry in queue (mark as served)
  */
 export async function callNextEntry(queueId: string) {
-  const result = await db.$transaction(async (tx) => {
-    // Get first waiting entry
-    const nextEntry = await tx.queueEntry.findFirst({
-      where: { queueId, status: EntryStatus.WAITING },
-      orderBy: [{ position: 'asc' }, { createdAt: 'asc' }],
+  // Get first waiting entry
+  const nextEntryResults = await db
+    .select()
+    .from(queueEntries)
+    .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING')))
+    .orderBy(asc(queueEntries.position), asc(queueEntries.createdAt))
+    .limit(1)
+
+  const nextEntry = nextEntryResults[0]
+
+  if (!nextEntry) {
+    throw new Error('No waiting entries')
+  }
+
+  // Update entry to served
+  const [updatedEntry] = await db
+    .update(queueEntries)
+    .set({
+      status: 'SERVED',
+      servedAt: new Date(),
     })
+    .where(eq(queueEntries.id, nextEntry.id))
+    .returning()
 
-    if (!nextEntry) {
-      throw new Error('No waiting entries')
-    }
-
-    // Mark as served
-    await tx.queueEntry.update({
-      where: { id: nextEntry.id },
-      data: {
-        status: EntryStatus.SERVED,
-        servedAt: new Date(),
-      },
+  // Decrement positions of remaining entries
+  await db
+    .update(queueEntries)
+    .set({
+      position: sql`${queueEntries.position} - 1`,
     })
-
-    // Decrement positions of remaining entries
-    await tx.queueEntry.updateMany({
-      where: {
-        queueId,
-        position: { gt: nextEntry.position },
-        status: EntryStatus.WAITING,
-      },
-      data: {
-        position: { decrement: 1 },
-      },
-    })
-
-    return nextEntry
-  })
+    .where(
+      and(
+        eq(queueEntries.queueId, queueId),
+        gt(queueEntries.position, nextEntry.position),
+        eq(queueEntries.status, 'WAITING')
+      )
+    )
 
   // Broadcast real-time update to all connected clients
   broadcastQueueUpdate(queueId, {
     type: 'ENTRY_SERVED',
-    entry: result,
+    entry: updatedEntry,
   })
 
-  return result
+  return updatedEntry
 }
 
 /**
  * Remove an entry from queue
  */
 export async function removeQueueEntry(entryId: string) {
-  const result = await db.$transaction(async (tx) => {
-    const entry = await tx.queueEntry.findUnique({
-      where: { id: entryId },
+  // Get the entry
+  const entryResults = await db
+    .select()
+    .from(queueEntries)
+    .where(eq(queueEntries.id, entryId))
+    .limit(1)
+
+  const entry = entryResults[0]
+
+  if (!entry) {
+    throw new Error('Entry not found')
+  }
+
+  const queueId = entry.queueId
+  const position = entry.position
+
+  // Delete the entry
+  await db.delete(queueEntries).where(eq(queueEntries.id, entryId))
+
+  // Decrement positions of entries after this one
+  await db
+    .update(queueEntries)
+    .set({
+      position: sql`${queueEntries.position} - 1`,
     })
-
-    if (!entry) {
-      throw new Error('Entry not found')
-    }
-
-    const queueId = entry.queueId
-
-    // Delete the entry
-    await tx.queueEntry.delete({
-      where: { id: entryId },
-    })
-
-    // Decrement positions of entries after this one
-    await tx.queueEntry.updateMany({
-      where: {
-        queueId,
-        position: { gt: entry.position },
-        status: EntryStatus.WAITING,
-      },
-      data: {
-        position: { decrement: 1 },
-      },
-    })
-
-    return { entry, queueId }
-  })
+    .where(
+      and(
+        eq(queueEntries.queueId, queueId),
+        gt(queueEntries.position, position),
+        eq(queueEntries.status, 'WAITING')
+      )
+    )
 
   // Broadcast real-time update to all connected clients
-  broadcastQueueUpdate(result.queueId, {
+  broadcastQueueUpdate(queueId, {
     type: 'ENTRY_REMOVED',
-    entry: result.entry,
+    entry,
   })
 
-  return result.entry
+  return entry
 }
 
 /**
  * Add new entry to queue
  */
 export async function addQueueEntry(queueId: string, customerPhone: string) {
-  const result = await db.$transaction(async (tx) => {
-    // Get current max position
-    const lastEntry = await tx.queueEntry.findFirst({
-      where: { queueId, status: EntryStatus.WAITING },
-      orderBy: { position: 'desc' },
+  // Get current max position
+  const lastEntryResults = await db
+    .select()
+    .from(queueEntries)
+    .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING')))
+    .orderBy(desc(queueEntries.position))
+    .limit(1)
+
+  const newPosition = (lastEntryResults[0]?.position || 0) + 1
+
+  // Create new entry
+  const [newEntry] = await db
+    .insert(queueEntries)
+    .values({
+      queueId,
+      customerPhone,
+      position: newPosition,
+      status: 'WAITING',
     })
-
-    const newPosition = (lastEntry?.position || 0) + 1
-
-    // Create new entry
-    const newEntry = await tx.queueEntry.create({
-      data: {
-        queueId,
-        customerPhone,
-        position: newPosition,
-        status: EntryStatus.WAITING,
-      },
-    })
-
-    return newEntry
-  })
+    .returning()
 
   // Broadcast real-time update to all connected clients
   broadcastQueueUpdate(queueId, {
     type: 'ENTRY_ADDED',
-    entry: result,
+    entry: newEntry,
   })
 
-  return result
+  return newEntry
 }
