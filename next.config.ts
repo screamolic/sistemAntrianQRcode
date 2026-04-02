@@ -1,7 +1,11 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  // Treat postgres as external package for Edge compatibility
+  serverExternalPackages: ['postgres'],
+  experimental: {
+    serverComponentsExternalPackages: ['postgres'],
+  },
+}
 
-export default nextConfig;
+export default nextConfig

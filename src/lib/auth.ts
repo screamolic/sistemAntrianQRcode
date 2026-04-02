@@ -1,9 +1,20 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
+import { eq } from 'drizzle-orm'
 import { db } from './db'
 import { users } from '@/lib/db/schema'
-import { eq } from 'drizzle-orm'
+
+// Helper function to get user by email (lazy-loaded to avoid middleware import issues)
+async function getUserByEmail(email: string) {
+  try {
+    const results = await db.select().from(users).where(eq(users.email, email)).limit(1)
+    return results[0] || null
+  } catch (error) {
+    console.error('Error fetching user:', error)
+    return null
+  }
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -18,13 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           throw new Error('Email and password are required')
         }
 
-        const userResults = await db
-          .select()
-          .from(users)
-          .where(eq(users.email, credentials.email as string))
-          .limit(1)
-
-        const user = userResults[0]
+        const user = await getUserByEmail(credentials.email as string)
 
         if (!user) {
           throw new Error('No user found with this email')
