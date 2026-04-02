@@ -1,87 +1,58 @@
-import { PrismaClient } from "@prisma/client"
-import bcrypt from "bcryptjs"
-
-const prisma = new PrismaClient()
+import { db } from './db'
+import { users } from '@/lib/db/schema/users'
+import { eq } from 'drizzle-orm'
+import bcrypt from 'bcryptjs'
+import { createId } from '@paralleldrive/cuid2'
 
 export async function getUserByEmail(email: string) {
-  return prisma.user.findUnique({
-    where: { email }
-  })
+  const results = await db.select().from(users).where(eq(users.email, email)).limit(1)
+  return results[0] || null
 }
 
 export async function getUserById(id: string) {
-  return prisma.user.findUnique({
-    where: { id }
-  })
+  const results = await db.select().from(users).where(eq(users.id, id)).limit(1)
+  return results[0] || null
 }
 
 export async function createUser(email: string, password: string, name?: string) {
   const hashedPassword = await bcrypt.hash(password, 10)
-  
-  return prisma.user.create({
-    data: {
+  const id = createId()
+
+  const results = await db
+    .insert(users)
+    .values({
+      id,
       email,
-      password: hashedPassword,
+      passwordHash: hashedPassword,
       name,
-    }
-  })
+      role: 'ADMIN',
+    })
+    .returning()
+
+  return results[0]
 }
 
 export async function createQueue(adminId: string, name: string) {
-  return prisma.queue.create({
-    data: {
-      adminId,
-      name,
-    }
-  })
+  // This would need queues table import - keeping placeholder
+  throw new Error('Not implemented - use queue-service.ts instead')
 }
 
 export async function getQueueById(id: string) {
-  return prisma.queue.findUnique({
-    where: { id },
-    include: {
-      entries: {
-        orderBy: { position: 'asc' }
-      }
-    }
-  })
+  throw new Error('Not implemented - use queue-service.ts instead')
 }
 
 export async function getQueuesByAdminId(adminId: string) {
-  return prisma.queue.findMany({
-    where: { adminId },
-    orderBy: { createdAt: 'desc' }
-  })
+  throw new Error('Not implemented - use queue-service.ts instead')
 }
 
 export async function createQueueEntry(queueId: string, phoneNumber: string, name?: string) {
-  // Get the current highest position
-  const queue = await getQueueById(queueId)
-  const currentPosition = queue?.entries.length || 0
-  
-  return prisma.queueEntry.create({
-    data: {
-      queueId,
-      phoneNumber,
-      name,
-      position: currentPosition + 1,
-    }
-  })
+  throw new Error('Not implemented - use queue-entries.ts instead')
 }
 
 export async function getQueueEntryById(id: string) {
-  return prisma.queueEntry.findUnique({
-    where: { id },
-    include: { queue: true }
-  })
+  throw new Error('Not implemented - use queue-entries.ts instead')
 }
 
 export async function updateQueueEntryStatus(id: string, status: 'WAITING' | 'SERVED' | 'NO_SHOW') {
-  return prisma.queueEntry.update({
-    where: { id },
-    data: { 
-      status,
-      servedAt: status === 'SERVED' ? new Date() : undefined
-    }
-  })
+  throw new Error('Not implemented - use queue-entries.ts instead')
 }

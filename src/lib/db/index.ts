@@ -13,14 +13,16 @@ if (!connectionString) {
   throw new Error('DATABASE_URL environment variable is required')
 }
 
-// Create PostgreSQL client with SSL configuration for Supabase
+// Check if this is a local connection (no SSL needed)
+const isLocal = connectionString.includes('localhost') || connectionString.includes('127.0.0.1')
+
+// Create PostgreSQL client
 const client = postgres(connectionString, {
-  ssl: {
-    rejectUnauthorized: false,
-  },
-  max: 4,
-  idle_timeout: 30,
-  connect_timeout: 5,
+  ssl: isLocal ? false : { rejectUnauthorized: false },
+  max: 10,
+  idle_timeout: 20,
+  connect_timeout: 10,
+  prepare: false,
 })
 
 // Create Drizzle database instance
