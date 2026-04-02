@@ -1,48 +1,42 @@
-import { db } from '@/lib/prisma';
-import { EntryStatus } from '@prisma/client';
+import { db } from '@/lib/db'
+import { queueEntries, queues, entryStatusEnum } from '@/lib/db/schema'
+import { and, count, eq, sql } from 'drizzle-orm'
 
-export async function getQueueStats(queueId: string) {
-  const [waiting, served, noShow, total] = await Promise.all([
-    db.queueEntry.count({
-      where: { queueId, status: EntryStatus.WAITING },
-    }),
-    db.queueEntry.count({
-      where: { queueId, status: EntryStatus.SERVED },
-    }),
-    db.queueEntry.count({
-      where: { queueId, status: EntryStatus.NO_SHOW },
-    }),
-    db.queueEntry.count({
-      where: { queueId },
-    }),
-  ]);
+export class QueueStats {
+  /**
+   * Get queue statistics
+   */
+  static async getStats(queueId: string) {
+    const [waitingCount, servedCount, totalEntries] = await Promise.all([
+      db
+        .select({ count: count() })
+        .from(queueEntries)
+        .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING'))),
+      db
+        .select({ count: count() })
+        .from(queueEntries)
+        .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'SERVED'))),
+      db.select({ count: count() }).from(queueEntries).where(eq(queueEntries.queueId, queueId)),
+    ])
 
-  // Calculate average wait time from served entries
-  const servedEntries = await db.queueEntry.findMany({
-    where: {
-      queueId,
-      status: EntryStatus.SERVED,
-      servedAt: { not: null },
-    },
-    select: {
-      createdAt: true,
-      servedAt: true,
-    },
-  });
+    return {
+      waiting: Number(waitingCount[0]?.count || 0),
+      served: Number(servedCount[0]?.count || 0),
+      total: Number(totalEntries[0]?.count || 0),
+    }
+  }
 
-  const averageWaitTime =
-    servedEntries.length > 0
-      ? servedEntries.reduce((acc: number, entry: any) => {
-          const waitTime = (entry.servedAt!.getTime() - entry.createdAt.getTime()) / 1000;
-          return acc + waitTime;
-        }, 0) / servedEntries.length
-      : 0;
+  /**
+   * Get average wait time
+   */
+  static async getAverageWaitTime(queueId: string) {
+    const result = await db
+      .select({
+        avgWait: sql<number>`AVG(EXTRACT(EPOCH FROM (served_at - created_at)))`,
+      })
+      .from(queueEntries)
+      .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'SERVED')))
 
-  return {
-    waiting,
-    served,
-    noShow,
-    total,
-    averageWaitTime: Math.round(averageWaitTime), // in seconds
-  };
+    return Number(result[0]?.avgWait || 0)
+  }
 }
