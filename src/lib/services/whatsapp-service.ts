@@ -6,7 +6,7 @@
 import { evolution } from '@/lib/evolution/connection'
 import { db } from '@/lib/db'
 import { notifications } from '@/lib/db/schema/notifications'
-import { nanoid } from '@paralleldrive/cuid2'
+import { createId } from '@paralleldrive/cuid2'
 
 interface SendNotificationParams {
   queueId: string
@@ -22,7 +22,7 @@ export class WhatsAppService {
    * Send WhatsApp message with retry logic and database tracking
    */
   static async sendNotification(params: SendNotificationParams) {
-    const id = nanoid()
+    const id = createId()
 
     // Create notification record
     await db.insert(notifications).values({

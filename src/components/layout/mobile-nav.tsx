@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { Menu, X, Home, Users, Settings, LogOut, User } from "lucide-react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { signOut } from "@/lib/auth"
+import * as React from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { Menu, X, Home, Users, Settings, LogOut, User } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { ThemeToggle } from '@/components/theme-toggle'
+import { signOut } from '@/lib/auth'
 
 interface MobileNavProps {
   user?: {
@@ -19,18 +19,18 @@ interface MobileNavProps {
 
 const navItems = [
   {
-    title: "Dashboard",
-    href: "/dashboard",
+    title: 'Dashboard',
+    href: '/dashboard',
     icon: Home,
   },
   {
-    title: "Queues",
-    href: "/dashboard/queues",
+    title: 'Queues',
+    href: '/dashboard/queues',
     icon: Users,
   },
   {
-    title: "Settings",
-    href: "/dashboard/settings",
+    title: 'Settings',
+    href: '/dashboard/settings',
     icon: Settings,
   },
 ]
@@ -47,12 +47,12 @@ export function MobileNav({ user }: MobileNavProps) {
   // Prevent body scroll when menu is open
   React.useEffect(() => {
     if (open) {
-      document.body.style.overflow = "hidden"
+      document.body.style.overflow = 'hidden'
     } else {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = 'unset'
     }
     return () => {
-      document.body.style.overflow = "unset"
+      document.body.style.overflow = 'unset'
     }
   }, [open])
 
@@ -64,7 +64,7 @@ export function MobileNav({ user }: MobileNavProps) {
         size="icon"
         className="md:hidden"
         onClick={() => setOpen(!open)}
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? 'Close menu' : 'Open menu'}
         aria-expanded={open}
         aria-controls="mobile-menu"
       >
@@ -82,19 +82,15 @@ export function MobileNav({ user }: MobileNavProps) {
         aria-modal="true"
         aria-label="Navigation menu"
         className={cn(
-          "fixed inset-0 z-50 bg-background md:hidden",
-          open ? "opacity-100 visible" : "opacity-0 invisible",
-          "transition-all duration-300"
+          'fixed inset-0 z-50 bg-background md:hidden',
+          open ? 'opacity-100 visible' : 'opacity-0 invisible',
+          'transition-all duration-300'
         )}
       >
         <div className="container mx-auto px-4 py-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
-            <Link
-              href="/"
-              className="text-xl font-bold"
-              onClick={() => setOpen(false)}
-            >
+            <Link href="/" className="text-xl font-bold" onClick={() => setOpen(false)}>
               Queue Automation
             </Link>
             <div className="flex items-center gap-2">
@@ -121,10 +117,10 @@ export function MobileNav({ user }: MobileNavProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-4 py-3 text-lg font-medium transition-colors",
+                    'flex items-center gap-3 rounded-lg px-4 py-3 text-lg font-medium transition-colors',
                     isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   )}
                 >
                   <Icon className="h-5 w-5" aria-hidden="true" />
@@ -143,7 +139,7 @@ export function MobileNav({ user }: MobileNavProps) {
                 </div>
                 <div className="flex-1">
                   <div className="font-medium">{user.name || user.email}</div>
-                  {user.role === "SUPER_ADMIN" && (
+                  {user.role === 'SUPER_ADMIN' && (
                     <div className="text-xs text-muted-foreground">Super Admin</div>
                   )}
                 </div>
@@ -151,15 +147,11 @@ export function MobileNav({ user }: MobileNavProps) {
 
               <form
                 action={async () => {
-                  "use server"
-                  await signOut({ redirectTo: "/" })
+                  'use server'
+                  await signOut({ redirectTo: '/' })
                 }}
               >
-                <Button
-                  type="submit"
-                  variant="outline"
-                  className="w-full justify-start gap-3"
-                >
+                <Button type="submit" variant="outline" className="w-full justify-start gap-3">
                   <LogOut className="h-5 w-5" aria-hidden="true" />
                   Sign Out
                 </Button>
