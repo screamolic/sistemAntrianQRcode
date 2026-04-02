@@ -1,7 +1,4 @@
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core'
-import { relations } from 'drizzle-orm'
-import { users } from './users'
-import { queues } from './queues'
 
 // Counters table
 export const counters = pgTable('counters', {
@@ -15,13 +12,8 @@ export const counters = pgTable('counters', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 })
 
-export const countersRelations = relations(counters, ({ one, many }) => ({
-  admin: one(users, {
-    fields: [counters.adminId],
-    references: [users.id],
-  }),
-  queues: many(queues),
-}))
-
 export type Counter = typeof counters.$inferSelect
 export type NewCounter = typeof counters.$inferInsert
+
+// Import users for the reference
+import { users } from './users'

@@ -1,5 +1,4 @@
 import { pgTable, text, timestamp, pgEnum } from 'drizzle-orm/pg-core'
-import { relations } from 'drizzle-orm'
 
 // Role enum
 export const roleEnum = pgEnum('role', ['SUPER_ADMIN', 'ADMIN', 'STAFF'])
@@ -15,15 +14,6 @@ export const users = pgTable('users', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 })
-
-export const usersRelations = relations(users, ({ many, one }) => ({
-  counters: many(counters),
-  queues: many(queues),
-  counter: one(counters, {
-    fields: [users.counterId],
-    references: [counters.id],
-  }),
-}))
 
 export type User = typeof users.$inferSelect
 export type NewUser = typeof users.$inferInsert

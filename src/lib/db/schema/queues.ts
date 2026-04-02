@@ -1,8 +1,4 @@
 import { pgTable, text, timestamp, integer, pgEnum } from 'drizzle-orm/pg-core'
-import { relations } from 'drizzle-orm'
-import { counters } from './counters'
-import { users } from './users'
-import { queueEntries } from './queue-entries'
 
 // Queue status enum
 export const queueStatusEnum = pgEnum('queue_status', ['ACTIVE', 'INACTIVE', 'EXPIRED'])
@@ -24,17 +20,9 @@ export const queues = pgTable('queues', {
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 })
 
-export const queuesRelations = relations(queues, ({ one, many }) => ({
-  counter: one(counters, {
-    fields: [queues.counterId],
-    references: [counters.id],
-  }),
-  admin: one(users, {
-    fields: [queues.adminId],
-    references: [users.id],
-  }),
-  entries: many(queueEntries),
-}))
-
 export type Queue = typeof queues.$inferSelect
 export type NewQueue = typeof queues.$inferInsert
+
+// Import for references
+import { counters } from './counters'
+import { users } from './users'
