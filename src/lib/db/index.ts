@@ -1,11 +1,10 @@
-import { drizzle } from 'drizzle-orm/node-postgres'
-import pg from 'pg'
-import './pg-config' // Configure SSL globally
+import { drizzle } from 'drizzle-orm/postgres-js'
+import postgres from 'postgres'
 import * as schema from './schema/index'
 
 // Global type for hot-reload prevention
 declare global {
-  var dbPool: pg.Pool | undefined
+  var dbClient: ReturnType<typeof postgres> | undefined
 }
 
 const connectionString = process.env.DATABASE_URL
@@ -14,19 +13,21 @@ if (!connectionString) {
   throw new Error('DATABASE_URL environment variable is required')
 }
 
-// Create PostgreSQL connection pool with SSL configuration for Supabase
-const pool = new pg.Pool({
-  connectionString,
-  max: 4, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+// Create PostgreSQL client with SSL configuration for Supabase
+const client = postgres(connectionString, {
+  ssl: {
+    rejectUnauthorized: false,
+  },
+  max: 4,
+  idle_timeout: 30,
+  connect_timeout: 5,
 })
 
 // Create Drizzle database instance
-export const db = drizzle(pool, { schema })
+export const db = drizzle(client, { schema })
 
-// Export pool for manual queries if needed
-export { pool }
+// Export client for manual queries if needed
+export { client }
 
 // Re-export all schema for convenience
 export * from './schema/index'
