@@ -54,8 +54,5 @@
       "permanent": true
     }
   ],
-  "rewrites": [],
-  "environment": {
-    "NODE_VERSION": "20"
-  }
+  "rewrites": []
 }
