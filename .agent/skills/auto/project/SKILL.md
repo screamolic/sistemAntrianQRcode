@@ -10,7 +10,7 @@ enabled: true
 
 # Project
 
-Auto-compiled from **113 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on project files.
+Auto-compiled from **114 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on project files.
 
 ## ⚠️ Anti-Patterns & Gotchas
 

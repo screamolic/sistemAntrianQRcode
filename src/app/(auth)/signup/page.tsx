@@ -15,6 +15,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 export default function SignupPage() {
   const router = useRouter()
   const [serverError, setServerError] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   const {
     register,
@@ -47,6 +48,8 @@ export default function SignupPage() {
       }
 
       // Auto login after successful signup
+      setSuccessMessage('Akun berhasil dibuat! Sedang masuk...')
+
       const loginResult = await signIn('credentials', {
         email: data.email,
         password: data.password,
@@ -54,8 +57,10 @@ export default function SignupPage() {
       })
 
       if (loginResult?.error) {
-        setServerError('Akun berhasil dibuat. Silakan masuk secara manual.')
+        setSuccessMessage('Akun berhasil dibuat! Silakan login secara manual.')
+        setTimeout(() => router.push('/login'), 2000)
       } else {
+        setSuccessMessage('Login berhasil! Mengalihkan...')
         router.push('/dashboard')
         router.refresh()
       }
@@ -83,6 +88,12 @@ export default function SignupPage() {
             {serverError && (
               <Alert variant="destructive" role="alert" aria-live="assertive">
                 <AlertDescription>{serverError}</AlertDescription>
+              </Alert>
+            )}
+
+            {successMessage && (
+              <Alert role="alert" aria-live="assertive">
+                <AlertDescription>{successMessage}</AlertDescription>
               </Alert>
             )}
 

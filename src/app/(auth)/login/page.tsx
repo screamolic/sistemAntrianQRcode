@@ -37,6 +37,7 @@ export default function LoginPage() {
       if (result?.error) {
         setServerError('Email atau password salah. Silakan coba lagi.')
       } else {
+        setServerError('')
         router.push('/dashboard')
         router.refresh()
       }
@@ -52,9 +53,7 @@ export default function LoginPage() {
           <CardTitle id="login-title" className="text-2xl font-bold">
             Masuk
           </CardTitle>
-          <CardDescription>
-            Masukkan email dan password untuk mengakses akun Anda
-          </CardDescription>
+          <CardDescription>Masukkan email dan password untuk mengakses akun Anda</CardDescription>
         </CardHeader>
         <CardContent>
           <form
@@ -112,11 +111,7 @@ export default function LoginPage() {
               disabled={isSubmitting}
               aria-busy={isSubmitting}
             >
-              {isSubmitting ? (
-                <span aria-live="polite">Sedang masuk...</span>
-              ) : (
-                'Masuk'
-              )}
+              {isSubmitting ? <span aria-live="polite">Sedang masuk...</span> : 'Masuk'}
             </Button>
           </form>
 
