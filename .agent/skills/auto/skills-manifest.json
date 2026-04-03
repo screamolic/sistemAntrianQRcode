@@ -1,61 +1,47 @@
 {
   "project": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:05:06.133Z",
-    "observationCount": 104,
+    "lastGenerated": "2026-04-03T04:35:07.429Z",
+    "observationCount": 108,
     "skillCount": 0,
     "domain": "project",
-    "triggerGlobs": [
-      "**/*"
-    ],
+    "triggerGlobs": ["**/*"],
     "description": "Project for sistemAntrianQRcode. 33 gotchas, 46 conventions, 7 fixes."
   },
   "config": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:05:06.133Z",
+    "lastGenerated": "2026-04-03T04:35:07.430Z",
     "observationCount": 13,
     "skillCount": 0,
     "domain": "config",
-    "triggerGlobs": [
-      "**/*.yaml",
-      "**/*.yml",
-      "**/*.json",
-      "**/*.toml"
-    ],
+    "triggerGlobs": ["**/*.yaml", "**/*.yml", "**/*.json", "**/*.toml"],
     "description": "Config for sistemAntrianQRcode. 2 conventions."
   },
   "problem-fix": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:05:06.134Z",
+    "lastGenerated": "2026-04-03T04:35:07.431Z",
     "observationCount": 0,
     "skillCount": 1,
     "domain": "problem-fix",
-    "triggerGlobs": [
-      "**/*"
-    ],
+    "triggerGlobs": ["**/*"],
     "description": "Problem Fix for sistemAntrianQRcode. 1 error→fix pairs."
   },
   "typescript": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:05:06.133Z",
-    "observationCount": 29,
+    "lastGenerated": "2026-04-03T04:35:07.429Z",
+    "observationCount": 34,
     "skillCount": 0,
     "domain": "typescript",
-    "triggerGlobs": [
-      "**/*.ts",
-      "**/*.tsx"
-    ],
-    "description": "Typescript for sistemAntrianQRcode. 5 conventions, 7 fixes."
+    "triggerGlobs": ["**/*.ts", "**/*.tsx"],
+    "description": "Typescript for sistemAntrianQRcode. 5 conventions, 9 fixes."
   },
   "typescript-react": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:05:06.133Z",
+    "lastGenerated": "2026-04-03T04:35:07.430Z",
     "observationCount": 24,
     "skillCount": 0,
     "domain": "typescript-react",
-    "triggerGlobs": [
-      "**/*.tsx"
-    ],
+    "triggerGlobs": ["**/*.tsx"],
     "description": "Typescript React for sistemAntrianQRcode. 3 conventions, 4 fixes."
   }
 }

@@ -2,10 +2,67 @@
 
 ## Current Status
 
-**Milestone:** v2.0
-**Status:** Phase 1 Complete
-**Current Phase:** Phase 2 (Next)
+**Milestone:** v2.0 — ARCHIVED ✅
+**Status:** Complete & Archived
+**Current Phase:** Ready for v2.1 planning
 **Last Updated:** 3 April 2026
+
+---
+
+## Phase Status
+
+| Phase | Title | Status | Completed |
+|-------|-------|--------|-----------|
+| 1 | Project Foundation & Auth | ✅ Archived | 3 April 2026 |
+| 2 | Database Schema & Drizzle Setup | ✅ Archived | 3 April 2026 |
+| 3 | QR Code & Queue Entry | ✅ Archived | 3 April 2026 |
+| 4 | Staff Dashboard & Queue Management | ✅ Archived | 3 April 2026 |
+| 5 | Evolution-API WhatsApp Integration | ✅ Archived | 3 April 2026 |
+| 6 | Real-time Updates & Queue Display | ✅ Archived | 3 April 2026 |
+| 7 | Automation & Daily Reset | ✅ Archived | 3 April 2026 |
+| 8 | Testing & Deployment | ✅ Archived | 3 April 2026 |
+
+**Milestone v2.0: COMPLETE & ARCHIVED** ✅
+
+---
+
+## Active Context
+
+**Milestone v2.0 delivered:**
+- Full-stack queue management system
+- NextAuth.js with 3-role RBAC
+- Drizzle ORM with 6 table schemas
+- Counter CRUD with QR code generation
+- Mobile-responsive queue join page
+- Staff dashboard APIs (call-next, mark-served, transfer)
+- WhatsApp notification service (5 types)
+- SSE real-time updates
+- Automated cron jobs
+- 9 unit tests passing
+- Build passes, lint passes
+
+**Outstanding:**
+- Database migrations pending (Supabase DNS issue)
+- End-to-end testing pending
+- Vercel deployment pending
+
+---
+
+## Next Action
+
+**Ready for:** Milestone v2.1 planning
+
+**Suggested:** `/gsd-new-milestone` to start v2.1
+
+---
+
+## Blockers
+
+- Supabase DNS resolution failure (non-blocking, infrastructure issue)
+
+---
+
+*Milestone v2.0 completed and archived on 3 April 2026*
 
 ---
 

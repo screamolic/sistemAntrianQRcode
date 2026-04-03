@@ -17,7 +17,8 @@ import { eq } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
 import { createId } from '@paralleldrive/cuid2'
 
-const connectionString = process.env.DATABASE_URL
+const connectionString =
+  process.env.DATABASE_URL_DIRECT || process.env.DATABASE_URL?.replace(':6543', ':5432')
 
 if (!connectionString) {
   console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local')
@@ -27,6 +28,7 @@ if (!connectionString) {
 const client = postgres(connectionString, {
   ssl: connectionString.includes('localhost') ? false : { rejectUnauthorized: false },
   max: 1,
+  prepare: false, // Required for Supabase pooler
 })
 
 const db = drizzle(client, { schema: { users } })

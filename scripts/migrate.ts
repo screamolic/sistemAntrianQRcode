@@ -14,7 +14,8 @@ import { drizzle } from 'drizzle-orm/postgres-js'
 import postgres from 'postgres'
 import { migrate } from 'drizzle-orm/postgres-js/migrator'
 
-const connectionString = process.env.DATABASE_URL
+const connectionString =
+  process.env.DATABASE_URL_DIRECT || process.env.DATABASE_URL?.replace(':6543', ':5432')
 
 if (!connectionString) {
   console.error('❌ DATABASE_URL tidak ditemukan di .env.local')
