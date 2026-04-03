@@ -1,20 +1,9 @@
 {
-  "crons": [
-    {
-      "path": "/api/cron/daily-cleanup",
-      "schedule": "0 2 * * *"
-    },
-    {
-      "path": "/api/cron/retry-notifications",
-      "schedule": "0 * * * *"
-    }
-  ],
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
   "outputDirectory": ".next",
-  "regions": ["sin1"],
   "headers": [
     {
       "source": "/(.*)",
@@ -53,6 +42,5 @@
       "destination": "/admin/queue",
       "permanent": true
     }
-  ],
-  "rewrites": []
+  ]
 }
