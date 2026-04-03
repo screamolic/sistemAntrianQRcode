@@ -1,47 +1,47 @@
 {
   "project": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:35:07.429Z",
-    "observationCount": 108,
+    "lastGenerated": "2026-04-03T04:55:07.383Z",
+    "observationCount": 113,
     "skillCount": 0,
     "domain": "project",
     "triggerGlobs": ["**/*"],
-    "description": "Project for sistemAntrianQRcode. 33 gotchas, 46 conventions, 7 fixes."
+    "description": "Project for sistemAntrianQRcode. 33 gotchas, 47 conventions, 7 fixes."
   },
   "config": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:35:07.430Z",
-    "observationCount": 13,
+    "lastGenerated": "2026-04-03T04:55:07.384Z",
+    "observationCount": 15,
     "skillCount": 0,
     "domain": "config",
     "triggerGlobs": ["**/*.yaml", "**/*.yml", "**/*.json", "**/*.toml"],
-    "description": "Config for sistemAntrianQRcode. 2 conventions."
+    "description": "Config for sistemAntrianQRcode. 2 conventions, 1 fixes."
   },
   "problem-fix": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:35:07.431Z",
+    "lastGenerated": "2026-04-03T04:55:07.384Z",
     "observationCount": 0,
     "skillCount": 1,
     "domain": "problem-fix",
     "triggerGlobs": ["**/*"],
-    "description": "Problem Fix for sistemAntrianQRcode. 1 error→fix pairs."
+    "description": "Problem Fix for sistemAntrianQRcode. 5 error→fix pairs."
   },
   "typescript": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:35:07.429Z",
-    "observationCount": 34,
+    "lastGenerated": "2026-04-03T04:55:07.384Z",
+    "observationCount": 46,
     "skillCount": 0,
     "domain": "typescript",
     "triggerGlobs": ["**/*.ts", "**/*.tsx"],
-    "description": "Typescript for sistemAntrianQRcode. 5 conventions, 9 fixes."
+    "description": "Typescript for sistemAntrianQRcode. 7 conventions, 16 fixes."
   },
   "typescript-react": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T04:35:07.430Z",
-    "observationCount": 24,
+    "lastGenerated": "2026-04-03T04:55:07.383Z",
+    "observationCount": 25,
     "skillCount": 0,
     "domain": "typescript-react",
     "triggerGlobs": ["**/*.tsx"],
-    "description": "Typescript React for sistemAntrianQRcode. 3 conventions, 4 fixes."
+    "description": "Typescript React for sistemAntrianQRcode. 3 conventions, 5 fixes."
   }
 }

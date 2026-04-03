@@ -35,6 +35,7 @@ export default function SignupPage() {
           name: data.name,
           email: data.email,
           password: data.password,
+          confirmPassword: data.confirmPassword,
         }),
       })
 
@@ -168,11 +169,7 @@ export default function SignupPage() {
               disabled={isSubmitting}
               aria-busy={isSubmitting}
             >
-              {isSubmitting ? (
-                <span aria-live="polite">Membuat akun...</span>
-              ) : (
-                'Buat Akun'
-              )}
+              {isSubmitting ? <span aria-live="polite">Membuat akun...</span> : 'Buat Akun'}
             </Button>
           </form>
 

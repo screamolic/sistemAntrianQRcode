@@ -1,6 +1,6 @@
 ---
 name: project
-description: 'Project for sistemAntrianQRcode. 33 gotchas, 46 conventions, 7 fixes.'
+description: 'Project for sistemAntrianQRcode. 33 gotchas, 47 conventions, 7 fixes.'
 domain: project
 triggers:
   - glob: '**/*'
@@ -10,7 +10,7 @@ enabled: true
 
 # Project
 
-Auto-compiled from **108 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on project files.
+Auto-compiled from **113 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on project files.
 
 ## ⚠️ Anti-Patterns & Gotchas
 
@@ -172,6 +172,14 @@ yarn-
 
 ### Project Conventions
 
+- 📐 **Added NextAuth authentication — ensures atomic multi-step database operations — confirmed 3x** — - **Milestone:** v2.0 — ARCHIVED ✅
+
+* **Milestone:** v2.0
+
+- **Status:** Complete & Archived
+
+* \*\*St
+
 - 📐 **Added NextAuth authentication — ensures atomic multi-step database operations — confirmed 3x** — - | 8 | Testing & Deployment | In Progress | 3 April 2026 | - |
 
 * | 8 | Testing & Deployment | ✅ Co
@@ -216,8 +224,6 @@ yarn-
 - 📐 **Implement rate limiting on login endpoints to prevent brute force** — Implement rate limiting on login endpoints to prevent brute force
 - 📐 **Use constants for magic numbers and strings** — Use constants for magic numbers and strings
 - 📐 **Handle edge cases: empty arrays, empty strings, null, undefined, 0, NaN** — Handle edge cases: empty arrays, empty strings, null, undefined, 0, NaN
-- 📐 **Keep functions under 50 lines and single-responsibility** — Keep functions under 50 lines and single-responsibility
-- 📐 **Remove unused imports, variables, and dead code** — Remove unused imports, variables, and dead code
--
+- 📐 \*\*Keep functions unde
 
 ... [Truncated — see individual observations for full content]

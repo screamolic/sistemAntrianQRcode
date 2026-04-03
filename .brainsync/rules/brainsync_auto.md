@@ -1,6 +1,6 @@
 # Project Memory — sistemAntrianQRcode
 
-> 179 notes | Score threshold: >40
+> 199 notes | Score threshold: >40
 
 ## Safety — Never Run Destructive Commands
 
@@ -19,18 +19,22 @@
 
 ## 📝 NOTE: 1 uncommitted file(s) in working tree.\n\n## Project Standards
 
+- Fixed null crash in Database — prevents null/undefined runtime crashes — confirmed 10x
+- Added session cookies authentication — improves module reusability — confirmed 5x
+- Added NextAuth authentication — ensures atomic multi-step database operations — confirmed 3x
 - Added NextAuth authentication — ensures atomic multi-step database operations — confirmed 3x
 - convention in auth.test.ts
 - Replaced drizzle-orm with drizzle-orm — confirmed 3x
 - problem-fix in route.ts — confirmed 3x
 - what-changed in route.ts — confirmed 3x
-- what-changed in queue-list.tsx — confirmed 3x
-- what-changed in page.tsx — confirmed 3x
-- Fixed null crash in Create — prevents null/undefined runtime crashes — confirmed 4x
 
 ## Known Fixes
 
 - ❌ yarn-error.log\* → ✅ problem-fix in .gitignore
+- ❌ - console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Menghubungkan — prevents null/undefined runtime crashes
+- ❌ - console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Required — uses a proper password hashing algorithm
+- ❌ + console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Database — prevents null/undefined runtime crashes
+- ❌ + console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Database — uses a proper password hashing algorithm
 
 ## Recent Decisions
 

@@ -1,6 +1,6 @@
 ---
 name: typescript
-description: 'Typescript for sistemAntrianQRcode. 5 conventions, 9 fixes.'
+description: 'Typescript for sistemAntrianQRcode. 7 conventions, 16 fixes.'
 domain: typescript
 triggers:
   - glob: '**/*.ts'
@@ -11,9 +11,269 @@ enabled: true
 
 # Typescript
 
-Auto-compiled from **34 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on typescript files.
+Auto-compiled from **46 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on typescript files.
 
 ## 🔧 Problem Playbooks
+
+### Fixed null crash in SELECT
+
+- import postgres from 'postgres'
+
+* import postgres from 'postgres'
+
+-
+
+*
+
+- // Try direct connection (port 5432)
+
+* // Try direct connection (port 5432)
+
+- const directUrl = 'postgresql://postgres:9tmvdY1IaM91YMcK@db.lzfrvgplqwhmgtzkvima.supabase.co:5432/postgres'
+
+* const directUrl =
+
+-
+
+* 'postgresql://postgres:9tmvdY1IaM91YMcK@db.lzfrvgplqwhmgtzkvima.supabase.co:5432/postgres'
+
+- // Try poole
+
+**Actionable Steps:**
+
+1. Modified 1 files
+2. identifier: Try
+3. identifier: SELECT
+4. identifier: Connected
+5. identifier: JSON
+
+### Fixed null crash in Database — uses a proper password hashing algorithm
+
+- /\*\*
+
+* /\*\*
+
+- - Database seed script — creates initial super admin account
+
+* - Database seed script — creates initial super admin account
+
+- -
+
+* -
+
+- - Usage:
+
+* - Usage:
+
+- - npx tsx scripts/seed.ts
+
+* - npx tsx scripts/seed.ts
+
+- - # atau
+
+* - # atau
+
+- - npx ts-node scripts/seed.ts
+
+* - npx ts-node scripts/seed.ts
+
+- -
+
+* -
+
+- - Requires: DATABASE_URL dan SUPER_ADMIN_EMAI
+
+**Actionable Steps:**
+
+1. Modified 1 files
+2. identifier: Database
+3. identifier: Usage
+4. identifier: Requires
+5. identifier: Required
+
+### Fixed null crash in SELECT
+
+- import postgres from 'postgres'
+
+* import postgres from 'postgres'
+
+-
+
+*
+
+- // Try direct connection (port 5432)
+
+* // Try direct connection (port 5432)
+
+- const directUrl = 'postgresql://postgres:9tmvdY1IaM91YMcK@db.lzfrvgplqwhmgtzkvima.supabase.co:5432/postgres'
+
+* const directUrl = 'postgresql://postgres:9tmvdY1IaM91YMcK@db.lzfrvgplqwhmgtzkvima.supabase.co:5432/postgres'
+
+-
+
+*
+
+- // Try pooler
+
+**Actionable Steps:**
+
+1. Modified 1 files
+2. identifier: Try
+3. identifier: SELECT
+4. identifier: Connected
+5. identifier: JSON
+
+### Fixed null crash in Required — uses a proper password hashing algorithm
+
+- const connectionString = process.env.DATABASE_URL
+
+* const connectionString =
+
+-
+
+* process.env.DATABASE_URL_DIRECT ||
+
+- if (!connectionString) {
+
+* process.env.DATABASE_URL?.replace(':6543', ':5432')
+
+- console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local')
+
+*
+
+- process.exit(1)
+
+* if (!connectionString) {
+
+- }
+
+* console.error('❌ DATABASE_URL belum dikonfigurasi di .e
+
+**Actionable Steps:**
+
+1. Modified 1 files
+2. identifier: Required
+3. identifier: Supabase
+4. identifier: Memulai
+5. identifier: Get
+
+### Fixed null crash in Menghubungkan — prevents null/undefined runtime crashes
+
+- const connectionString = process.env.DATABASE_URL
+
+* const connectionString =
+
+-
+
+* process.env.DATABASE_URL_DIRECT ||
+
+- if (!connectionString) {
+
+* process.env.DATABASE_URL?.replace(':6543', ':5432')
+
+- console.error('❌ DATABASE_URL tidak ditemukan di .env.local')
+
+*
+
+- process.exit(1)
+
+* if (!connectionString) {
+
+- }
+
+* console.error('❌ DATABASE_URL tidak ditemukan di .env.local
+
+**Actionable Steps:**
+
+1. Modified 1 files
+2. identifier: Menghubungkan
+3. identifier: Menjalankan
+4. identifier: Migrasi
+5. identifier: Skema
+
+### Fixed null crash in Database — uses a proper password hashing algorithm
+
+- /\*\*
+
+* /\*\*
+
+- - Database seed script — creates initial super admin account
+
+* - Database seed script — creates initial super admin account
+
+- -
+
+* -
+
+- - Usage:
+
+* - Usage:
+
+- - npx tsx scripts/seed.ts
+
+* - npx tsx scripts/seed.ts
+
+- - # atau
+
+* - # atau
+
+- - npx ts-node scripts/seed.ts
+
+* - npx ts-node scripts/seed.ts
+
+- -
+
+* -
+
+- - Requires: DATABASE_URL dan SUPER_ADMIN_EMAI
+
+**Actionable Steps:**
+
+1. Modified 1 files
+2. identifier: Database
+3. identifier: Usage
+4. identifier: Requires
+5. identifier: Memulai
+
+### Fixed null crash in Database — prevents null/undefined runtime crashes
+
+- /\*\*
+
+* /\*\*
+
+- - Database migration runner using Drizzle ORM
+
+* - Database migration runner using Drizzle ORM
+
+- -
+
+* -
+
+- - Usage:
+
+* - Usage:
+
+- - npx dotenv-cli -e .env.local -- npx tsx scripts/migrate.ts
+
+* - npx dotenv-cli -e .env.local -- npx tsx scripts/migrate.ts
+
+- - # or add to package.json scripts
+
+* - # or add to package.json scripts
+
+- -
+
+* -
+
+- - Requires: DATABASE_URL
+
+**Actionable Steps:**
+
+1. Modified 1 files
+2. identifier: Database
+3. identifier: Drizzle
+4. identifier: ORM
+5. identifier: Usage
 
 ### Fixed null crash in SELECT
 
@@ -252,6 +512,23 @@ import { revalidatePath } from 'next/cache';
 
 ### Project Conventions
 
+- 📐 **Fixed null crash in Database — prevents null/undefined runtime crashes — confirmed 10x** — - /\*\*
+
+* /\*\*
+
+- - Database migration runner using Drizzle ORM
+
+* - Database migration runner using
+
+- 📐 **Added session cookies authentication — improves module reusability — confirmed 5x** — - import { defineConfig } from 'drizzle-kit'
+
+* import { defineConfig } from 'drizzle-kit'
+
+-
+
+*
+
+-
 - 📐 **convention in auth.test.ts** — File updated (external): src/lib/validators/auth.test.ts
 
 Content summary (87 lines):
@@ -288,4 +565,4 @@ import { NextRe
 
 ---
 
-_Auto-generated by BrainSync 🧠 | 34 patterns | 2026-04-03_
+_Auto-generated by BrainSync 🧠 | 46 patterns | 2026-04-03_
