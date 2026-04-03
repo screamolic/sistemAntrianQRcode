@@ -1,22 +1,22 @@
-'use client';
+'use client'
 
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { UserX } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { UserX } from 'lucide-react'
 
 interface QueueEntry {
-  id: string;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  position: number;
+  id: string
+  firstName: string
+  lastName: string
+  phone: string
+  position: number
 }
 
 interface QueueEntryCardProps {
-  entry: QueueEntry;
-  onRemove?: (entryId: string) => void;
-  isRemoving?: boolean;
+  entry: QueueEntry
+  onRemove?: (entryId: string) => void
+  isRemoving?: boolean
 }
 
 export function QueueEntryCard({ entry, onRemove, isRemoving }: QueueEntryCardProps) {
@@ -31,9 +31,7 @@ export function QueueEntryCard({ entry, onRemove, isRemoving }: QueueEntryCardPr
             <p className="font-semibold">
               {entry.firstName} {entry.lastName}
             </p>
-            <p className="text-sm text-muted-foreground">
-              {entry.phone}
-            </p>
+            <p className="text-sm text-muted-foreground">{entry.phone}</p>
           </div>
         </div>
         {onRemove && (
@@ -48,5 +46,5 @@ export function QueueEntryCard({ entry, onRemove, isRemoving }: QueueEntryCardPr
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

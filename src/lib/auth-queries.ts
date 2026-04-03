@@ -67,7 +67,7 @@ export async function getQueuesByAdminId(adminId: string) {
         entries: [],
       })
     }
-    
+
     if (row.entryId) {
       queueMap.get(row.id).entries.push({
         id: row.entryId,

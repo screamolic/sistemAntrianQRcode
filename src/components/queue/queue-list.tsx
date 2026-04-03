@@ -1,33 +1,33 @@
-'use client';
+'use client'
 
-import { useQueueEntries, useCallNextMutation, useRemoveEntryMutation } from '@/hooks/use-queue';
-import { QueueEntryCard } from './queue-entry-card';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Users, CheckCircle } from 'lucide-react';
+import { useQueueEntries, useCallNextMutation, useRemoveEntryMutation } from '@/hooks/use-queue'
+import { QueueEntryCard } from './queue-entry-card'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Users, CheckCircle } from 'lucide-react'
 
 interface QueueListProps {
-  queueId: string;
-  isAdmin?: boolean;
+  queueId: string
+  isAdmin?: boolean
 }
 
 export function QueueList({ queueId, isAdmin = false }: QueueListProps) {
-  const { data: entries, isLoading, error } = useQueueEntries(queueId);
-  const callNextMutation = useCallNextMutation(queueId);
-  const removeEntryMutation = useRemoveEntryMutation(queueId);
+  const { data: entries, isLoading, error } = useQueueEntries(queueId)
+  const callNextMutation = useCallNextMutation(queueId)
+  const removeEntryMutation = useRemoveEntryMutation(queueId)
 
   const handleCallNext = async () => {
     if (!entries || entries.length === 0) {
-      alert('No one is in queue');
-      return;
+      alert('No one is in queue')
+      return
     }
-    await callNextMutation.mutateAsync();
-  };
+    await callNextMutation.mutateAsync()
+  }
 
   const handleRemove = async (entryId: string) => {
-    await removeEntryMutation.mutateAsync(entryId);
-  };
+    await removeEntryMutation.mutateAsync(entryId)
+  }
 
   if (isLoading) {
     return (
@@ -40,7 +40,7 @@ export function QueueList({ queueId, isAdmin = false }: QueueListProps) {
           </div>
         </CardContent>
       </Card>
-    );
+    )
   }
 
   if (error) {
@@ -50,7 +50,7 @@ export function QueueList({ queueId, isAdmin = false }: QueueListProps) {
           Failed to load queue entries
         </CardContent>
       </Card>
-    );
+    )
   }
 
   return (
@@ -59,9 +59,7 @@ export function QueueList({ queueId, isAdmin = false }: QueueListProps) {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Users className="h-5 w-5" />
-            <span className="font-semibold">
-              {entries?.length || 0} Waiting
-            </span>
+            <span className="font-semibold">{entries?.length || 0} Waiting</span>
           </div>
           <Button
             onClick={handleCallNext}
@@ -74,20 +72,25 @@ export function QueueList({ queueId, isAdmin = false }: QueueListProps) {
       )}
 
       <div className="grid gap-4">
-        {entries?.map((entry: { id: string; name?: string; phoneNumber?: string; position: number }, _index: number) => (
-          <QueueEntryCard
-            key={entry.id}
-            entry={{
-              id: entry.id,
-              firstName: entry.name?.split(' ')[0] || 'Unknown',
-              lastName: entry.name?.split(' ').slice(1).join(' ') || '',
-              phone: entry.phoneNumber || 'N/A',
-              position: entry.position,
-            }}
-            onRemove={isAdmin ? handleRemove : undefined}
-            isRemoving={removeEntryMutation.isPending}
-          />
-        ))}
+        {entries?.map(
+          (
+            entry: { id: string; name?: string; phoneNumber?: string; position: number },
+            _index: number
+          ) => (
+            <QueueEntryCard
+              key={entry.id}
+              entry={{
+                id: entry.id,
+                firstName: entry.name?.split(' ')[0] || 'Unknown',
+                lastName: entry.name?.split(' ').slice(1).join(' ') || '',
+                phone: entry.phoneNumber || 'N/A',
+                position: entry.position,
+              }}
+              onRemove={isAdmin ? handleRemove : undefined}
+              isRemoving={removeEntryMutation.isPending}
+            />
+          )
+        )}
 
         {(!entries || entries.length === 0) && (
           <Card>
@@ -99,5 +102,5 @@ export function QueueList({ queueId, isAdmin = false }: QueueListProps) {
         )}
       </div>
     </div>
-  );
+  )
 }

@@ -1,10 +1,17 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { AlertTriangle, RefreshCw, Home, ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import * as React from 'react'
+import { AlertTriangle, RefreshCw, Home, ArrowLeft } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 interface ErrorBoundaryProps {
   children: React.ReactNode
@@ -38,7 +45,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error to console (in production, send to error tracking service)
-    console.error("ErrorBoundary caught an error:", error, errorInfo)
+    console.error('ErrorBoundary caught an error:', error, errorInfo)
     this.setState({ errorInfo })
   }
 
@@ -52,7 +59,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   handleGoBack = () => {
-    if (typeof window !== "undefined" && window.history.length > 1) {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
       window.history.back()
     } else {
       this.handleReset()
@@ -60,8 +67,8 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   handleGoHome = () => {
-    if (typeof window !== "undefined") {
-      window.location.href = "/"
+    if (typeof window !== 'undefined') {
+      window.location.href = '/'
     }
   }
 
@@ -89,7 +96,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
               <Alert variant="destructive">
                 <AlertTitle>Error Details</AlertTitle>
                 <AlertDescription className="text-xs font-mono break-all">
-                  {this.state.error?.message || "Unknown error occurred"}
+                  {this.state.error?.message || 'Unknown error occurred'}
                 </AlertDescription>
               </Alert>
             </CardContent>
@@ -122,21 +129,21 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 export function GlobalErrorHandler() {
   React.useEffect(() => {
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      console.error("Unhandled promise rejection:", event.reason)
+      console.error('Unhandled promise rejection:', event.reason)
       // In production, send to error tracking service
     }
 
     const handleError = (event: ErrorEvent) => {
-      console.error("Uncaught error:", event.error)
+      console.error('Uncaught error:', event.error)
       // In production, send to error tracking service
     }
 
-    window.addEventListener("unhandledrejection", handleUnhandledRejection)
-    window.addEventListener("error", handleError)
+    window.addEventListener('unhandledrejection', handleUnhandledRejection)
+    window.addEventListener('error', handleError)
 
     return () => {
-      window.removeEventListener("unhandledrejection", handleUnhandledRejection)
-      window.removeEventListener("error", handleError)
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection)
+      window.removeEventListener('error', handleError)
     }
   }, [])
 
@@ -160,12 +167,12 @@ export function useErrorHandler(onError?: (error: Error) => void) {
       }
     }
 
-    window.addEventListener("error", handleError)
-    window.addEventListener("unhandledrejection", handleRejection)
+    window.addEventListener('error', handleError)
+    window.addEventListener('unhandledrejection', handleRejection)
 
     return () => {
-      window.removeEventListener("error", handleError)
-      window.removeEventListener("unhandledrejection", handleRejection)
+      window.removeEventListener('error', handleError)
+      window.removeEventListener('unhandledrejection', handleRejection)
     }
   }, [onError])
 }
@@ -179,7 +186,11 @@ interface InlineErrorProps {
   className?: string
 }
 
-export function InlineError({ message = "An error occurred", onRetry, className }: InlineErrorProps) {
+export function InlineError({
+  message = 'An error occurred',
+  onRetry,
+  className,
+}: InlineErrorProps) {
   return (
     <Alert variant="destructive" className={className} role="alert">
       <AlertTriangle className="h-4 w-4" aria-hidden="true" />

@@ -1,10 +1,10 @@
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { FileText, Inbox, Users, Calendar, AlertCircle, Plus } from "lucide-react"
-import Link from "next/link"
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { FileText, Inbox, Users, Calendar, AlertCircle, Plus } from 'lucide-react'
+import Link from 'next/link'
 
 interface EmptyStateProps {
-  variant?: "default" | "queues" | "users" | "schedule" | "search" | "error"
+  variant?: 'default' | 'queues' | 'users' | 'schedule' | 'search' | 'error'
   title?: string
   description?: string
   action?: {
@@ -22,7 +22,7 @@ interface EmptyStateProps {
 }
 
 const variantConfig: Record<
-  NonNullable<EmptyStateProps["variant"]>,
+  NonNullable<EmptyStateProps['variant']>,
   {
     icon: React.ReactNode
     title: string
@@ -31,32 +31,32 @@ const variantConfig: Record<
 > = {
   default: {
     icon: <FileText className="h-12 w-12" aria-hidden="true" />,
-    title: "No items",
-    description: "There are no items to display yet.",
+    title: 'No items',
+    description: 'There are no items to display yet.',
   },
   queues: {
     icon: <Inbox className="h-12 w-12" aria-hidden="true" />,
-    title: "No queues yet",
-    description: "Create your first queue to start managing visitors.",
+    title: 'No queues yet',
+    description: 'Create your first queue to start managing visitors.',
   },
   users: {
     icon: <Users className="h-12 w-12" aria-hidden="true" />,
-    title: "No users found",
-    description: "There are no users matching your search criteria.",
+    title: 'No users found',
+    description: 'There are no users matching your search criteria.',
   },
   schedule: {
     icon: <Calendar className="h-12 w-12" aria-hidden="true" />,
-    title: "No scheduled items",
-    description: "There are no scheduled items for this date.",
+    title: 'No scheduled items',
+    description: 'There are no scheduled items for this date.',
   },
   search: {
     icon: <AlertCircle className="h-12 w-12" aria-hidden="true" />,
-    title: "No results found",
-    description: "Try adjusting your search or filter criteria.",
+    title: 'No results found',
+    description: 'Try adjusting your search or filter criteria.',
   },
   error: {
     icon: <AlertCircle className="h-12 w-12" aria-hidden="true" />,
-    title: "Something went wrong",
+    title: 'Something went wrong',
     description: "We couldn't load the content. Please try again.",
   },
 }
@@ -65,7 +65,7 @@ const variantConfig: Record<
  * Empty state component for displaying when there's no content
  */
 export function EmptyState({
-  variant = "default",
+  variant = 'default',
   title,
   description,
   action,
@@ -78,7 +78,7 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        "flex min-h-[300px] flex-col items-center justify-center rounded-lg border border-dashed bg-muted/50 p-8 text-center",
+        'flex min-h-[300px] flex-col items-center justify-center rounded-lg border border-dashed bg-muted/50 p-8 text-center',
         className
       )}
       role="status"
@@ -139,11 +139,11 @@ interface CompactEmptyStateProps {
   className?: string
 }
 
-export function CompactEmptyState({ message = "No items", className }: CompactEmptyStateProps) {
+export function CompactEmptyState({ message = 'No items', className }: CompactEmptyStateProps) {
   return (
     <div
       className={cn(
-        "flex items-center justify-center py-8 text-center text-sm text-muted-foreground",
+        'flex items-center justify-center py-8 text-center text-sm text-muted-foreground',
         className
       )}
       role="status"
@@ -168,13 +168,13 @@ export function QueueEmptyState({ onCreateQueue, className }: QueueEmptyStatePro
       variant="queues"
       className={className}
       action={{
-        label: "Create Queue",
+        label: 'Create Queue',
         onClick: onCreateQueue,
-        href: "/dashboard/queues/new",
+        href: '/dashboard/queues/new',
       }}
       secondaryAction={{
-        label: "Learn More",
-        href: "/docs/queues",
+        label: 'Learn More',
+        href: '/docs/queues',
       }}
     />
   )

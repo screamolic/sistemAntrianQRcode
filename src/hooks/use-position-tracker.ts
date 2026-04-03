@@ -1,13 +1,13 @@
-'use client';
+'use client'
 
-import { useEffect, useRef } from 'react';
-import { useQueueEntries } from './use-queue';
+import { useEffect, useRef } from 'react'
+import { useQueueEntries } from './use-queue'
 
 interface UsePositionTrackerProps {
-  queueId: string;
-  phone?: string;
-  entryId?: string;
-  onPositionThree?: () => void;
+  queueId: string
+  phone?: string
+  entryId?: string
+  onPositionThree?: () => void
 }
 
 /**
@@ -19,26 +19,26 @@ export function usePositionTracker({
   entryId,
   onPositionThree,
 }: UsePositionTrackerProps) {
-  const { data: entries } = useQueueEntries(queueId);
-  const previousPosition = useRef<number | null>(null);
+  const { data: entries } = useQueueEntries(queueId)
+  const previousPosition = useRef<number | null>(null)
 
   useEffect(() => {
-    if (!phone || !entryId || !entries) return;
+    if (!phone || !entryId || !entries) return
 
     // Find user's entry
-    const userEntry = entries.find((e) => e.id === entryId);
-    if (!userEntry) return;
+    const userEntry = entries.find((e) => e.id === entryId)
+    if (!userEntry) return
 
-    const currentPosition = userEntry.position;
+    const currentPosition = userEntry.position
 
     // Check if position changed
     if (previousPosition.current !== null && previousPosition.current !== currentPosition) {
       // Trigger notification at position 3
       if (currentPosition === 3) {
-        onPositionThree?.();
+        onPositionThree?.()
       }
     }
 
-    previousPosition.current = currentPosition;
-  }, [entries, phone, entryId, onPositionThree]);
+    previousPosition.current = currentPosition
+  }, [entries, phone, entryId, onPositionThree])
 }

@@ -15,7 +15,7 @@ const counterSchema = z.object({
  */
 export async function GET() {
   const session = await auth()
-  
+
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -34,7 +34,7 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   const session = await auth()
-  
+
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -53,25 +53,22 @@ export async function POST(request: NextRequest) {
       .returning()
 
     return NextResponse.json(
-      { 
+      {
         message: 'Counter berhasil dibuat',
-        counter: newCounter 
+        counter: newCounter,
       },
       { status: 201 }
     )
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.issues.map(e => e.message).join(', ') },
+        { error: error.issues.map((e) => e.message).join(', ') },
         { status: 400 }
       )
     }
-    
+
     console.error('Error creating counter:', error)
-    return NextResponse.json(
-      { error: 'Gagal membuat counter' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Gagal membuat counter' }, { status: 500 })
   }
 }
 
@@ -80,7 +77,7 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   const session = await auth()
-  
+
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -88,7 +85,7 @@ export async function PUT(request: NextRequest) {
   try {
     const url = new URL(request.url)
     const id = url.pathname.split('/').pop()
-    
+
     if (!id) {
       return NextResponse.json({ error: 'Counter ID required' }, { status: 400 })
     }
@@ -97,11 +94,7 @@ export async function PUT(request: NextRequest) {
     const validated = counterSchema.parse(body)
 
     // Verify ownership
-    const existingCounter = await db
-      .select()
-      .from(counters)
-      .where(eq(counters.id, id))
-      .limit(1)
+    const existingCounter = await db.select().from(counters).where(eq(counters.id, id)).limit(1)
 
     if (existingCounter.length === 0) {
       return NextResponse.json({ error: 'Counter tidak ditemukan' }, { status: 404 })
@@ -127,16 +120,13 @@ export async function PUT(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.issues.map(e => e.message).join(', ') },
+        { error: error.issues.map((e) => e.message).join(', ') },
         { status: 400 }
       )
     }
-    
+
     console.error('Error updating counter:', error)
-    return NextResponse.json(
-      { error: 'Gagal memperbarui counter' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Gagal memperbarui counter' }, { status: 500 })
   }
 }
 
@@ -145,7 +135,7 @@ export async function PUT(request: NextRequest) {
  */
 export async function DELETE(request: NextRequest) {
   const session = await auth()
-  
+
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -153,17 +143,13 @@ export async function DELETE(request: NextRequest) {
   try {
     const url = new URL(request.url)
     const id = url.pathname.split('/').pop()
-    
+
     if (!id) {
       return NextResponse.json({ error: 'Counter ID required' }, { status: 400 })
     }
 
     // Verify ownership
-    const existingCounter = await db
-      .select()
-      .from(counters)
-      .where(eq(counters.id, id))
-      .limit(1)
+    const existingCounter = await db.select().from(counters).where(eq(counters.id, id)).limit(1)
 
     if (existingCounter.length === 0) {
       return NextResponse.json({ error: 'Counter tidak ditemukan' }, { status: 404 })
@@ -173,18 +159,13 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
-    await db
-      .delete(counters)
-      .where(eq(counters.id, id))
+    await db.delete(counters).where(eq(counters.id, id))
 
     return NextResponse.json({
       message: 'Counter berhasil dihapus',
     })
   } catch (error) {
     console.error('Error deleting counter:', error)
-    return NextResponse.json(
-      { error: 'Gagal menghapus counter' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Gagal menghapus counter' }, { status: 500 })
   }
 }

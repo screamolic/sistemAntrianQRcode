@@ -1,11 +1,5 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
-import {
-  cn,
-  generateQueueId,
-  formatQueueUrl,
-  isQueueExpired,
-  formatRelativeTime,
-} from './utils'
+import { cn, generateQueueId, formatQueueUrl, isQueueExpired, formatRelativeTime } from './utils'
 
 describe('utils', () => {
   describe('cn', () => {
@@ -17,9 +11,7 @@ describe('utils', () => {
 
     it('should handle conditional classes', () => {
       const isActive = true
-      expect(cn('base-class', isActive && 'active-class')).toBe(
-        'base-class active-class'
-      )
+      expect(cn('base-class', isActive && 'active-class')).toBe('base-class active-class')
     })
 
     it('should handle false and null values', () => {

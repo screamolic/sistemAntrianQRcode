@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import * as React from 'react'
 import Link from 'next/link'
@@ -104,22 +104,14 @@ export function MobileNav({ user }: MobileNavProps) {
                   <div className="mb-4 flex items-center gap-3 px-4">
                     <User className="h-5 w-5 text-muted-foreground" />
                     <div>
-                      <div className="text-sm font-medium">
-                        {user.name || user.email}
-                      </div>
+                      <div className="text-sm font-medium">{user.name || user.email}</div>
                       {user.role === 'SUPER_ADMIN' && (
-                        <div className="text-xs text-muted-foreground">
-                          Super Admin
-                        </div>
+                        <div className="text-xs text-muted-foreground">Super Admin</div>
                       )}
                     </div>
                   </div>
                   <form action={handleSignOut}>
-                    <Button
-                      type="submit"
-                      variant="outline"
-                      className="w-full justify-start gap-2"
-                    >
+                    <Button type="submit" variant="outline" className="w-full justify-start gap-2">
                       <LogOut className="h-4 w-4" />
                       Sign Out
                     </Button>

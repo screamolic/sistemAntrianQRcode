@@ -1,43 +1,43 @@
-'use server';
+'use server'
 
-import { auth } from '@/lib/auth';
-import { createQueue, deleteQueue, getAdminQueues } from '@/lib/queue';
-import { revalidatePath } from 'next/cache';
+import { auth } from '@/lib/auth'
+import { createQueue, deleteQueue, getAdminQueues } from '@/lib/queue'
+import { revalidatePath } from 'next/cache'
 
 /**
  * Create a new queue action
  */
 export async function createQueueAction(formData: FormData) {
-  const session = await auth();
+  const session = await auth()
   if (!session?.user?.id) {
     return {
       success: false,
       error: 'Unauthorized',
-    };
+    }
   }
 
-  const name = formData.get('name') as string;
+  const name = formData.get('name') as string
 
   if (!name || name.trim().length === 0) {
     return {
       success: false,
       error: 'Queue name is required',
-    };
+    }
   }
 
   try {
-    const queue = await createQueue(session.user.id, name);
-    revalidatePath('/dashboard');
+    const queue = await createQueue(session.user.id, name)
+    revalidatePath('/dashboard')
     return {
       success: true,
       queueId: queue.id,
-    };
+    }
   } catch (error) {
-    console.error('Error creating queue:', error);
+    console.error('Error creating queue:', error)
     return {
       success: false,
       error: 'Failed to create queue',
-    };
+    }
   }
 }
 
@@ -45,26 +45,26 @@ export async function createQueueAction(formData: FormData) {
  * Delete a queue action
  */
 export async function deleteQueueAction(queueId: string) {
-  const session = await auth();
+  const session = await auth()
   if (!session?.user?.id) {
     return {
       success: false,
       error: 'Unauthorized',
-    };
+    }
   }
 
   try {
-    await deleteQueue(queueId, session.user.id);
-    revalidatePath('/dashboard');
+    await deleteQueue(queueId, session.user.id)
+    revalidatePath('/dashboard')
     return {
       success: true,
-    };
+    }
   } catch (error) {
-    console.error('Error deleting queue:', error);
+    console.error('Error deleting queue:', error)
     return {
       success: false,
       error: 'Failed to delete queue',
-    };
+    }
   }
 }
 
@@ -72,10 +72,10 @@ export async function deleteQueueAction(queueId: string) {
  * Get admin queues action (for client components)
  */
 export async function getAdminQueuesAction() {
-  const session = await auth();
+  const session = await auth()
   if (!session?.user?.id) {
-    return [];
+    return []
   }
 
-  return getAdminQueues(session.user.id);
+  return getAdminQueues(session.user.id)
 }

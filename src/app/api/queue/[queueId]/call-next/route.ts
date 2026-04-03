@@ -12,7 +12,7 @@ export async function POST(
   { params }: { params: Promise<{ queueId: string }> }
 ) {
   const session = await auth()
-  
+
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -21,11 +21,7 @@ export async function POST(
     const { queueId } = await params
 
     // Verify queue exists and user has access
-    const queueResults = await db
-      .select()
-      .from(queues)
-      .where(eq(queues.id, queueId))
-      .limit(1)
+    const queueResults = await db.select().from(queues).where(eq(queues.id, queueId)).limit(1)
 
     if (queueResults.length === 0) {
       return NextResponse.json({ error: 'Queue tidak ditemukan' }, { status: 404 })
@@ -35,20 +31,12 @@ export async function POST(
     const nextEntryResults = await db
       .select()
       .from(queueEntries)
-      .where(
-        and(
-          eq(queueEntries.queueId, queueId),
-          eq(queueEntries.status, 'WAITING')
-        )
-      )
+      .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING')))
       .orderBy(asc(queueEntries.position), asc(queueEntries.createdAt))
       .limit(1)
 
     if (nextEntryResults.length === 0) {
-      return NextResponse.json(
-        { error: 'Tidak ada antrian yang menunggu' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Tidak ada antrian yang menunggu' }, { status: 400 })
     }
 
     const nextEntry = nextEntryResults[0]
@@ -69,12 +57,7 @@ export async function POST(
       .set({
         position: sql`${queueEntries.position} - 1`,
       })
-      .where(
-        and(
-          eq(queueEntries.queueId, queueId),
-          eq(queueEntries.status, 'WAITING')
-        )
-      )
+      .where(and(eq(queueEntries.queueId, queueId), eq(queueEntries.status, 'WAITING')))
 
     return NextResponse.json({
       message: 'Berhasil memanggil antrian berikutnya',
@@ -82,9 +65,6 @@ export async function POST(
     })
   } catch (error) {
     console.error('Error calling next entry:', error)
-    return NextResponse.json(
-      { error: 'Gagal memanggil antrian berikutnya' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Gagal memanggil antrian berikutnya' }, { status: 500 })
   }
 }

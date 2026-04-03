@@ -1,44 +1,44 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { createQueueAction } from '@/app/actions/queue';
-import { Plus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { createQueueAction } from '@/app/actions/queue'
+import { Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 
 export function CreateQueueButton() {
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const router = useRouter()
+  const [open, setOpen] = useState(false)
+  const [pending, setPending] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (formData: FormData) => {
-    setPending(true);
-    setError(null);
+    setPending(true)
+    setError(null)
 
     try {
-      const result = await createQueueAction(formData);
+      const result = await createQueueAction(formData)
       if (result.success && result.queueId) {
-        setOpen(false);
-        router.push(`/admin/queue/${result.queueId}`);
-        router.refresh();
+        setOpen(false)
+        router.push(`/admin/queue/${result.queueId}`)
+        router.refresh()
       } else {
-        setError(result.error || 'Failed to create queue');
+        setError(result.error || 'Failed to create queue')
       }
     } catch {
-      setError('An unexpected error occurred');
+      setError('An unexpected error occurred')
     } finally {
-      setPending(false);
+      setPending(false)
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -68,9 +68,7 @@ export function CreateQueueButton() {
                 disabled={pending}
               />
             </div>
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-sm text-destructive">{error}</p>}
             <div className="flex justify-end gap-2">
               <Button
                 type="button"
@@ -88,5 +86,5 @@ export function CreateQueueButton() {
         </form>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

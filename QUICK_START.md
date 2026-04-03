@@ -3,6 +3,7 @@
 ## Prerequisites Check
 
 Make sure you have:
+
 - [ ] Node.js 20+ installed (`node --version`)
 - [ ] Docker Desktop installed and running
 - [ ] Git credentials configured
@@ -21,6 +22,7 @@ Copy-Item .env.example .env
 ```
 
 **.env file:**
+
 ```env
 # Database (Docker PostgreSQL)
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/queue_automation?schema=public"
@@ -56,6 +58,7 @@ docker compose ps
 ```
 
 You should see:
+
 ```
 NAME                STATUS
 queue-automation-postgres-1   Up (healthy)
@@ -80,6 +83,7 @@ npx prisma studio
 ```
 
 This creates:
+
 - User table (for authentication)
 - Queue table (for queue management)
 - QueueEntry table (for people in queue)
@@ -159,6 +163,7 @@ npm run test:e2e
 ```
 
 This runs Playwright tests for:
+
 - Authentication flow (signup, login)
 - Queue management (create, join, call next)
 
@@ -179,6 +184,7 @@ Run: `npx prisma generate`
 ### "Port 3000 already in use"
 
 Change port in package.json:
+
 ```json
 "dev": "next dev -p 3001"
 ```
@@ -186,11 +192,13 @@ Change port in package.json:
 ### Evolution-API errors (WhatsApp not configured)
 
 This is normal for local testing without WhatsApp. The app will:
+
 - Log errors to console
 - Continue working without notifications
 - Show notification status in admin panel
 
 To fully test WhatsApp:
+
 1. Run Evolution-API: `docker-compose -f docker-compose.evolution.yml up -d`
 2. Visit http://localhost:8080/manager
 3. Scan QR code to pair WhatsApp
@@ -201,11 +209,13 @@ To fully test WhatsApp:
 ## Next Steps
 
 After local testing:
+
 1. ✅ All features working
 2. ✅ Tests passing
 3. ✅ Database migrations successful
 
 Then deploy to production:
+
 - See `docs/VERCEL_DEPLOYMENT.md`
 
 ---

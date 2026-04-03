@@ -13,7 +13,8 @@ import { QueuePositionDisplay } from '@/components/queue/queue-position-display'
 
 const joinQueueSchema = z.object({
   customerName: z.string().min(2, 'Nama minimal 2 karakter').max(100),
-  customerPhone: z.string()
+  customerPhone: z
+    .string()
     .min(10, 'Nomor telepon minimal 10 digit')
     .regex(/^[0-9+\-\s()]+$/, 'Format nomor telepon tidak valid'),
 })

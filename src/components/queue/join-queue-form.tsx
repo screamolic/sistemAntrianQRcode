@@ -1,33 +1,33 @@
-'use client';
+'use client'
 
-import { useState, useTransition } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { joinQueueAction } from '@/app/actions/join-queue';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { useState, useTransition } from 'react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { joinQueueAction } from '@/app/actions/join-queue'
+import { CheckCircle2, AlertCircle } from 'lucide-react'
 
 interface JoinQueueFormProps {
-  queueId: string;
+  queueId: string
 }
 
 export function JoinQueueForm({ queueId }: JoinQueueFormProps) {
-  const [pending, startTransition] = useTransition();
+  const [pending, startTransition] = useTransition()
   const [result, setResult] = useState<{
-    success: boolean;
-    error?: string;
-    position?: number;
-  } | null>(null);
+    success: boolean
+    error?: string
+    position?: number
+  } | null>(null)
 
   const handleSubmit = async (formData: FormData) => {
-    formData.append('queueId', queueId);
+    formData.append('queueId', queueId)
 
     startTransition(async () => {
-      const response = await joinQueueAction(formData);
-      setResult(response);
-    });
-  };
+      const response = await joinQueueAction(formData)
+      setResult(response)
+    })
+  }
 
   return (
     <form action={handleSubmit} className="space-y-4 max-w-md mx-auto">
@@ -63,9 +63,7 @@ export function JoinQueueForm({ queueId }: JoinQueueFormProps) {
           required
           disabled={pending || result?.success}
         />
-        <p className="text-sm text-muted-foreground">
-          Format: +62 or 08 (Indonesian WhatsApp)
-        </p>
+        <p className="text-sm text-muted-foreground">Format: +62 or 08 (Indonesian WhatsApp)</p>
       </div>
 
       <Button type="submit" className="w-full" disabled={pending || result?.success}>
@@ -80,12 +78,10 @@ export function JoinQueueForm({ queueId }: JoinQueueFormProps) {
             <AlertCircle className="h-4 w-4" />
           )}
           <AlertDescription>
-            {result.success
-              ? `You're in queue! Position: #${result.position}`
-              : result.error}
+            {result.success ? `You're in queue! Position: #${result.position}` : result.error}
           </AlertDescription>
         </Alert>
       )}
     </form>
-  );
+  )
 }

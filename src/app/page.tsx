@@ -1,16 +1,16 @@
-import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
-import { Header } from "@/components/layout/header"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import Link from "next/link"
+import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
+import { Header } from '@/components/layout/header'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import Link from 'next/link'
 
 export default async function Home() {
   const session = await auth()
 
   // Redirect logged-in users to dashboard
   if (session?.user) {
-    redirect("/dashboard")
+    redirect('/dashboard')
   }
 
   return (
@@ -19,9 +19,7 @@ export default async function Home() {
       <main className="flex-1 container mx-auto px-4 py-16">
         <div className="max-w-4xl mx-auto space-y-12">
           <section className="text-center space-y-6">
-            <h1 className="text-5xl font-bold tracking-tight">
-              Queue Automation System
-            </h1>
+            <h1 className="text-5xl font-bold tracking-tight">Queue Automation System</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Modern queue management with QR codes, real-time updates, and WhatsApp notifications.
               Built for efficiency, designed for simplicity.
@@ -40,9 +38,7 @@ export default async function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>QR Code Join</CardTitle>
-                <CardDescription>
-                  Users scan QR code to join queue instantly
-                </CardDescription>
+                <CardDescription>Users scan QR code to join queue instantly</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
@@ -54,9 +50,7 @@ export default async function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>Real-Time Updates</CardTitle>
-                <CardDescription>
-                  Live queue position tracking
-                </CardDescription>
+                <CardDescription>Live queue position tracking</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
@@ -68,9 +62,7 @@ export default async function Home() {
             <Card>
               <CardHeader>
                 <CardTitle>WhatsApp Notifications</CardTitle>
-                <CardDescription>
-                  Automated alerts when it&apos;s almost your turn
-                </CardDescription>
+                <CardDescription>Automated alerts when it&apos;s almost your turn</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">

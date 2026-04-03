@@ -16,7 +16,7 @@ export async function generateCounterQRCode(
   baseUrl: string = process.env.AUTH_URL || 'http://localhost:3000'
 ): Promise<string> {
   const queueUrl = `${baseUrl}/q/${counterId}`
-  
+
   return toDataURL(queueUrl, {
     width: 300,
     margin: 2,

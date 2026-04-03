@@ -1,33 +1,33 @@
-'use client';
+'use client'
 
-import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-react';
-import { retryFailedNotificationsAction } from '@/app/actions/notifications';
+import { useQuery } from '@tanstack/react-query'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { RefreshCw, CheckCircle, XCircle, Clock } from 'lucide-react'
+import { retryFailedNotificationsAction } from '@/app/actions/notifications'
 
 interface NotificationPanelProps {
-  queueId: string;
+  queueId: string
 }
 
 export function NotificationPanel({ queueId }: NotificationPanelProps) {
   const { data: stats, refetch } = useQuery({
     queryKey: ['notification-stats', queueId],
     queryFn: async () => {
-      const res = await fetch(`/api/notifications/stats?queueId=${queueId}`);
-      if (!res.ok) throw new Error('Failed to fetch');
-      return res.json();
+      const res = await fetch(`/api/notifications/stats?queueId=${queueId}`)
+      if (!res.ok) throw new Error('Failed to fetch')
+      return res.json()
     },
     refetchInterval: 30000, // 30 seconds
-  });
+  })
 
   const handleRetry = async () => {
-    const result = await retryFailedNotificationsAction(queueId);
+    const result = await retryFailedNotificationsAction(queueId)
     if (result.success) {
-      refetch();
-      alert(`Retried ${result.retried} notifications, ${result.succeeded} succeeded`);
+      refetch()
+      alert(`Retried ${result.retried} notifications, ${result.succeeded} succeeded`)
     }
-  };
+  }
 
   return (
     <Card>
@@ -72,5 +72,5 @@ export function NotificationPanel({ queueId }: NotificationPanelProps) {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

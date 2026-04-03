@@ -26,7 +26,7 @@ export function QRCodeDisplay({ value, size = 300 }: QRCodeDisplayProps) {
             light: '#FFFFFF',
           },
         })
-        
+
         if (mounted) {
           setQrDataUrl(dataUrl)
           setIsLoading(false)
@@ -64,13 +64,7 @@ export function QRCodeDisplay({ value, size = 300 }: QRCodeDisplayProps) {
 
   return (
     <div className="relative" style={{ width: size, height: size }}>
-      <Image
-        src={qrDataUrl}
-        alt="QR Code"
-        fill
-        className="object-contain"
-        unoptimized
-      />
+      <Image src={qrDataUrl} alt="QR Code" fill className="object-contain" unoptimized />
     </div>
   )
 }

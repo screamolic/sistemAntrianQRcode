@@ -1,54 +1,54 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { RefreshCw, Trash2, Clock } from 'lucide-react';
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { RefreshCw, Trash2, Clock } from 'lucide-react'
 
 export function CronTrigger() {
   const [running, setRunning] = useState<{
-    cleanup?: boolean;
-    retry?: boolean;
-  }>({});
-  const [result, setResult] = useState<string>('');
+    cleanup?: boolean
+    retry?: boolean
+  }>({})
+  const [result, setResult] = useState<string>('')
 
   const runCleanup = async () => {
-    setRunning((prev) => ({ ...prev, cleanup: true }));
+    setRunning((prev) => ({ ...prev, cleanup: true }))
     try {
       const res = await fetch('/api/cron/daily-cleanup', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_CRON_SECRET}`,
         },
-      });
-      const data = await res.json();
+      })
+      const data = await res.json()
       setResult(
         `Cleanup: ${data.archivedQueues} queues archived, ${data.deletedNotifications} notifications deleted`
-      );
+      )
     } catch {
-      setResult('Cleanup failed');
+      setResult('Cleanup failed')
     } finally {
-      setRunning((prev) => ({ ...prev, cleanup: false }));
+      setRunning((prev) => ({ ...prev, cleanup: false }))
     }
-  };
+  }
 
   const runRetry = async () => {
-    setRunning((prev) => ({ ...prev, retry: true }));
+    setRunning((prev) => ({ ...prev, retry: true }))
     try {
       const res = await fetch('/api/cron/retry-notifications', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_CRON_SECRET}`,
         },
-      });
-      const data = await res.json();
-      setResult(`Retry: ${data.succeeded}/${data.attempted} notifications sent`);
+      })
+      const data = await res.json()
+      setResult(`Retry: ${data.succeeded}/${data.attempted} notifications sent`)
     } catch {
-      setResult('Retry failed');
+      setResult('Retry failed')
     } finally {
-      setRunning((prev) => ({ ...prev, retry: false }));
+      setRunning((prev) => ({ ...prev, retry: false }))
     }
-  };
+  }
 
   return (
     <Card>
@@ -74,5 +74,5 @@ export function CronTrigger() {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }

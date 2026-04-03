@@ -81,7 +81,7 @@ export default function CreateCounterPage() {
             <div className="flex justify-center">
               <QRCodeDisplay value={createdCounter.qrCode} size={300} />
             </div>
-            
+
             <Alert>
               <AlertDescription>
                 <p className="font-medium mb-2">URL Antrian:</p>
@@ -95,10 +95,7 @@ export default function CreateCounterPage() {
             </Alert>
 
             <div className="flex gap-4">
-              <Button
-                onClick={() => router.push('/dashboard')}
-                className="flex-1"
-              >
+              <Button onClick={() => router.push('/dashboard')} className="flex-1">
                 Kembali ke Dashboard
               </Button>
               <Button
@@ -122,9 +119,7 @@ export default function CreateCounterPage() {
       <Card>
         <CardHeader>
           <CardTitle>Buat Counter Baru</CardTitle>
-          <CardDescription>
-            Tambahkan counter layanan baru untuk sistem antrian
-          </CardDescription>
+          <CardDescription>Tambahkan counter layanan baru untuk sistem antrian</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -143,9 +138,7 @@ export default function CreateCounterPage() {
                 disabled={isLoading}
                 {...register('name')}
               />
-              {errors.name && (
-                <p className="text-sm text-destructive">{errors.name.message}</p>
-              )}
+              {errors.name && <p className="text-sm text-destructive">{errors.name.message}</p>}
             </div>
 
             <div className="space-y-2">

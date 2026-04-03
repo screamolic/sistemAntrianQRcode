@@ -1,7 +1,6 @@
-
-
 # Project Memory — sistemAntrianQRcode
-> 215 notes | Score threshold: >40
+
+> 305 notes | Score threshold: >40
 
 ## Safety — Never Run Destructive Commands
 
@@ -18,30 +17,48 @@
 
 **Stack:** JavaScript/TypeScript · Next.js + React + Tailwind · DB: MongoDB, PostgreSQL, Prisma
 
-## 📝 NOTE: 1 uncommitted file(s) in working tree.\n\n## Project Standards
+## 📝 NOTE: 1 uncommitted file(s) in working tree.\n\n## Important Warnings
 
+- **gotcha in theme-provider.tsx** — File updated (external): src/components/theme-provider.tsx
+
+Content su
+
+- **gotcha in AGENTS.md** — File updated (external): AGENTS.md
+
+Content summary (8 lines):
+
+<!-- BE
+- **gotcha in .eslintrc.json** — File updated (external): .eslintrc.json
+
+Content summary (9 lines):
+{
+
+
+## Project Standards
+
+- Strengthened types ClassValue — externalizes configuration for environment fl...
+- Strengthened types Nomor — prevents brute-force and DoS attacks
+- convention in VERCEL_DEPLOYMENT.md
+- convention in queue.ts
 - convention in queue.ts
 - what-changed in test-results.json — confirmed 3x
 - convention in queue.test.ts
 - Fixed null crash in Database — prevents null/undefined runtime crashes — confirmed 10x
-- Added session cookies authentication — improves module reusability — confirmed 5x
-- Added NextAuth authentication — ensures atomic multi-step database operations — confirmed 3x
-- Added NextAuth authentication — ensures atomic multi-step database operations — confirmed 3x
-- convention in auth.test.ts
 
 ## Known Fixes
 
+- ❌ } catch (error) { → ✅ problem-fix in route.ts
 - ❌ yarn-error.log* → ✅ problem-fix in .gitignore
 - ❌ -   console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Menghubungkan — prevents null/undefined runtime crashes
 - ❌ -   console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Required — uses a proper password hashing algorithm
 - ❌ +   console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Database — prevents null/undefined runtime crashes
-- ❌ +   console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Database — uses a proper password hashing algorithm
 
 ## Recent Decisions
 
-- Optimized Property — protects against XSS and CSRF token theft
-- decision in route.ts
-- Optimized package — uses a proper password hashing algorithm
+- decision in use-queue-updates.ts
+- decision in query-provider.tsx
+- decision in eslint.config.mjs
+- Optimized RateLimitConfig — prevents brute-force and DoS attacks
 
 ## Learned Patterns
 

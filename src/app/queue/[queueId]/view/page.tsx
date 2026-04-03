@@ -1,24 +1,28 @@
-'use client';
+'use client'
 
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Users } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query'
+import { useParams } from 'next/navigation'
+import { Card, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Users } from 'lucide-react'
 
 export default function QueueViewPage() {
-  const params = useParams();
-  const queueId = params.queueId as string;
+  const params = useParams()
+  const queueId = params.queueId as string
 
-  const { data: entries, isLoading, error } = useQuery({
+  const {
+    data: entries,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['queue-entries', queueId],
     queryFn: async () => {
-      const res = await fetch(`/api/queue/${queueId}/entries`);
-      if (!res.ok) throw new Error('Failed to fetch');
-      return res.json();
+      const res = await fetch(`/api/queue/${queueId}/entries`)
+      if (!res.ok) throw new Error('Failed to fetch')
+      return res.json()
     },
     refetchInterval: 5000,
-  });
+  })
 
   if (isLoading) {
     return (
@@ -34,7 +38,7 @@ export default function QueueViewPage() {
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   if (error) {
@@ -47,7 +51,7 @@ export default function QueueViewPage() {
           </CardContent>
         </Card>
       </div>
-    );
+    )
   }
 
   return (
@@ -58,13 +62,9 @@ export default function QueueViewPage() {
         {entries.map((entry: { id: string; name?: string }, index: number) => (
           <Card key={entry.id}>
             <CardContent className="flex items-center gap-4 p-4">
-              <span className="text-2xl font-bold w-12 text-center">
-                #{index + 1}
-              </span>
+              <span className="text-2xl font-bold w-12 text-center">#{index + 1}</span>
               <div>
-                <p className="font-semibold">
-                  {entry.name || 'Anonymous'}
-                </p>
+                <p className="font-semibold">{entry.name || 'Anonymous'}</p>
               </div>
             </CardContent>
           </Card>
@@ -80,5 +80,5 @@ export default function QueueViewPage() {
         )}
       </div>
     </div>
-  );
+  )
 }

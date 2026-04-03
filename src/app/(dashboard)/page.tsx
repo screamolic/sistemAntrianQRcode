@@ -1,26 +1,26 @@
-import { auth } from "@/lib/auth"
-import { redirect } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { getQueuesByAdminId } from "@/lib/auth-queries"
-import { CreateQueueButton } from "@/components/queue/create-queue-button"
-import Link from "next/link"
+import { auth } from '@/lib/auth'
+import { redirect } from 'next/navigation'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { getQueuesByAdminId } from '@/lib/auth-queries'
+import { CreateQueueButton } from '@/components/queue/create-queue-button'
+import Link from 'next/link'
 
 export default async function DashboardPage() {
   const session = await auth()
 
   if (!session?.user) {
-    redirect("/login")
+    redirect('/login')
   }
 
-interface QueueData {
-  id: string
-  name: string
-  status: string
-  entries: Array<{ id: string }>
-}
+  interface QueueData {
+    id: string
+    name: string
+    status: string
+    entries: Array<{ id: string }>
+  }
 
-  const queues = await getQueuesByAdminId(session.user.id) as QueueData[]
+  const queues = (await getQueuesByAdminId(session.user.id)) as QueueData[]
   const activeQueues = queues.filter((q) => q.status === 'ACTIVE')
   const totalEntries = queues.reduce((sum, q) => sum + (q.entries?.length || 0), 0)
 
@@ -29,13 +29,15 @@ interface QueueData {
       {/* Page Header */}
       <header className="flex justify-between items-center" role="banner">
         <div>
-          <h1 className="text-3xl font-bold" id="page-title">Dashboard</h1>
+          <h1 className="text-3xl font-bold" id="page-title">
+            Dashboard
+          </h1>
           <p className="text-muted-foreground" aria-label="Welcome message">
             Welcome back, {session.user.name || session.user.email}
           </p>
         </div>
-        {session.user.role === "SUPER_ADMIN" && (
-          <span 
+        {session.user.role === 'SUPER_ADMIN' && (
+          <span
             className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
             role="status"
             aria-label="Super Administrator badge"
@@ -47,15 +49,19 @@ interface QueueData {
 
       {/* Stats Cards */}
       <section aria-labelledby="stats-heading" className="grid gap-6 md:grid-cols-3">
-        <h2 id="stats-heading" className="sr-only">Statistics Overview</h2>
-        
+        <h2 id="stats-heading" className="sr-only">
+          Statistics Overview
+        </h2>
+
         <Card aria-labelledby="total-queues-label">
           <CardHeader>
             <CardTitle id="total-queues-label">Total Queues</CardTitle>
             <CardDescription>Active queues you&apos;ve created</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold" aria-live="polite">{queues.length}</div>
+            <div className="text-3xl font-bold" aria-live="polite">
+              {queues.length}
+            </div>
           </CardContent>
         </Card>
 
@@ -65,7 +71,9 @@ interface QueueData {
             <CardDescription>Queues with activity today</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold" aria-live="polite">{activeQueues.length}</div>
+            <div className="text-3xl font-bold" aria-live="polite">
+              {activeQueues.length}
+            </div>
           </CardContent>
         </Card>
 
@@ -75,7 +83,9 @@ interface QueueData {
             <CardDescription>All queue entries across your queues</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold" aria-live="polite">{totalEntries}</div>
+            <div className="text-3xl font-bold" aria-live="polite">
+              {totalEntries}
+            </div>
           </CardContent>
         </Card>
       </section>
@@ -116,7 +126,10 @@ interface QueueData {
                         </Link>
                       </Button>
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/admin/queue/${queue.id}`} aria-label={`Manage ${queue.name} queue`}>
+                        <Link
+                          href={`/admin/queue/${queue.id}`}
+                          aria-label={`Manage ${queue.name} queue`}
+                        >
                           Manage
                         </Link>
                       </Button>
@@ -132,9 +145,7 @@ interface QueueData {
         <Card aria-labelledby="no-queues-label">
           <CardHeader>
             <CardTitle id="no-queues-label">No Queues Yet</CardTitle>
-            <CardDescription>
-              Create your first queue to get started
-            </CardDescription>
+            <CardDescription>Create your first queue to get started</CardDescription>
           </CardHeader>
           <CardContent>
             <CreateQueueButton />

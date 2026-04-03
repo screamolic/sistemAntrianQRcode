@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { cn } from "@/lib/utils"
-import { Skeleton } from "@/components/ui/skeleton"
+import { cn } from '@/lib/utils'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface LoadingSkeletonProps {
-  variant?: "card" | "table" | "list" | "text" | "dashboard"
+  variant?: 'card' | 'table' | 'list' | 'text' | 'dashboard'
   count?: number
   className?: string
 }
@@ -12,15 +12,11 @@ interface LoadingSkeletonProps {
 /**
  * Reusable loading skeleton component for various UI patterns
  */
-export function LoadingSkeleton({
-  variant = "card",
-  count = 1,
-  className,
-}: LoadingSkeletonProps) {
+export function LoadingSkeleton({ variant = 'card', count = 1, className }: LoadingSkeletonProps) {
   switch (variant) {
-    case "card":
+    case 'card':
       return (
-        <div className={cn("space-y-4", className)}>
+        <div className={cn('space-y-4', className)}>
           {Array.from({ length: count }).map((_, i) => (
             <div
               key={i}
@@ -41,9 +37,13 @@ export function LoadingSkeleton({
         </div>
       )
 
-    case "table":
+    case 'table':
       return (
-        <div className={cn("rounded-lg border bg-card", className)} role="status" aria-label="Loading table">
+        <div
+          className={cn('rounded-lg border bg-card', className)}
+          role="status"
+          aria-label="Loading table"
+        >
           <div className="p-4 border-b">
             <Skeleton className="h-6 w-1/4" />
           </div>
@@ -59,11 +59,16 @@ export function LoadingSkeleton({
         </div>
       )
 
-    case "list":
+    case 'list':
       return (
-        <div className={cn("space-y-3", className)}>
+        <div className={cn('space-y-3', className)}>
           {Array.from({ length: count }).map((_, i) => (
-            <div key={i} className="flex items-center gap-4" role="status" aria-label="Loading item">
+            <div
+              key={i}
+              className="flex items-center gap-4"
+              role="status"
+              aria-label="Loading item"
+            >
               <Skeleton className="h-10 w-10 rounded-lg" />
               <div className="space-y-2 flex-1">
                 <Skeleton className="h-4 w-3/4" />
@@ -74,22 +79,27 @@ export function LoadingSkeleton({
         </div>
       )
 
-    case "text":
+    case 'text':
       return (
-        <div className={cn("space-y-2", className)} role="status" aria-label="Loading text">
+        <div className={cn('space-y-2', className)} role="status" aria-label="Loading text">
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-5/6" />
           <Skeleton className="h-4 w-4/6" />
         </div>
       )
 
-    case "dashboard":
+    case 'dashboard':
       return (
-        <div className={cn("space-y-6", className)}>
+        <div className={cn('space-y-6', className)}>
           {/* Stats Cards */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="rounded-lg border bg-card p-6" role="status" aria-label="Loading stat">
+              <div
+                key={i}
+                className="rounded-lg border bg-card p-6"
+                role="status"
+                aria-label="Loading stat"
+              >
                 <div className="flex items-center gap-4">
                   <Skeleton className="h-10 w-10 rounded-lg" />
                   <div className="space-y-2">
@@ -125,7 +135,7 @@ export function LoadingSkeleton({
 
     default:
       return (
-        <div className={cn("space-y-2", className)} role="status" aria-label="Loading">
+        <div className={cn('space-y-2', className)} role="status" aria-label="Loading">
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-3/4" />
         </div>

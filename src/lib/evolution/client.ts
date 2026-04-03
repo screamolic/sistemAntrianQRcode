@@ -4,43 +4,43 @@
  */
 
 export interface EvolutionMessageResponse {
-  id: string;
-  status: string;
-  message: string;
+  id: string
+  status: string
+  message: string
 }
 
 export interface EvolutionStatusResponse {
-  status: 'open' | 'closed' | 'connecting';
+  status: 'open' | 'closed' | 'connecting'
   instance?: {
-    id: string;
-    name: string;
-    connectionStatus: string;
-  };
+    id: string
+    name: string
+    connectionStatus: string
+  }
 }
 
 export interface EvolutionConnectResponse {
-  base64: string;
-  code: string;
-  count?: number;
+  base64: string
+  code: string
+  count?: number
 }
 
 export class EvolutionAPI {
-  private baseUrl: string;
-  private apiKey: string;
-  private instanceName: string;
+  private baseUrl: string
+  private apiKey: string
+  private instanceName: string
 
   constructor(baseUrl: string, apiKey: string, instanceName: string) {
-    this.baseUrl = baseUrl;
-    this.apiKey = apiKey;
-    this.instanceName = instanceName;
+    this.baseUrl = baseUrl
+    this.apiKey = apiKey
+    this.instanceName = instanceName
   }
 
   /**
    * Make authenticated request to Evolution-API
    */
   private async request<T>(endpoint: string, options?: RequestInit): Promise<T> {
-    const url = `${this.baseUrl}${endpoint}`;
-    
+    const url = `${this.baseUrl}${endpoint}`
+
     const response = await fetch(url, {
       ...options,
       headers: {
@@ -48,23 +48,21 @@ export class EvolutionAPI {
         apikey: this.apiKey,
         ...options?.headers,
       },
-    });
+    })
 
     if (!response.ok) {
-      const errorText = await response.text().catch(() => response.statusText);
-      throw new Error(`Evolution API error (${response.status}): ${errorText}`);
+      const errorText = await response.text().catch(() => response.statusText)
+      throw new Error(`Evolution API error (${response.status}): ${errorText}`)
     }
 
-    return response.json();
+    return response.json()
   }
 
   /**
    * Get instance connection status
    */
   async getInstanceStatus(): Promise<EvolutionStatusResponse> {
-    return this.request<EvolutionStatusResponse>(
-      `/instance/connectionState/${this.instanceName}`
-    );
+    return this.request<EvolutionStatusResponse>(`/instance/connectionState/${this.instanceName}`)
   }
 
   /**
@@ -72,10 +70,10 @@ export class EvolutionAPI {
    */
   async isConnected(): Promise<boolean> {
     try {
-      const status = await this.getInstanceStatus();
-      return status.status === 'open';
+      const status = await this.getInstanceStatus()
+      return status.status === 'open'
     } catch {
-      return false;
+      return false
     }
   }
 
@@ -85,11 +83,11 @@ export class EvolutionAPI {
   async connect(): Promise<EvolutionConnectResponse> {
     return this.request<EvolutionConnectResponse>('/instance/connect', {
       method: 'POST',
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         instanceName: this.instanceName,
         token: this.apiKey,
       }),
-    });
+    })
   }
 
   /**
@@ -99,8 +97,8 @@ export class EvolutionAPI {
    */
   async sendMessage(phone: string, message: string): Promise<EvolutionMessageResponse> {
     // Format phone number: remove +, spaces, dashes
-    const formattedPhone = phone.replace(/[\s\-\+]/g, '');
-    
+    const formattedPhone = phone.replace(/[\s\-\+]/g, '')
+
     return this.request<EvolutionMessageResponse>('/message/sendText', {
       method: 'POST',
       body: JSON.stringify({
@@ -108,7 +106,7 @@ export class EvolutionAPI {
         number: formattedPhone,
         textMessage: { text: message },
       }),
-    });
+    })
   }
 
   /**
@@ -117,7 +115,7 @@ export class EvolutionAPI {
   async logout(): Promise<void> {
     await this.request(`/instance/logout/${this.instanceName}`, {
       method: 'POST',
-    });
+    })
   }
 
   /**
@@ -126,6 +124,6 @@ export class EvolutionAPI {
   async deleteInstance(): Promise<void> {
     await this.request(`/instance/delete/${this.instanceName}`, {
       method: 'DELETE',
-    });
+    })
   }
 }

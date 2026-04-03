@@ -1,36 +1,36 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { QRCodeDisplay } from './qr-code-display';
-import { Share } from 'lucide-react';
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { QRCodeDisplay } from './qr-code-display'
+import { Share } from 'lucide-react'
 
 interface QueueShareDialogProps {
-  queueId: string;
-  queueUrl: string;
+  queueId: string
+  queueUrl: string
 }
 
 export function QueueShareDialog({ queueId: _queueId, queueUrl }: QueueShareDialogProps) {
-  const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(queueUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(queueUrl)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     } catch (error) {
-      console.error('Failed to copy:', error);
+      console.error('Failed to copy:', error)
     }
-  };
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -56,5 +56,5 @@ export function QueueShareDialog({ queueId: _queueId, queueUrl }: QueueShareDial
         </div>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

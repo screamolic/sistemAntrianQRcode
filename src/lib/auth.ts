@@ -30,7 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           const { db, users, eq } = await getDb()
           const bcrypt = await import('bcryptjs')
-          
+
           const results = await db
             .select()
             .from(users)

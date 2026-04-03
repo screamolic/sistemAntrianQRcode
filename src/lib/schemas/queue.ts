@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const joinQueueSchema = z.object({
   firstName: z
@@ -17,16 +17,13 @@ export const joinQueueSchema = z.object({
     .string()
     .min(10, 'Phone number must be at least 10 digits')
     .max(20, 'Phone number must be at most 20 characters')
-    .refine(
-      (phone) => {
-        // Accept Indonesian WhatsApp formats: +62, 62, 08
-        const cleaned = phone.replace(/[\s\-\(\)]/g, '');
-        return /^(\+62|62|08)[0-9]{8,12}$/.test(cleaned);
-      },
-      'Phone must be valid Indonesian WhatsApp format (+62/08)'
-    ),
+    .refine((phone) => {
+      // Accept Indonesian WhatsApp formats: +62, 62, 08
+      const cleaned = phone.replace(/[\s\-\(\)]/g, '')
+      return /^(\+62|62|08)[0-9]{8,12}$/.test(cleaned)
+    }, 'Phone must be valid Indonesian WhatsApp format (+62/08)'),
 
   queueId: z.string().min(1, 'Queue ID is required'),
-});
+})
 
-export type JoinQueueInput = z.infer<typeof joinQueueSchema>;
+export type JoinQueueInput = z.infer<typeof joinQueueSchema>

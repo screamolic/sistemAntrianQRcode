@@ -361,10 +361,10 @@ Content summary (52 lines):
 
 # dependencies
 
-/node_modules
+/node*modules
 /.pnp
-.pnp._
-.yarn/_
+.pnp.*
+.yarn/\_
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases

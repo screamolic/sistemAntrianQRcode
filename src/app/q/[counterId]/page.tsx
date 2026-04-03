@@ -14,11 +14,7 @@ export default async function QueueJoinPage({ params }: QueueJoinPageProps) {
   const { counterId } = await params
 
   // Verify counter exists
-  const counter = await db
-    .select()
-    .from(counters)
-    .where(eq(counters.id, counterId))
-    .limit(1)
+  const counter = await db.select().from(counters).where(eq(counters.id, counterId)).limit(1)
 
   if (counter.length === 0) {
     notFound()

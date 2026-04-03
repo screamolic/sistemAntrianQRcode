@@ -8,7 +8,8 @@ import { apiRateLimiter } from '@/lib/rate-limiter'
 const joinQueueSchema = z.object({
   counterId: z.string().min(1, 'Counter ID diperlukan'),
   customerName: z.string().min(2, 'Nama minimal 2 karakter').max(100),
-  customerPhone: z.string()
+  customerPhone: z
+    .string()
     .min(10, 'Nomor telepon minimal 10 digit')
     .regex(/^[0-9+\-\s()]+$/, 'Format nomor telepon tidak valid'),
 })
@@ -40,10 +41,7 @@ export async function POST(request: NextRequest) {
       .limit(1)
 
     if (counterResults.length === 0) {
-      return NextResponse.json(
-        { error: 'Counter tidak ditemukan' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Counter tidak ditemukan' }, { status: 404 })
     }
 
     const counter = counterResults[0]
@@ -68,7 +66,7 @@ export async function POST(request: NextRequest) {
           status: 'ACTIVE',
         })
         .returning()
-      
+
       queueId = newQueue.id
     } else {
       queueId = queueResults[0].id
@@ -113,7 +111,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.issues.map(e => e.message).join(', ') },
+        { error: error.issues.map((e) => e.message).join(', ') },
         { status: 400 }
       )
     }

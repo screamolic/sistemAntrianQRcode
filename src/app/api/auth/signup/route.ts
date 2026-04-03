@@ -52,9 +52,6 @@ export async function POST(req: NextRequest) {
     )
   } catch (error) {
     console.error('Signup error:', error)
-    return NextResponse.json(
-      { error: 'Gagal membuat akun. Silakan coba lagi.' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Gagal membuat akun. Silakan coba lagi.' }, { status: 500 })
   }
 }

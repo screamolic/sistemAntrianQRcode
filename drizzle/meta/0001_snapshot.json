@@ -53,12 +53,8 @@
           "name": "counters_admin_id_users_id_fk",
           "tableFrom": "counters",
           "tableTo": "users",
-          "columnsFrom": [
-            "admin_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["admin_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -220,12 +216,8 @@
           "name": "notifications_queue_entry_id_queue_entries_id_fk",
           "tableFrom": "notifications",
           "tableTo": "queue_entries",
-          "columnsFrom": [
-            "queue_entry_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["queue_entry_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -233,12 +225,8 @@
           "name": "notifications_user_id_users_id_fk",
           "tableFrom": "notifications",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -330,12 +318,8 @@
           "name": "queue_entries_queue_id_queues_id_fk",
           "tableFrom": "queue_entries",
           "tableTo": "queues",
-          "columnsFrom": [
-            "queue_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["queue_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -415,12 +399,8 @@
           "name": "queues_counter_id_counters_id_fk",
           "tableFrom": "queues",
           "tableTo": "counters",
-          "columnsFrom": [
-            "counter_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["counter_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -428,12 +408,8 @@
           "name": "queues_admin_id_users_id_fk",
           "tableFrom": "queues",
           "tableTo": "users",
-          "columnsFrom": [
-            "admin_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["admin_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -508,9 +484,7 @@
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -522,30 +496,17 @@
     "public.entry_status": {
       "name": "entry_status",
       "schema": "public",
-      "values": [
-        "WAITING",
-        "SERVED",
-        "COMPLETED",
-        "NO_SHOW"
-      ]
+      "values": ["WAITING", "SERVED", "COMPLETED", "NO_SHOW"]
     },
     "public.job_status": {
       "name": "job_status",
       "schema": "public",
-      "values": [
-        "RUNNING",
-        "COMPLETED",
-        "FAILED"
-      ]
+      "values": ["RUNNING", "COMPLETED", "FAILED"]
     },
     "public.notification_status": {
       "name": "notification_status",
       "schema": "public",
-      "values": [
-        "PENDING",
-        "SENT",
-        "FAILED"
-      ]
+      "values": ["PENDING", "SENT", "FAILED"]
     },
     "public.notification_type": {
       "name": "notification_type",
@@ -561,20 +522,12 @@
     "public.queue_status": {
       "name": "queue_status",
       "schema": "public",
-      "values": [
-        "ACTIVE",
-        "INACTIVE",
-        "EXPIRED"
-      ]
+      "values": ["ACTIVE", "INACTIVE", "EXPIRED"]
     },
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": [
-        "SUPER_ADMIN",
-        "ADMIN",
-        "STAFF"
-      ]
+      "values": ["SUPER_ADMIN", "ADMIN", "STAFF"]
     }
   },
   "schemas": {},

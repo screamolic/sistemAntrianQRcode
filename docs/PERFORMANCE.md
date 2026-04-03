@@ -17,16 +17,16 @@ npm run lighthouse:mobile
 
 ## Performance Targets
 
-| Metric | Target | Priority |
-|--------|--------|----------|
-| Performance | ≥ 90 | High |
-| Accessibility | ≥ 95 | Critical |
-| Best Practices | ≥ 90 | High |
-| SEO | ≥ 90 | Medium |
-| First Contentful Paint | < 1.5s | High |
-| Largest Contentful Paint | < 2.5s | High |
-| Cumulative Layout Shift | < 0.1 | High |
-| Total Blocking Time | < 200ms | Medium |
+| Metric                   | Target  | Priority |
+| ------------------------ | ------- | -------- |
+| Performance              | ≥ 90    | High     |
+| Accessibility            | ≥ 95    | Critical |
+| Best Practices           | ≥ 90    | High     |
+| SEO                      | ≥ 90    | Medium   |
+| First Contentful Paint   | < 1.5s  | High     |
+| Largest Contentful Paint | < 2.5s  | High     |
+| Cumulative Layout Shift  | < 0.1   | High     |
+| Total Blocking Time      | < 200ms | Medium   |
 
 ## Optimization Strategies
 
@@ -38,8 +38,7 @@ npm run lighthouse:mobile
 
 ```tsx
 import Image from 'next/image'
-
-<Image
+;<Image
   src="/hero.jpg"
   alt="Hero"
   width={1200}
@@ -57,13 +56,10 @@ import Image from 'next/image'
 ```tsx
 import dynamic from 'next/dynamic'
 
-const HeavyComponent = dynamic(
-  () => import('@/components/heavy-component'),
-  { 
-    loading: () => <LoadingSkeleton />,
-    ssr: false // Disable SSR if not needed
-  }
-)
+const HeavyComponent = dynamic(() => import('@/components/heavy-component'), {
+  loading: () => <LoadingSkeleton />,
+  ssr: false, // Disable SSR if not needed
+})
 ```
 
 ### 3. Font Optimization
@@ -105,10 +101,12 @@ ANALYZE=true npm run build
 ### 6. Caching Strategies
 
 #### Static Assets
+
 - Set long cache TTLs for static assets
 - Use content hashes for cache busting
 
 #### API Responses
+
 - Implement stale-while-revalidate
 - Use SWR or React Query for data caching
 
@@ -146,11 +144,7 @@ export async function GET() {
 
 ```tsx
 import Script from 'next/script'
-
-<Script
-  src="https://analytics.example.com/script.js"
-  strategy="lazyOnload"
-/>
+;<Script src="https://analytics.example.com/script.js" strategy="lazyOnload" />
 ```
 
 ## Monitoring
@@ -192,11 +186,13 @@ Track these metrics in production:
 ### High LCP
 
 **Causes:**
+
 - Large images
 - Slow server response
 - Render-blocking resources
 
 **Solutions:**
+
 - Optimize and compress images
 - Use Edge Functions
 - Preload critical resources
@@ -204,11 +200,13 @@ Track these metrics in production:
 ### High CLS
 
 **Causes:**
+
 - Images without dimensions
 - Web fonts causing FOUT
 - Dynamically injected content
 
 **Solutions:**
+
 - Always specify width/height for images
 - Use `font-display: swap`
 - Reserve space for dynamic content
@@ -216,11 +214,13 @@ Track these metrics in production:
 ### High TBT
 
 **Causes:**
+
 - Long JavaScript tasks
 - Excessive DOM manipulation
 - Heavy component rendering
 
 **Solutions:**
+
 - Code split heavy components
 - Use Web Workers for heavy computation
 - Implement virtual scrolling for long lists

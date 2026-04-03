@@ -18,17 +18,16 @@ export function QueuePositionDisplay({
 }: QueuePositionDisplayProps) {
   // Estimate wait time (2 minutes per person in queue)
   const estimatedWaitMinutes = position * 2
-  const estimatedWait = estimatedWaitMinutes < 60 
-    ? `${estimatedWaitMinutes} menit`
-    : `${Math.floor(estimatedWaitMinutes / 60)} jam ${estimatedWaitMinutes % 60} menit`
+  const estimatedWait =
+    estimatedWaitMinutes < 60
+      ? `${estimatedWaitMinutes} menit`
+      : `${Math.floor(estimatedWaitMinutes / 60)} jam ${estimatedWaitMinutes % 60} menit`
 
   return (
     <Card className="text-center">
       <CardHeader>
         <CardTitle className="text-2xl">Anda Berhasil Bergabung!</CardTitle>
-        <CardDescription>
-          Antrian di {counterName}
-        </CardDescription>
+        <CardDescription>Antrian di {counterName}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-2">

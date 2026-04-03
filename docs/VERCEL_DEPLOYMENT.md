@@ -16,21 +16,21 @@ Set these in Vercel Dashboard (Project Settings → Environment Variables):
 
 ### Required Variables
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@host:5432/db` |
-| `NEXTAUTH_SECRET` | NextAuth.js secret (min 32 chars) | `openssl rand -base64 32` |
-| `NEXTAUTH_URL` | Application URL | `https://your-app.vercel.app` |
-| `EVOLUTION_API_URL` | Evolution-API instance URL | `http://your-vps:8080` |
-| `EVOLUTION_API_KEY` | Evolution-API authentication key | `your-api-key` |
-| `WHATSAPP_INSTANCE_ID` | Evolution-API instance ID | `queue-notifications` |
+| Variable               | Description                       | Example                               |
+| ---------------------- | --------------------------------- | ------------------------------------- |
+| `DATABASE_URL`         | PostgreSQL connection string      | `postgresql://user:pass@host:5432/db` |
+| `NEXTAUTH_SECRET`      | NextAuth.js secret (min 32 chars) | `openssl rand -base64 32`             |
+| `NEXTAUTH_URL`         | Application URL                   | `https://your-app.vercel.app`         |
+| `EVOLUTION_API_URL`    | Evolution-API instance URL        | `http://your-vps:8080`                |
+| `EVOLUTION_API_KEY`    | Evolution-API authentication key  | `your-api-key`                        |
+| `WHATSAPP_INSTANCE_ID` | Evolution-API instance ID         | `queue-notifications`                 |
 
 ### Optional Variables
 
-| Variable | Description | Default |
-|----------|-------------|---------|
+| Variable              | Description                    | Default                 |
+| --------------------- | ------------------------------ | ----------------------- |
 | `NEXT_PUBLIC_APP_URL` | Public app URL for queue links | `http://localhost:3000` |
-| `NODE_ENV` | Node environment | `production` |
+| `NODE_ENV`            | Node environment               | `production`            |
 
 ## Deployment Steps
 
@@ -91,10 +91,10 @@ Vercel will automatically deploy on every push to `main` branch.
 
 The following cron jobs are configured in `vercel.json`:
 
-| Path | Schedule | Description |
-|------|----------|-------------|
-| `/api/cron/daily-cleanup` | Daily at 2:00 AM | Deletes expired queues |
-| `/api/cron/retry-notifications` | Every hour | Retries failed notifications |
+| Path                            | Schedule         | Description                  |
+| ------------------------------- | ---------------- | ---------------------------- |
+| `/api/cron/daily-cleanup`       | Daily at 2:00 AM | Deletes expired queues       |
+| `/api/cron/retry-notifications` | Every hour       | Retries failed notifications |
 
 ## Monitoring
 
@@ -150,7 +150,7 @@ Use Next.js Image component for automatic optimization:
 
 ```tsx
 import Image from 'next/image'
-<Image src="/logo.png" alt="Logo" width={200} height={100} />
+;<Image src="/logo.png" alt="Logo" width={200} height={100} />
 ```
 
 ## Troubleshooting

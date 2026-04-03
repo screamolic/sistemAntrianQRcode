@@ -17,7 +17,7 @@ export async function POST(
   { params }: { params: Promise<{ entryId: string }> }
 ) {
   const session = await auth()
-  
+
   if (!session?.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
@@ -92,15 +92,12 @@ export async function POST(
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: error.issues.map(e => e.message).join(', ') },
+        { error: error.issues.map((e) => e.message).join(', ') },
         { status: 400 }
       )
     }
 
     console.error('Error transferring entry:', error)
-    return NextResponse.json(
-      { error: 'Gagal memindahkan pelanggan' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Gagal memindahkan pelanggan' }, { status: 500 })
   }
 }
