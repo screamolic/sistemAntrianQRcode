@@ -1,0 +1,13 @@
+﻿should accept phone with spaces and dashes
+AssertionError: expected false to be true // Object.is equality
+    at D:/SYNCTHING/DEVELOPMENT/sistemAntrianQRcode/src/lib/schemas/queue.test.ts:132:30
+    at file:///D:/SYNCTHING/DEVELOPMENT/sistemAntrianQRcode/node_modules/@vitest/runner/dist/chunk-artifact.js:302:11
+    at file:///D:/SYNCTHING/DEVELOPMENT/sistemAntrianQRcode/node_modules/@vitest/runner/dist/chunk-artifact.js:1893:26
+    at file:///D:/SYNCTHING/DEVELOPMENT/sistemAntrianQRcode/node_modules/@vitest/runner/dist/chunk-artifact.js:2316:20
+    at new Promise (<anonymous>)
+    at runWithCancel (file:///D:/SYNCTHING/DEVELOPMENT/sistemAntrianQRcode/node_modules/@vitest/runner/dist/chunk-artifact.js:2313:10)
+    at file:///D:/SYNCTHING/DEVELOPMENT/sistemAntrianQRcode/node_modules/@vitest/runner/dist/chunk-artifact.js:2295:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///D:/SYNCTHING/DEVELOPMENT/sistemAntrianQRcode/node_modules/@vitest/runner/dist/chunk-artifact.js:2262:10)
+    at file:///D:/SYNCTHING/DEVELOPMENT/sistemAntrianQRcode/node_modules/@vitest/runner/dist/chunk-artifact.js:2945:64
+

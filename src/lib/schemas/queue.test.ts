@@ -22,7 +22,7 @@ describe('queue schemas', () => {
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].path).toContain('firstName')
+        expect(result.error.issues[0].path).toContain('firstName')
       }
     })
 
@@ -33,7 +33,7 @@ describe('queue schemas', () => {
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].message).toContain('less than 50 characters')
+        expect(result.error.issues[0].message).toContain('less than 50 characters')
       }
     })
 
@@ -44,7 +44,7 @@ describe('queue schemas', () => {
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].message).toContain('only contain letters')
+        expect(result.error.issues[0].message).toContain('only contain letters')
       }
     })
 
@@ -63,7 +63,7 @@ describe('queue schemas', () => {
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].path).toContain('lastName')
+        expect(result.error.issues[0].path).toContain('lastName')
       }
     })
 
@@ -74,18 +74,18 @@ describe('queue schemas', () => {
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].message).toContain('at least 10 digits')
+        expect(result.error.issues[0].message).toContain('at least 10 digits')
       }
     })
 
     it('should reject phone number too long', () => {
       const result = joinQueueSchema.safeParse({
         ...validBaseData,
-        phone: '+6281234567890123456',
+        phone: '+628123456789012345678', // 21 chars
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].message).toContain('at most 15 digits')
+        expect(result.error.issues[0].message).toContain('at most 20 characters')
       }
     })
 
@@ -120,7 +120,7 @@ describe('queue schemas', () => {
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].message).toContain('Indonesian WhatsApp format')
+        expect(result.error.issues[0].message).toContain('Indonesian WhatsApp format')
       }
     })
 
@@ -139,7 +139,7 @@ describe('queue schemas', () => {
       })
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors[0].path).toContain('queueId')
+        expect(result.error.issues[0].path).toContain('queueId')
       }
     })
 
@@ -153,8 +153,8 @@ describe('queue schemas', () => {
 
       expect(result.success).toBe(false)
       if (!result.success) {
-        expect(result.error.errors.length).toBeGreaterThan(0)
-        result.error.errors.forEach((error) => {
+        expect(result.error.issues.length).toBeGreaterThan(0)
+        result.error.issues.forEach((error) => {
           expect(error.message).toBeTruthy()
         })
       }

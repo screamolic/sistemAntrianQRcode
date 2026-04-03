@@ -16,7 +16,7 @@ export const joinQueueSchema = z.object({
   phone: z
     .string()
     .min(10, 'Phone number must be at least 10 digits')
-    .max(15, 'Phone number must be at most 15 digits')
+    .max(20, 'Phone number must be at most 20 characters')
     .refine(
       (phone) => {
         // Accept Indonesian WhatsApp formats: +62, 62, 08

@@ -5,7 +5,7 @@ import {
   formatQueueUrl,
   isQueueExpired,
   formatRelativeTime,
-} from '../utils'
+} from './utils'
 
 describe('utils', () => {
   describe('cn', () => {

@@ -29,7 +29,7 @@ export function formatQueueUrl(queueId: string): string {
  * Check if a queue has expired based on expiresAt timestamp
  */
 export function isQueueExpired(expiresAt: Date): boolean {
-  return expiresAt < new Date();
+  return expiresAt <= new Date();
 }
 
 /**

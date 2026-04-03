@@ -1,6 +1,7 @@
-# Project Memory — sistemAntrianQRcode
 
-> 201 notes | Score threshold: >40
+
+# Project Memory — sistemAntrianQRcode
+> 215 notes | Score threshold: >40
 
 ## Safety — Never Run Destructive Commands
 
@@ -19,22 +20,22 @@
 
 ## 📝 NOTE: 1 uncommitted file(s) in working tree.\n\n## Project Standards
 
+- convention in queue.ts
+- what-changed in test-results.json — confirmed 3x
+- convention in queue.test.ts
 - Fixed null crash in Database — prevents null/undefined runtime crashes — confirmed 10x
 - Added session cookies authentication — improves module reusability — confirmed 5x
 - Added NextAuth authentication — ensures atomic multi-step database operations — confirmed 3x
 - Added NextAuth authentication — ensures atomic multi-step database operations — confirmed 3x
 - convention in auth.test.ts
-- Replaced drizzle-orm with drizzle-orm — confirmed 3x
-- problem-fix in route.ts — confirmed 3x
-- what-changed in route.ts — confirmed 3x
 
 ## Known Fixes
 
-- ❌ yarn-error.log\* → ✅ problem-fix in .gitignore
-- ❌ - console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Menghubungkan — prevents null/undefined runtime crashes
-- ❌ - console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Required — uses a proper password hashing algorithm
-- ❌ + console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Database — prevents null/undefined runtime crashes
-- ❌ + console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Database — uses a proper password hashing algorithm
+- ❌ yarn-error.log* → ✅ problem-fix in .gitignore
+- ❌ -   console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Menghubungkan — prevents null/undefined runtime crashes
+- ❌ -   console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Required — uses a proper password hashing algorithm
+- ❌ +   console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Database — prevents null/undefined runtime crashes
+- ❌ +   console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Database — uses a proper password hashing algorithm
 
 ## Recent Decisions
 
@@ -49,7 +50,6 @@
 - Agent installs packages without checking if already installed
 
 ### 📚 Core Framework Rules: [callstackincubator/react-native-best-practices]
-
 # React Native Best Practices
 
 ## Overview
@@ -71,7 +71,6 @@ Each reference file follows a hybrid format for fast lookup and deep understandi
 ## When to Apply
 
 Reference these guidelines when:
-
 - Debugging slow/janky UI or animations
 - Investigating memory leaks (JS or native)
 - Optimizing app startup time (TTI)
@@ -88,14 +87,14 @@ Reference these guidelines when:
 
 ## Priority-Ordered Guidelines
 
-| Priority | Category           | Impact      | Prefix                 |
-| -------- | ------------------ | ----------- | ---------------------- |
-| 1        | FPS & Re-renders   | CRITICAL    | `js-*`                 |
-| 2        | Bundle Size        | CRITICAL    | `bundle-*`             |
-| 3        | TTI Optimization   | HIGH        | `native-*`, `bundle-*` |
-| 4        | Native Performance | HIGH        | `native-*`             |
-| 5        | Memory Management  | MEDIUM-HIGH | `js-*`, `native-*`     |
-| 6        | Animations         | MEDIUM      | `js-*`                 |
+| Priority | Category | Impact | Prefix |
+|----------|----------|--------|--------|
+| 1 | FPS & Re-renders | CRITICAL | `js-*` |
+| 2 | Bundle Size | CRITICAL | `bundle-*` |
+| 3 | TTI Optimization | HIGH | `native-*`, `bundle-*` |
+| 4 | Native Performance | HIGH | `native-*` |
+| 5 | Memory Management | MEDIUM-HIGH | `js-*`, `native-*` |
+| 6 | Animations | MEDIUM | `js-*` |
 
 ## Quick Reference
 
@@ -106,11 +105,11 @@ Follow this cycle for any performance issue: **Measure → Optimize → Re-measu
 1. **Measure**: Capture baseline metrics (FPS, TTI, bundle size) before changes
 2. **Optimize**: Apply the targeted fix from the relevant reference
 3. **Re-measure**: Run the same measurement to get updated metrics
-   ...
-   (truncated)
+...
+(truncated)
+
 
 ### 📚 Core Framework Rules: [callstackincubator/upgrading-react-native]
-
 # Upgrading React Native
 
 ## Overview
@@ -126,42 +125,44 @@ Covers the full React Native upgrade workflow: template diffs via Upgrade Helper
 5. **Expo** (if applicable): Apply Expo SDK layer via [expo-sdk-upgrade.md][expo-sdk-upgrade]
 6. **Verify**: Run post-upgrade checks via [upgrade-verification.md][upgrade-verification]
 
+
+
 ## When to Apply
 
 Reference these guidelines when:
-
 - Moving a React Native app to a newer version
 - Reconciling native config changes from Upgrade Helper
 - Validating release notes for breaking changes
 
 ## Quick Reference
 
-| File                                                              | Description                                                |
-| ----------------------------------------------------------------- | ---------------------------------------------------------- |
-| [upgrading-react-native.md][upgrading-react-native]               | Router: choose the right upgrade path                      |
-| [upgrade-helper-core.md][upgrade-helper-core]                     | Core Upgrade Helper workflow and reliability gates         |
-| [upgrading-dependencies.md][upgrading-dependencies]               | Dependency compatibility checks and migration planning     |
-| [react.md][react]                                                 | React and React 19 upgrade alignment rules                 |
-| [expo-sdk-upgrade.md][expo-sdk-upgrade]                           | Expo SDK-specific upgrade layer (conditional)              |
-| [upgrade-verification.md][upgrade-verification]                   | Manual post-upgrade verification checklist                 |
+| File | Description |
+|------|-------------|
+| [upgrading-react-native.md][upgrading-react-native] | Router: choose the right upgrade path |
+| [upgrade-helper-core.md][upgrade-helper-core] | Core Upgrade Helper workflow and reliability gates |
+| [upgrading-dependencies.md][upgrading-dependencies] | Dependency compatibility checks and migration planning |
+| [react.md][react] | React and React 19 upgrade alignment rules |
+| [expo-sdk-upgrade.md][expo-sdk-upgrade] | Expo SDK-specific upgrade layer (conditional) |
+| [upgrade-verification.md][upgrade-verification] | Manual post-upgrade verification checklist |
 | [monorepo-singlerepo-targeting.md][monorepo-singlerepo-targeting] | Monorepo and single-repo app targeting and command scoping |
 
 ## Problem → Skill Mapping
 
-| Problem                                           | Start With                                                        |
-| ------------------------------------------------- | ----------------------------------------------------------------- |
-| Need to upgrade React Native                      | [upgrade-helper-core.md][upgrade-helper-core]                     |
-| Need dependency risk triage and migration options | [upgrading-dependencies.md][upgrading-dependencies]               |
-| Need React/React 19 package alignment             | [react.md][react]                                                 |
-| Need workflow routing first                       | [upgrading-react-native.md][upgrading-react-native]               |
-| Need Expo SDK-specific steps                      | [expo-sdk-upgrade.md][expo-sdk-upgrade]                           |
-| Need manual regression validation                 | [upgrade-verification.md][upgrade-verification]                   |
-| Need repo/app command scoping                     | [monorepo-singlerepo-targeting.md][monorepo-singlerepo-targeting] |
+| Problem | Start With |
+|---------|------------|
+| Need to upgrade React Native | [upgrade-helper-core.md][upgrade-helper-core] |
+| Need dependency risk triage and migration options | [upgrading-dependencies.md][upgrading-dependencies] |
+| Need React/React 19 package alignment | [react.md][react] |
+| Need workflow routing first | [upgrading-react-native.md][upgrading-react-native] |
+| Need Expo SDK-specific steps | [expo-sdk-upgrade.md][expo-sdk-upgrade] |
+| Need manual regression validation | [upgrade-verification.md][upgrade-verification] |
+| Need repo/app command scoping | [monorepo-singlerepo-targeting.md][monorepo-singlerepo-targeting] |
 
-[upgrading-react-native]: references/upgrading-react... 'truncated'
+[upgrading-react-native]: references/upgrading-react...
+(truncated)
+
 
 ### 📚 Core Framework Rules: [tinybirdco/tinybird-typescript-sdk-guidelines]
-
 # Tinybird TypeScript SDK Guidelines
 
 Guidance for using the `@tinybirdco/sdk` package to define Tinybird resources in TypeScript with complete type inference.
@@ -204,7 +205,6 @@ Guidance for using the `@tinybirdco/sdk` package to define Tinybird resources in
 - [JavaScript/TypeScript] Use === not == (strict equality prevents type coercion bugs)
 
 ## Available Tools (ON-DEMAND only)
-
 - `query(q)` — Deep search when stuck
 - `find(query)` — Full-text lookup
-  > Context above IS your context. Do NOT call load() at startup.
+> Context above IS your context. Do NOT call load() at startup.

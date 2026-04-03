@@ -4,7 +4,7 @@ import {
   createRateLimitedNotification,
   getRateLimitStatus,
   type RateLimitConfig,
-} from '../rate-limiter'
+} from './rate-limiter'
 
 describe('rate-limiter', () => {
   beforeEach(() => {
