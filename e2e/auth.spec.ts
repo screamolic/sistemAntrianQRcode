@@ -26,8 +26,8 @@ test.describe('Authentication', () => {
 
       await page.getByRole('button', { name: /sign in/i }).click()
 
-      await expect(page.getByLabel('Email')).toBeInvalid()
-      await expect(page.getByLabel('Password')).toBeInvalid()
+      await expect(page.getByLabel('Email')).toHaveAttribute('aria-invalid', 'true')
+      await expect(page.getByLabel('Password')).toHaveAttribute('aria-invalid', 'true')
     })
 
     test('should show error for invalid credentials', async ({ page }) => {

@@ -20,8 +20,8 @@ Auto-compiled from **1 real patterns** in **sistemAntrianQRcode**. This skill is
 
 | Error Pattern                                         | Fix                                                          | Seen |
 | ----------------------------------------------------- | ------------------------------------------------------------ | ---- |
+| `yarn-error.log*`                                     | problem-fix in .gitignore                                    | 3x   |
 | `} catch (error) {`                                   | problem-fix in route.ts                                      | 3x   |
-| `yarn-error.log*`                                     | problem-fix in .gitignore                                    | 2x   |
 | `-   console.error('❌ DATABASE_URL tidak ditemukan ` | Fixed null crash in Menghubungkan — prevents null/undefined  | 2x   |
 | `-   console.error('❌ DATABASE_URL belum dikonfigur` | Fixed null crash in Required — uses a proper password hashin | 2x   |
 | `+   console.error('❌ DATABASE_URL tidak ditemukan ` | Fixed null crash in Database — prevents null/undefined runti | 2x   |

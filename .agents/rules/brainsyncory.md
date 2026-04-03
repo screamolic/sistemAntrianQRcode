@@ -1,6 +1,6 @@
 # Project Memory — sistemAntrianQRcode
 
-> 305 notes | Score threshold: >40
+> 309 notes | Score threshold: >40
 
 ## Safety — Never Run Destructive Commands
 
@@ -36,33 +36,34 @@ Content summary (9 lines):
 
 ## Project Standards
 
+- Fixed null crash in NextResponse — prevents null/undefined runtime crashes — confirmed 13x
+- Updated vitest database schema — confirmed 4x
 - Strengthened types ClassValue — externalizes configuration for environment fl...
+- discovery in page.tsx — confirmed 3x
 - Strengthened types Nomor — prevents brute-force and DoS attacks
+- problem-fix in route.ts — confirmed 5x
+- what-changed in route.ts — confirmed 4x
 - convention in VERCEL_DEPLOYMENT.md
-- convention in queue.ts
-- convention in queue.ts
-- what-changed in test-results.json — confirmed 3x
-- convention in queue.test.ts
-- Fixed null crash in Database — prevents null/undefined runtime crashes — confirmed 10x
 
 ## Known Fixes
 
-- ❌ } catch (error) { → ✅ problem-fix in route.ts
 - ❌ yarn-error.log* → ✅ problem-fix in .gitignore
+- ❌ } catch (error) { → ✅ problem-fix in route.ts
 - ❌ -   console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Menghubungkan — prevents null/undefined runtime crashes
 - ❌ -   console.error('❌ DATABASE_URL belum dikonfigurasi di .env.local') → ✅ Fixed null crash in Required — uses a proper password hashing algorithm
 - ❌ +   console.error('❌ DATABASE_URL tidak ditemukan di .env.local') → ✅ Fixed null crash in Database — prevents null/undefined runtime crashes
 
 ## Recent Decisions
 
+- Optimized Image — reduces initial bundle size with code splitting
 - decision in use-queue-updates.ts
 - decision in query-provider.tsx
 - decision in eslint.config.mjs
-- Optimized RateLimitConfig — prevents brute-force and DoS attacks
 
 ## Learned Patterns
 
 - When encountering this, fix by: problem-fix in .gitignore (seen 2x)
+- Always: what-changed in page.tsx — confirmed 3x (seen 2x)
 - Agent generates new migration for every change (squash related changes)
 - Agent installs packages without checking if already installed
 

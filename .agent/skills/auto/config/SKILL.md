@@ -68,7 +68,9 @@ Content summary (9 lines):
 
 *     {
 
-- **Actionable Steps:**
+-
+
+**Actionable Steps:**
 
 1. Modified 1 files
 2. identifier: Content

@@ -1,6 +1,6 @@
 ---
 name: project
-description: 'Project for sistemAntrianQRcode. 34 gotchas, 48 conventions, 8 fixes.'
+description: 'Project for sistemAntrianQRcode. 34 gotchas, 49 conventions, 8 fixes.'
 domain: project
 triggers:
   - glob: '**/*'
@@ -10,7 +10,7 @@ enabled: true
 
 # Project
 
-Auto-compiled from **124 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on project files.
+Auto-compiled from **128 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on project files.
 
 ## ⚠️ Anti-Patterns & Gotchas
 
@@ -80,10 +80,10 @@ Content summary (52 lines):
 
 # dependencies
 
-/node*modules
+/node_modules
 /.pnp
-.pnp.*
-.yarn/\_
+.pnp._
+.yarn/_
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -147,10 +147,10 @@ Content summary (48 lines):
 
 # dependencies
 
-/node*modules
+/node_modules
 /.pnp
-.pnp.*
-.yarn/\_
+.pnp._
+.yarn/_
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -187,6 +187,12 @@ yarn-
 ## 📐 Conventions & Best Practices
 
 ### Project Conventions
+
+- 📐 **problem-fix in .gitignore — confirmed 3x** — File updated (external): .gitignore
+
+Content summary (53 lines):
+
+# See https://help.github.com/artic
 
 - 📐 **convention in VERCEL_DEPLOYMENT.md** — File updated (external): docs/VERCEL_DEPLOYMENT.md
 
@@ -239,7 +245,6 @@ Content summary (195 lines):
 - 📐 **Close resources (streams, connections, handles) when done** — Close resources (streams, connections, handles) when done
 - 📐 **Debounce user input handlers (search, resize, scroll)** — Debounce user input handlers (search, resize, scroll)
 - 📐 **Use pagination for lists over 100 items** — Use pagination for lists over 100 items
-- 📐 **Implement retry logic for transient failures with exponential backoff** — Implement retry logic for transient failures with exponential backoff
-- 📐 \*\*Return proper HTTP
+- 📐 \*\*Implement retry l
 
 ... [Truncated — see individual observations for full content]

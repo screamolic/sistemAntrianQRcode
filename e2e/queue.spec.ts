@@ -74,9 +74,9 @@ test.describe('Queue Management', () => {
         await submitButton.click()
 
         // Should show validation errors
-        await expect(page.getByLabel(/first name/i)).toBeInvalid()
-        await expect(page.getByLabel(/last name/i)).toBeInvalid()
-        await expect(page.getByLabel(/phone/i)).toBeInvalid()
+        await expect(page.getByLabel(/first name/i)).toHaveAttribute('aria-invalid', 'true')
+        await expect(page.getByLabel(/last name/i)).toHaveAttribute('aria-invalid', 'true')
+        await expect(page.getByLabel(/phone/i)).toHaveAttribute('aria-invalid', 'true')
       }
     })
   })

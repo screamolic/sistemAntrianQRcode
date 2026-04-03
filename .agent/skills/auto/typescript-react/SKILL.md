@@ -180,7 +180,9 @@ import { ThemeProvider as NextThemesProvider } from 'next-themes'
 
 - entryId: string;
 
-* **Actionable Steps:**
+*
+
+**Actionable Steps:**
 
 1. Modified 1 files
 2. identifier: Switch
@@ -460,7 +462,9 @@ export default function QueueViewPage()
 
 -     onSuccess: () => {
 
-* **Actionable Steps:**
+*
+
+**Actionable Steps:**
 
 1. Modified 1 files
 2. identifier: DELETE
