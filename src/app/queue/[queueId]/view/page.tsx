@@ -55,7 +55,7 @@ export default function QueueViewPage() {
       <h1 className="text-3xl font-bold mb-8">Queue Status</h1>
 
       <div className="grid gap-4 max-w-2xl mx-auto">
-        {entries.map((entry: any, index: number) => (
+        {entries.map((entry: { id: string; name?: string }, index: number) => (
           <Card key={entry.id}>
             <CardContent className="flex items-center gap-4 p-4">
               <span className="text-2xl font-bold w-12 text-center">

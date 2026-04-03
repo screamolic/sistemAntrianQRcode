@@ -8,6 +8,13 @@
       "when": 1775144523130,
       "tag": "0000_superb_hellfire_club",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1775181938111,
+      "tag": "0001_silky_trauma",
+      "breakpoints": true
     }
   ]
 }

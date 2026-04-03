@@ -1,66 +1,73 @@
-import { db } from './prisma';
-import { generateQueueId } from '@/lib/utils';
+/**
+ * Queue utility functions using Drizzle ORM
+ * Replaces legacy Prisma-based queue.ts
+ */
+
+import { db } from './db'
+import { queues } from '@/lib/db/schema'
+import { eq, and } from 'drizzle-orm'
 
 /**
  * Create a new queue with automatic expiration (24 hours from creation)
  */
-export async function createQueue(adminId: string, name?: string) {
-  const queueId = generateQueueId();
-  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+export async function createQueue(
+  adminId: string,
+  counterId: string,
+  name?: string
+) {
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours
 
-  return db.queue.create({
-    data: {
-      id: queueId,
+  const results = await db
+    .insert(queues)
+    .values({
       adminId,
-      name: name || `Queue-${queueId.slice(0, 6)}`,
+      counterId,
+      name: name || `Antrian-${Date.now().toString(36).toUpperCase()}`,
       expiresAt,
-    },
-  });
+      status: 'ACTIVE',
+    })
+    .returning()
+
+  return results[0]
 }
 
 /**
- * Get a queue by ID with admin and entry count info
+ * Get a queue by ID
  */
 export async function getQueue(queueId: string) {
-  return db.queue.findUnique({
-    where: { id: queueId },
-    include: {
-      admin: { select: { id: true, name: true, email: true } },
-      _count: { select: { entries: true } },
-    },
-  });
+  const results = await db
+    .select()
+    .from(queues)
+    .where(eq(queues.id, queueId))
+    .limit(1)
+
+  return results[0] ?? null
 }
 
 /**
  * Check if a queue exists and is not expired
  */
 export async function isQueueExpired(queueId: string): Promise<boolean> {
-  const queue = await getQueue(queueId);
-  if (!queue) return true;
-  return queue.expiresAt ? queue.expiresAt < new Date() : false;
+  const queue = await getQueue(queueId)
+  if (!queue) return true
+  return queue.expiresAt ? queue.expiresAt < new Date() : false
 }
 
 /**
- * Get all queues for an admin
+ * Get all queues for an admin (ordered by newest first)
  */
 export async function getAdminQueues(adminId: string) {
-  return db.queue.findMany({
-    where: { adminId },
-    orderBy: { createdAt: 'desc' },
-    include: {
-      _count: { select: { entries: true } },
-    },
-  });
+  return db
+    .select()
+    .from(queues)
+    .where(eq(queues.adminId, adminId))
 }
 
 /**
- * Delete a queue (admin only)
+ * Delete a queue (verifies admin ownership)
  */
 export async function deleteQueue(queueId: string, adminId: string) {
-  return db.queue.deleteMany({
-    where: {
-      id: queueId,
-      adminId,
-    },
-  });
+  return db
+    .delete(queues)
+    .where(and(eq(queues.id, queueId), eq(queues.adminId, adminId)))
 }

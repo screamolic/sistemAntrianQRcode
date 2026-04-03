@@ -1,65 +1,76 @@
-'use client';
+'use client'
 
-import { useRef } from 'react';
-import { QRCodeSVG } from 'qrcode.react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { useEffect, useState } from 'react'
+import { toDataURL } from 'qrcode'
+import Image from 'next/image'
 
 interface QRCodeDisplayProps {
-  value: string; // Queue URL
-  size?: number;
-  includeDownload?: boolean;
+  value: string
+  size?: number
 }
 
-export function QRCodeDisplay({
-  value,
-  size = 256,
-  includeDownload = true,
-}: QRCodeDisplayProps) {
-  const svgRef = useRef<SVGSVGElement>(null);
+export function QRCodeDisplay({ value, size = 300 }: QRCodeDisplayProps) {
+  const [qrDataUrl, setQrDataUrl] = useState<string>('')
+  const [isLoading, setIsLoading] = useState(true)
 
-  const handleDownload = () => {
-    if (!svgRef.current) return;
+  useEffect(() => {
+    let mounted = true
 
-    const svgData = new XMLSerializer().serializeToString(svgRef.current);
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const img = new Image();
+    async function generateQR() {
+      try {
+        const dataUrl = await toDataURL(value, {
+          width: size,
+          margin: 2,
+          color: {
+            dark: '#000000',
+            light: '#FFFFFF',
+          },
+        })
+        
+        if (mounted) {
+          setQrDataUrl(dataUrl)
+          setIsLoading(false)
+        }
+      } catch (error) {
+        console.error('Failed to generate QR code:', error)
+        if (mounted) {
+          setIsLoading(false)
+        }
+      }
+    }
 
-    img.onload = () => {
-      canvas.width = size;
-      canvas.height = size;
-      ctx?.drawImage(img, 0, 0);
-      const pngFile = canvas.toDataURL('image/png');
+    generateQR()
 
-      const downloadLink = document.createElement('a');
-      downloadLink.download = `queue-qr-${Date.now()}.png`;
-      downloadLink.href = pngFile;
-      downloadLink.click();
-    };
+    return () => {
+      mounted = false
+    }
+  }, [value, size])
 
-    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
-  };
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center w-full h-full min-h-[200px]">
+        <p className="text-muted-foreground">Generating QR code...</p>
+      </div>
+    )
+  }
+
+  if (!qrDataUrl) {
+    return (
+      <div className="flex items-center justify-center w-full h-full min-h-[200px]">
+        <p className="text-destructive">Failed to generate QR code</p>
+      </div>
+    )
+  }
 
   return (
-    <Card className="w-fit">
-      <CardContent className="pt-6 space-y-4">
-        <div className="flex justify-center">
-          <QRCodeSVG
-            ref={svgRef}
-            value={value}
-            size={size}
-            level="M"
-            includeMargin={true}
-            aria-label={`QR code for queue: ${value}`}
-          />
-        </div>
-        {includeDownload && (
-          <Button onClick={handleDownload} className="w-full">
-            Download QR Code
-          </Button>
-        )}
-      </CardContent>
-    </Card>
-  );
+    <div className="relative" style={{ width: size, height: size }}>
+      <Image
+        src={qrDataUrl}
+        alt="QR Code"
+        fill
+        className="object-contain"
+        unoptimized
+      />
+    </div>
+  )
 }

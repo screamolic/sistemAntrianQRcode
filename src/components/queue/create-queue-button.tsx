@@ -33,7 +33,7 @@ export function CreateQueueButton() {
       } else {
         setError(result.error || 'Failed to create queue');
       }
-    } catch (err) {
+    } catch {
       setError('An unexpected error occurred');
     } finally {
       setPending(false);

@@ -59,7 +59,7 @@ export default async function PublicQueuePage({
         </div>
 
         <div className="flex justify-center">
-          <QRCodeDisplay value={queueUrl} size={200} includeDownload={false} />
+          <QRCodeDisplay value={queueUrl} size={200} />
         </div>
 
         <div className="border-t pt-8">

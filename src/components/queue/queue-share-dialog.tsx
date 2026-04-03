@@ -18,7 +18,7 @@ interface QueueShareDialogProps {
   queueUrl: string;
 }
 
-export function QueueShareDialog({ queueId, queueUrl }: QueueShareDialogProps) {
+export function QueueShareDialog({ queueId: _queueId, queueUrl }: QueueShareDialogProps) {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -45,7 +45,7 @@ export function QueueShareDialog({ queueId, queueUrl }: QueueShareDialogProps) {
         </DialogHeader>
         <div className="space-y-4">
           <div className="flex justify-center">
-            <QRCodeDisplay value={queueUrl} size={200} includeDownload={false} />
+            <QRCodeDisplay value={queueUrl} size={200} />
           </div>
           <div className="flex gap-2">
             <Input value={queueUrl} readOnly className="flex-1" />

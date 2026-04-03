@@ -25,7 +25,7 @@ export function CronTrigger() {
       setResult(
         `Cleanup: ${data.archivedQueues} queues archived, ${data.deletedNotifications} notifications deleted`
       );
-    } catch (error) {
+    } catch {
       setResult('Cleanup failed');
     } finally {
       setRunning((prev) => ({ ...prev, cleanup: false }));
@@ -43,7 +43,7 @@ export function CronTrigger() {
       });
       const data = await res.json();
       setResult(`Retry: ${data.succeeded}/${data.attempted} notifications sent`);
-    } catch (error) {
+    } catch {
       setResult('Retry failed');
     } finally {
       setRunning((prev) => ({ ...prev, retry: false }));

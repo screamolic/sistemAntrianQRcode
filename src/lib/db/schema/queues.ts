@@ -1,11 +1,14 @@
-import { pgTable, text, timestamp, integer, pgEnum } from 'drizzle-orm/pg-core'
+import { pgTable, text, timestamp, pgEnum } from 'drizzle-orm/pg-core'
+import { createId } from '@paralleldrive/cuid2'
 
 // Queue status enum
 export const queueStatusEnum = pgEnum('queue_status', ['ACTIVE', 'INACTIVE', 'EXPIRED'])
 
 // Queues table
 export const queues = pgTable('queues', {
-  id: text('id').primaryKey(),
+  id: text('id')
+    .$defaultFn(() => createId())
+    .primaryKey(),
   counterId: text('counter_id')
     .notNull()
     .references(() => counters.id, { onDelete: 'cascade' }),
@@ -17,7 +20,10 @@ export const queues = pgTable('queues', {
   status: queueStatusEnum('status').notNull().default('ACTIVE'),
   expiresAt: timestamp('expires_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true })
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
 })
 
 export type Queue = typeof queues.$inferSelect

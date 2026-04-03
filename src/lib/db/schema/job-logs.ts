@@ -1,11 +1,14 @@
 import { pgTable, text, timestamp, pgEnum, jsonb } from 'drizzle-orm/pg-core'
+import { createId } from '@paralleldrive/cuid2'
 
 // Job status enum
 export const jobStatusEnum = pgEnum('job_status', ['RUNNING', 'COMPLETED', 'FAILED'])
 
 // Job logs table
 export const jobLogs = pgTable('job_logs', {
-  id: text('id').primaryKey(),
+  id: text('id')
+    .$defaultFn(() => createId())
+    .primaryKey(),
   jobType: text('job_type').notNull(),
   status: jobStatusEnum('status').notNull(),
   message: text('message'),

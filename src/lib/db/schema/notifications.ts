@@ -1,4 +1,5 @@
 import { pgTable, text, timestamp, pgEnum, integer } from 'drizzle-orm/pg-core'
+import { createId } from '@paralleldrive/cuid2'
 import { relations } from 'drizzle-orm'
 import { queueEntries } from './queue-entries'
 import { users } from './users'
@@ -17,7 +18,9 @@ export const notificationStatusEnum = pgEnum('notification_status', ['PENDING', 
 
 // Notifications table
 export const notifications = pgTable('notifications', {
-  id: text('id').primaryKey(),
+  id: text('id')
+    .$defaultFn(() => createId())
+    .primaryKey(),
   queueEntryId: text('queue_entry_id').references(() => queueEntries.id, { onDelete: 'cascade' }),
   queueId: text('queue_id').notNull(),
   userId: text('user_id').references(() => users.id, { onDelete: 'cascade' }),

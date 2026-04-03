@@ -12,18 +12,12 @@ export async function POST(request: NextRequest) {
     const { queueId, entryId, type, phone, message } = body
 
     // Check rate limit
-    const rateLimitResult = await createRateLimitedNotification(
-      queueId,
-      entryId,
-      type,
-      phone,
-      message
-    )
+    const rateLimitResult = createRateLimitedNotification(phone)
 
-    if (!rateLimitResult.success) {
+    if (!rateLimitResult.allowed) {
       return NextResponse.json({
         success: false,
-        error: 'Rate limit exceeded',
+        error: rateLimitResult.reason,
       })
     }
 

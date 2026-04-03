@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation'
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { queues, queueEntries, entryStatusEnum } from '@/lib/db/schema'
+import { queues, queueEntries } from '@/lib/db/schema'
 import { eq, and, sql } from 'drizzle-orm'
 import { QueueManagement } from './queue-management'
 import { QueueShareDialog } from '@/components/queue/queue-share-dialog'

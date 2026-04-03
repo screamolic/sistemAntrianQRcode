@@ -69,12 +69,12 @@ export default async function Home() {
               <CardHeader>
                 <CardTitle>WhatsApp Notifications</CardTitle>
                 <CardDescription>
-                  Automated alerts when it's almost your turn
+                  Automated alerts when it&apos;s almost your turn
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Get notified when you're 3rd in line. Powered by Evolution-API.
+                  Get notified when you&apos;re 3rd in line. Powered by Evolution-API.
                 </p>
               </CardContent>
             </Card>

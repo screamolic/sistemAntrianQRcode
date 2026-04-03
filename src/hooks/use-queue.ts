@@ -49,7 +49,7 @@ export function useCallNextMutation(queueId: string) {
       if (Array.isArray(previousEntries)) {
         queryClient.setQueryData(
           ['queue-entries', queueId],
-          previousEntries.slice(1).map((entry: any, index: number) => ({
+          previousEntries.slice(1).map((entry: { id: string }, index: number) => ({
             ...entry,
             position: index + 1,
           }))

@@ -1,19 +1,13 @@
 import NextAuth from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-import bcrypt from 'bcryptjs'
-import { eq } from 'drizzle-orm'
-import { db } from './db'
-import { users } from '@/lib/db/schema'
+import { loginSchema } from '@/lib/validators/auth'
 
-// Helper function to get user by email (lazy-loaded to avoid middleware import issues)
-async function getUserByEmail(email: string) {
-  try {
-    const results = await db.select().from(users).where(eq(users.email, email)).limit(1)
-    return results[0] || null
-  } catch (error) {
-    console.error('Error fetching user:', error)
-    return null
-  }
+// Lazy-load database connection to avoid bundling in middleware
+async function getDb() {
+  const { db } = await import('./db')
+  const { users } = await import('@/lib/db/schema')
+  const { eq } = await import('drizzle-orm')
+  return { db, users, eq }
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -25,36 +19,46 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email and password are required')
+        // Validate input with Zod
+        const validated = loginSchema.safeParse(credentials)
+        if (!validated.success) {
+          return null
         }
 
-        const user = await getUserByEmail(credentials.email as string)
+        const { email, password } = validated.data
 
-        if (!user) {
-          throw new Error('No user found with this email')
-        }
+        try {
+          const { db, users, eq } = await getDb()
+          const bcrypt = await import('bcryptjs')
+          
+          const results = await db
+            .select()
+            .from(users)
+            .where(eq(users.email, email.toLowerCase()))
+            .limit(1)
 
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password as string,
-          user.passwordHash
-        )
+          const user = results[0]
+          if (!user) return null
 
-        if (!isPasswordValid) {
-          throw new Error('Invalid password')
-        }
+          const isPasswordValid = await bcrypt.compare(password, user.passwordHash)
+          if (!isPasswordValid) return null
 
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            role: user.role,
+          }
+        } catch (error) {
+          console.error('Auth error:', error)
+          return null
         }
       },
     }),
   ],
   session: {
     strategy: 'jwt',
+    maxAge: 24 * 60 * 60, // 24 hours
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -67,7 +71,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
-        session.user.role = token.role as string
+        session.user.role = token.role as 'SUPER_ADMIN' | 'ADMIN' | 'STAFF'
       }
       return session
     },

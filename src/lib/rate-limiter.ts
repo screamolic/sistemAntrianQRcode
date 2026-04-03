@@ -106,3 +106,44 @@ export function getRateLimitStatus(phone: string): {
     limit: defaultConfig.maxRequests,
   };
 }
+
+// -----------------------------------------------------------
+// HTTP API Rate Limiter (for auth routes)
+// -----------------------------------------------------------
+
+class HttpRateLimiter {
+  private cache: LRUCache<string, number>
+  private maxRequests: number
+
+  constructor(options: { maxRequests: number; windowMs: number }) {
+    this.maxRequests = options.maxRequests
+    this.cache = new LRUCache({
+      max: 10000,
+      ttl: options.windowMs,
+    })
+  }
+
+  async isRateLimited(identifier: string): Promise<boolean> {
+    const current = this.cache.get(identifier) ?? 0
+    if (current >= this.maxRequests) return true
+    this.cache.set(identifier, current + 1)
+    return false
+  }
+
+  getRemaining(identifier: string): number {
+    const current = this.cache.get(identifier) ?? 0
+    return Math.max(0, this.maxRequests - current)
+  }
+}
+
+// Auth rate limiter: 5 requests per 15 minutes (brute force protection)
+export const authRateLimiter = new HttpRateLimiter({
+  maxRequests: 5,
+  windowMs: 15 * 60 * 1000,
+})
+
+// General API rate limiter: 100 requests per 15 minutes
+export const apiRateLimiter = new HttpRateLimiter({
+  maxRequests: 100,
+  windowMs: 15 * 60 * 1000,
+})

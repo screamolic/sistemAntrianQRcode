@@ -1,10 +1,29 @@
-import { auth } from "@/lib/auth"
 import { NextResponse } from "next/server"
+import type { NextRequest } from "next/server"
+import { jwtVerify } from "jose"
 
-export default auth((req) => {
+export async function middleware(req: NextRequest) {
   const { nextUrl } = req
-  const isLoggedIn = !!req.auth
-  const userRole = req.auth?.user?.role
+  const cookieName = process.env.NODE_ENV === 'production' 
+    ? '__Secure-next-auth.session-token' 
+    : 'next-auth.session-token'
+  
+  const token = req.cookies.get(cookieName)?.value
+
+  let userRole: string | null = null
+  let isLoggedIn = false
+
+  if (token) {
+    try {
+      const secret = new TextEncoder().encode(process.env.AUTH_SECRET)
+      const { payload } = await jwtVerify(token, secret)
+      userRole = payload.role as string | null
+      isLoggedIn = !!payload
+    } catch {
+      // Token invalid
+      isLoggedIn = false
+    }
+  }
 
   // Define protected routes
   const isAuthRoute = nextUrl.pathname.startsWith("/api/auth")
@@ -44,7 +63,7 @@ export default auth((req) => {
   }
 
   return NextResponse.next()
-})
+}
 
 export const config = {
   matcher: [

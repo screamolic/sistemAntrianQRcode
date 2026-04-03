@@ -13,9 +13,16 @@ export default async function DashboardPage() {
     redirect("/login")
   }
 
-  const queues = await getQueuesByAdminId(session.user.id)
-  const activeQueues = queues.filter((q: any) => q.isActive)
-  const totalEntries = queues.reduce((sum: number, q: any) => sum + (q.entries?.length || 0), 0)
+interface QueueData {
+  id: string
+  name: string
+  status: string
+  entries: Array<{ id: string }>
+}
+
+  const queues = await getQueuesByAdminId(session.user.id) as QueueData[]
+  const activeQueues = queues.filter((q) => q.status === 'ACTIVE')
+  const totalEntries = queues.reduce((sum, q) => sum + (q.entries?.length || 0), 0)
 
   return (
     <div className="container mx-auto py-8 space-y-8">
@@ -45,7 +52,7 @@ export default async function DashboardPage() {
         <Card aria-labelledby="total-queues-label">
           <CardHeader>
             <CardTitle id="total-queues-label">Total Queues</CardTitle>
-            <CardDescription>Active queues you've created</CardDescription>
+            <CardDescription>Active queues you&apos;ve created</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold" aria-live="polite">{queues.length}</div>
@@ -90,7 +97,7 @@ export default async function DashboardPage() {
           </CardHeader>
           <CardContent>
             <ul className="space-y-4" role="list" aria-label="Queue list">
-              {queues.slice(0, 5).map((queue: any) => (
+              {queues.slice(0, 5).map((queue) => (
                 <li key={queue.id}>
                   <div
                     className="flex justify-between items-center p-4 border rounded-lg"

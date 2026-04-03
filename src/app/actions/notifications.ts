@@ -69,6 +69,7 @@ export async function triggerNextNotification(entryId: string, queueId: string) 
     // Send notification
     const result = await WhatsAppService.sendTurnCalled(
       'Queue', // queue name - would need join in real app
+      entry.position || 1,
       entry.customerPhone,
       queueId,
       entryId

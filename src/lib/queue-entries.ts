@@ -1,5 +1,5 @@
 import { db } from './db'
-import { queueEntries, queues, entryStatusEnum } from '@/lib/db/schema'
+import { queueEntries } from '@/lib/db/schema'
 import { eq, and, gt, asc, desc, sql } from 'drizzle-orm'
 import { broadcastQueueUpdate } from '@/app/api/sse/queue-updates/route'
 

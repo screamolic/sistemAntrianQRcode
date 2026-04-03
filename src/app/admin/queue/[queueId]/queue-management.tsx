@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { callNextEntry, getQueueEntries, removeQueueEntry } from '@/lib/queue-entries'
 import { Users, CheckCircle } from 'lucide-react'
 import { QueueEntryCard } from '@/components/queue/queue-entry-card'
 import { useQueueUpdates } from '@/hooks/use-queue-updates'
@@ -14,6 +13,7 @@ interface QueueEntry {
   name: string | null
   phoneNumber: string
   position: number
+  status: string
 }
 
 interface QueueManagementProps {
@@ -24,15 +24,29 @@ interface QueueManagementProps {
   }
 }
 
+// API calls instead of direct db imports
+async function fetchQueueEntries(queueId: string): Promise<QueueEntry[]> {
+  const res = await fetch(`/api/queue/${queueId}/entries`)
+  if (!res.ok) throw new Error('Failed to fetch queue entries')
+  const data = await res.json()
+  return data.entries
+}
+
+async function callNextEntryApi(queueId: string) {
+  const res = await fetch(`/api/queue/${queueId}/call-next`, { method: 'POST' })
+  if (!res.ok) throw new Error('Failed to call next entry')
+  return res.json()
+}
+
 export function QueueManagement({ queue: initialQueue }: QueueManagementProps) {
   const queryClient = useQueryClient()
   const [isCalling, setIsCalling] = useState(false)
   const [removingId, setRemovingId] = useState<string | null>(null)
 
-  // Fetch queue entries - NO polling, manual refresh via SSE
+  // Fetch queue entries from API
   const { data: entries, error } = useQuery<QueueEntry[]>({
     queryKey: ['queue-entries', initialQueue.id],
-    queryFn: () => getQueueEntries(initialQueue.id),
+    queryFn: () => fetchQueueEntries(initialQueue.id),
     initialData: initialQueue.entries,
     refetchInterval: false, // Disable polling, use SSE instead
   })
@@ -50,7 +64,7 @@ export function QueueManagement({ queue: initialQueue }: QueueManagementProps) {
 
   // Call next entry mutation
   const callNextMutation = useMutation({
-    mutationFn: () => callNextEntry(initialQueue.id),
+    mutationFn: () => callNextEntryApi(initialQueue.id),
     onMutate: () => setIsCalling(true),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['queue-entries', initialQueue.id] })
@@ -60,7 +74,11 @@ export function QueueManagement({ queue: initialQueue }: QueueManagementProps) {
 
   // Remove entry mutation
   const removeMutation = useMutation({
-    mutationFn: (entryId: string) => removeQueueEntry(entryId),
+    mutationFn: async (entryId: string) => {
+      const res = await fetch(`/api/queue/entries/${entryId}`, { method: 'DELETE' })
+      if (!res.ok) throw new Error('Failed to remove entry')
+      return res.json()
+    },
     onMutate: (entryId) => setRemovingId(entryId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['queue-entries', initialQueue.id] })

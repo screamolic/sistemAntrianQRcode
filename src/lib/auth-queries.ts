@@ -1,5 +1,6 @@
 import { db } from './db'
 import { users } from '@/lib/db/schema/users'
+import { queues, counters, queueEntries } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
 import bcrypt from 'bcryptjs'
 import { createId } from '@paralleldrive/cuid2'
@@ -32,27 +33,50 @@ export async function createUser(email: string, password: string, name?: string)
   return results[0]
 }
 
-export async function createQueue(adminId: string, name: string) {
-  // This would need queues table import - keeping placeholder
-  throw new Error('Not implemented - use queue-service.ts instead')
-}
-
-export async function getQueueById(id: string) {
-  throw new Error('Not implemented - use queue-service.ts instead')
-}
-
 export async function getQueuesByAdminId(adminId: string) {
-  throw new Error('Not implemented - use queue-service.ts instead')
-}
+  // Get queues with their counters and entries
+  const result = await db
+    .select({
+      id: queues.id,
+      name: queues.name,
+      description: queues.description,
+      status: queues.status,
+      counterId: counters.id,
+      counterName: counters.name,
+      entryId: queueEntries.id,
+      entryPhone: queueEntries.customerPhone,
+      entryPosition: queueEntries.position,
+      entryStatus: queueEntries.status,
+    })
+    .from(queues)
+    .leftJoin(counters, eq(queues.counterId, counters.id))
+    .leftJoin(queueEntries, eq(queues.id, queueEntries.queueId))
+    .where(eq(queues.adminId, adminId))
 
-export async function createQueueEntry(queueId: string, phoneNumber: string, name?: string) {
-  throw new Error('Not implemented - use queue-entries.ts instead')
-}
+  // Group entries by queue
+  const queueMap = new Map()
+  result.forEach((row) => {
+    if (!queueMap.has(row.id)) {
+      queueMap.set(row.id, {
+        id: row.id,
+        name: row.name,
+        description: row.description,
+        status: row.status,
+        counterId: row.counterId,
+        counterName: row.counterName,
+        entries: [],
+      })
+    }
+    
+    if (row.entryId) {
+      queueMap.get(row.id).entries.push({
+        id: row.entryId,
+        phone: row.entryPhone,
+        position: row.entryPosition,
+        status: row.entryStatus,
+      })
+    }
+  })
 
-export async function getQueueEntryById(id: string) {
-  throw new Error('Not implemented - use queue-entries.ts instead')
-}
-
-export async function updateQueueEntryStatus(id: string, status: 'WAITING' | 'SERVED' | 'NO_SHOW') {
-  throw new Error('Not implemented - use queue-entries.ts instead')
+  return Array.from(queueMap.values())
 }

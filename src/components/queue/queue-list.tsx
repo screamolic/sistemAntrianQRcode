@@ -74,14 +74,14 @@ export function QueueList({ queueId, isAdmin = false }: QueueListProps) {
       )}
 
       <div className="grid gap-4">
-        {entries?.map((entry: any, index: number) => (
+        {entries?.map((entry: { id: string; name?: string; phoneNumber?: string; position: number }, _index: number) => (
           <QueueEntryCard
             key={entry.id}
             entry={{
               id: entry.id,
               firstName: entry.name?.split(' ')[0] || 'Unknown',
               lastName: entry.name?.split(' ').slice(1).join(' ') || '',
-              phone: entry.phoneNumber,
+              phone: entry.phoneNumber || 'N/A',
               position: entry.position,
             }}
             onRemove={isAdmin ? handleRemove : undefined}
