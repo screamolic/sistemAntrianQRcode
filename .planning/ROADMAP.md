@@ -27,7 +27,7 @@
 
 | Phase | Title | Requirements | Success Criteria |
 |-------|-------|--------------|------------------|
-| 1 | Project Foundation & Auth | AUTH-01, AUTH-02, SEC-01 | Staff can log in with email/password; Roles are enforced on protected routes; All inputs validated with Zod |
+| 1 | Project Foundation & Auth | AUTH-01, AUTH-02, AUTH-03, SEC-01 | Staff can log in with username/password; Roles are enforced on protected routes; Default superuser auto-created; All inputs validated with Zod |
 | 2 | Database Schema & Drizzle Setup | SEC-02 | Drizzle schema matches production tables; Migrations run successfully; Rate limiting protects API endpoints |
 | 3 | QR Code & Queue Entry | QUEUE-01, QUEUE-02, UI-01 | Admin can generate QR codes for counters; Customers can join queue via mobile scan; Queue view is mobile-responsive |
 | 4 | Staff Dashboard & Queue Management | QUEUE-03, STAFF-01, STAFF-02, STAFF-03, STAFF-04, UI-02 | Staff can view counter queue in FIFO order; Staff can call next customer; Staff can mark as served; Staff can transfer between counters; Dashboard meets WCAG 2.1 AA |
@@ -45,30 +45,34 @@
 **Goals:**
 - Initialize Next.js 15 project with TypeScript strict mode
 - Set up Drizzle ORM with Supabase PostgreSQL connection
-- Implement NextAuth.js with Credentials Provider (email/password)
-- Create User table with role-based access control (Admin, Staff)
+- Implement NextAuth.js with Credentials Provider (username/password)
+- Create User table with role-based access control (SUPER_ADMIN, ADMIN, STAFF)
 - Set up Zod schemas for input validation
 - Create basic layout with shadcn/ui components
+- Auto-seed default superuser on first app start
 
 **Requirements:**
-- AUTH-01: Staff can authenticate with email/password (NextAuth.js)
-- AUTH-02: Role-based access control (Admin, Staff)
+- AUTH-01: Staff can authenticate with username/password (NextAuth.js)
+- AUTH-02: Role-based access control (SUPER_ADMIN, ADMIN, STAFF)
+- AUTH-03: Default superuser auto-created on first app start
 - SEC-01: Input validation with Zod schemas
 
 **Success Criteria:**
-1. Staff member can sign up with email/password and log in securely
-2. Protected routes redirect unauthenticated users to login page
-3. Admin-only routes reject Staff role users with 403 error
-4. All form inputs are validated with Zod schemas showing appropriate error messages
+1. Staff member can log in with username/password securely
+2. Default SUPER_ADMIN created automatically on first run
+3. Protected routes redirect unauthenticated users to login page
+4. Admin-only routes reject non-SUPER_ADMIN users with 403 error
+5. All form inputs are validated with Zod schemas showing appropriate error messages
+6. No signup page — access controlled by admin only
 
 **Deliverables:**
 - `/src/lib/db/drizzle.ts` - Drizzle database configuration
-- `/src/lib/db/schema/users.ts` - User table schema
-- `/src/lib/auth.ts` - NextAuth.js configuration
+- `/src/lib/db/schema/users.ts` - User table schema (with username)
+- `/src/lib/auth.ts` - NextAuth.js configuration (username-based)
 - `/src/lib/validators/auth.ts` - Zod schemas for auth
+- `/src/lib/db/seed-on-first-run.ts` - Auto-seed superuser
 - `/src/app/api/auth/[...nextauth]/route.ts` - Auth API route
-- `/src/app/login/page.tsx` - Login page
-- `/src/app/signup/page.tsx` - Signup page
+- `/src/app/login/page.tsx` - Login page (username field)
 - `/src/middleware.ts` - Route protection middleware
 
 ---
@@ -289,8 +293,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Mapped |
-| AUTH-02 | Phase 1 | Mapped |
+| AUTH-01 | Phase 1 | ✅ Implemented |
+| AUTH-02 | Phase 1 | ✅ Implemented |
+| AUTH-03 | Phase 1 | ✅ Implemented |
 | QUEUE-01 | Phase 3 | Mapped |
 | QUEUE-02 | Phase 3 | Mapped |
 | QUEUE-03 | Phase 4 | Mapped |
@@ -312,25 +317,26 @@
 | TEST-01 | Phase 8 | Mapped |
 | TEST-02 | Phase 8 | Mapped |
 
-**Coverage:** 22/22 Active requirements mapped (100%)
+**Coverage:** 23/23 Active requirements mapped (100%)
 
 ### User Story Coverage
 
 | User Story | Related Requirements | Phase |
 |------------|---------------------|-------|
 | US-1: Admin Login | AUTH-01 | Phase 1 |
-| US-2: Admin Signup | AUTH-01 | Phase 1 |
+| US-2: ~~Admin Signup~~ | — | **REMOVED** |
 | US-3: Super Admin Access | AUTH-02 | Phase 1 |
 | US-4: Logout | AUTH-01 | Phase 1 |
 | US-5: Create Queue | QUEUE-01 | Phase 3 |
-| US-6: View Queue | QUEUE-03, STAFF-01 | Phase 4 |
+| US-6: View Queue | QUEUE-03, STAFF-01 | Phase 4, 6 |
 | US-7: Call Next Person | STAFF-02, WA-03 | Phase 4, 5 |
 | US-9: Scan QR to Join | QUEUE-02 | Phase 3 |
 | US-10: Queue Position Updates | QUEUE-04, UI-01 | Phase 3, 6 |
 | US-11: WhatsApp Notification | WA-01, WA-02, WA-03 | Phase 5 |
 | US-12: Daily Queue Reset | QUEUE-05 | Phase 7 |
+| US-13: Default Superuser Auto-Seed | AUTH-03 | Phase 1 |
 
-**Coverage:** 11/11 User Stories mapped (100%)
+**Coverage:** 12/12 User Stories mapped (1 removed: US-2)
 
 ---
 
@@ -379,6 +385,6 @@
 
 ---
 
-*Created: 1 April 2026*  
-*Last Updated: 1 April 2026*  
+*Created: 1 April 2026*
+*Last Updated: 4 April 2026 — Auth refactor (username login, AUTH-03 added, signup removed)*
 *Milestone: v2.0*

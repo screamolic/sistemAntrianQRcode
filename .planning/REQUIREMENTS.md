@@ -6,11 +6,12 @@
 
 **US-1: Admin Login**
 - As an admin, I want to log in securely so I can manage my queue
-- Acceptance: Email/password auth with NextAuth.js, secure session cookies, redirect to queue dashboard
+- Acceptance: Username/password auth with NextAuth.js, secure session cookies, redirect to queue dashboard
 
-**US-2: Admin Signup**
-- As a new admin, I want to create an account so I can start managing queues
-- Acceptance: Email/password with validation, password hashing (bcrypt), email uniqueness check
+**US-2: ~~Admin Signup~~** *(REMOVED — access controlled by admin only)*
+- ~~As a new admin, I want to create an account so I can start managing queues~~
+- Reason: Signup page removed; users are created by seeding or manually by SUPER_ADMIN
+- Replaced by: US-13: Default Superuser Auto-Seed
 
 **US-3: Super Admin Access**
 - As a super admin, I want to view all queues and admins so I can oversee the system
@@ -58,20 +59,29 @@
 - As a system, I want to auto-delete old queues daily so data stays current
 - Acceptance: Cron job at midnight, delete queues older than 24 hours, log cleanup
 
+### System Setup
+
+**US-13: Default Superuser Auto-Seed**
+- As a system, I want to create a default SUPER_ADMIN on first run so the app is usable immediately
+- Acceptance: Auto-creates user with username `admin` (configurable), password `Admin123!` (configurable), role `SUPER_ADMIN`, only if no users exist
+
 ## Functional Requirements
 
 ### FR-1: Authentication System
 - NextAuth.js with Credentials Provider
-- Password hashing with bcrypt (12 rounds)
+- Username-based login (min 3 characters)
+- Password hashing with bcrypt (10-12 rounds)
 - JWT-based sessions with httpOnly cookies
 - Session expiry: 24 hours
+- Default superuser auto-seeded on first run (configurable via env)
 - Password reset via email (Phase 2)
 
 ### FR-2: Database Schema
-- Users table (id, email, passwordHash, role, createdAt)
+- Users table (id, username, name, email, passwordHash, role, counterId, createdAt, updatedAt)
+- Username field (unique, nullable)
 - Queues table (id, adminId, name, createdAt, expiresAt)
 - QueueEntries table (id, queueId, userId, firstName, lastName, phone, position, createdAt)
-- Prisma migrations for schema management
+- Drizzle migrations for schema management
 
 ### FR-3: Queue Algorithm
 - FIFO (First-In-First-Out) ordering
@@ -215,7 +225,7 @@
 | User Story | Primary Phase | Related Phases |
 |------------|---------------|----------------|
 | US-1: Admin Login | Phase 1 | - |
-| US-2: Admin Signup | Phase 1 | - |
+| US-2: ~~Admin Signup~~ | Phase 1 | **REMOVED** |
 | US-3: Super Admin Access | Phase 1 | - |
 | US-4: Logout | Phase 1 | - |
 | US-5: Create Queue | Phase 3 | - |
@@ -225,9 +235,10 @@
 | US-10: Queue Position Updates | Phase 3 | Phase 6 |
 | US-11: WhatsApp Notification | Phase 5 | - |
 | US-12: Daily Queue Reset | Phase 7 | - |
+| US-13: Default Superuser Auto-Seed | Phase 1 | - |
 
-**Coverage:** 11/11 User Stories (100%)
+**Coverage:** 12/12 User Stories (1 active removed)
 
 ---
 
-*Last updated: 1 April 2026 — Added traceability for Milestone v2.0*
+*Last updated: 4 April 2026 — Auth refactor (username login, signup removed, US-13 added)*

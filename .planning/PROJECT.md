@@ -72,6 +72,8 @@ Enable service center customers to join queues via QR code scan and receive auto
 | Vercel deployment | Optimized for Next.js, zero-config deployments, edge functions | Primary deployment target |
 | Multi-counter support | Service centers need parallel service points with separate queues | Core feature from Phase 1 |
 | All WhatsApp notifications | Complete customer journey: join confirmation, queue position updates, completion, feedback | Better customer experience |
+| Username-based login | Simpler auth — no email validation needed; superuser logs in with username | Cleaner login UX |
+| No signup page | Access controlled by admin — no self-registration | Security-first approach |
 
 ## Requirements
 
@@ -81,8 +83,9 @@ Enable service center customers to join queues via QR code scan and receive auto
 
 ### Active
 
-- [ ] **AUTH-01**: Staff can authenticate with email/password (NextAuth.js)
-- [ ] **AUTH-02**: Role-based access control (Admin, Staff)
+- [x] **AUTH-01**: Staff can authenticate with username/password (NextAuth.js) — ✅ Validated
+- [x] **AUTH-02**: Role-based access control (SUPER_ADMIN, ADMIN, STAFF) — ✅ Validated
+- [x] **AUTH-03**: Default superuser auto-created on first app start — ✅ Validated
 - [ ] **QUEUE-01**: Admin can create service counters with unique QR codes
 - [ ] **QUEUE-02**: Customer scans QR code to join queue via mobile web
 - [ ] **QUEUE-03**: Queue displays in FIFO order per counter
@@ -132,4 +135,4 @@ This document evolves at phase transitions and milestone boundaries.
 
 ---
 
-*Last updated: 1 April 2026 after v2.0 milestone planning*
+*Last updated: 4 April 2026 — Auth refactor (username login, no signup, auto-seed superuser)*
