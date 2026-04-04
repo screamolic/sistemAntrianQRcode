@@ -66,15 +66,18 @@ async function seed() {
     }
 
     // Create super admin
+    const username = `superadmin_${createId().slice(0, 6)}`
+
     await db.insert(users).values({
       id: createId(),
+      username,
       name: 'Super Admin',
       email: normalizedEmail,
       passwordHash: hashedPassword,
       role: 'SUPER_ADMIN',
     })
 
-    console.log(`  ✓  Dibuat: ${normalizedEmail} (SUPER_ADMIN)`)
+    console.log(`  ✓  Dibuat: ${normalizedEmail} (SUPER_ADMIN, username: ${username})`)
     createdCount++
   }
 

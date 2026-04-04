@@ -10,7 +10,7 @@ enabled: true
 
 # Project
 
-Auto-compiled from **129 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on project files.
+Auto-compiled from **130 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on project files.
 
 ## ⚠️ Anti-Patterns & Gotchas
 
@@ -80,10 +80,10 @@ Content summary (52 lines):
 
 # dependencies
 
-/node_modules
+/node*modules
 /.pnp
-.pnp._
-.yarn/_
+.pnp.*
+.yarn/\_
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -147,10 +147,10 @@ Content summary (48 lines):
 
 # dependencies
 
-/node_modules
+/node*modules
 /.pnp
-.pnp._
-.yarn/_
+.pnp.*
+.yarn/\_
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases

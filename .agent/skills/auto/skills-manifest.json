@@ -1,8 +1,8 @@
 {
   "project": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T09:20:48.735Z",
-    "observationCount": 129,
+    "lastGenerated": "2026-04-04T04:44:22.840Z",
+    "observationCount": 130,
     "skillCount": 0,
     "domain": "project",
     "triggerGlobs": ["**/*"],
@@ -10,8 +10,8 @@
   },
   "config": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T09:20:48.737Z",
-    "observationCount": 24,
+    "lastGenerated": "2026-04-04T04:44:22.838Z",
+    "observationCount": 26,
     "skillCount": 0,
     "domain": "config",
     "triggerGlobs": ["**/*.yaml", "**/*.yml", "**/*.json", "**/*.toml"],
@@ -19,7 +19,7 @@
   },
   "problem-fix": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T09:20:48.737Z",
+    "lastGenerated": "2026-04-04T04:44:22.841Z",
     "observationCount": 0,
     "skillCount": 1,
     "domain": "problem-fix",
@@ -28,29 +28,38 @@
   },
   "typescript": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T09:20:48.736Z",
-    "observationCount": 93,
+    "lastGenerated": "2026-04-04T04:44:22.837Z",
+    "observationCount": 102,
     "skillCount": 0,
     "domain": "typescript",
     "triggerGlobs": ["**/*.ts", "**/*.tsx"],
-    "description": "Typescript for sistemAntrianQRcode. 18 conventions, 25 fixes."
+    "description": "Typescript for sistemAntrianQRcode. 20 conventions, 25 fixes."
   },
   "typescript-react": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T09:20:48.737Z",
-    "observationCount": 65,
+    "lastGenerated": "2026-04-04T04:44:22.839Z",
+    "observationCount": 66,
     "skillCount": 0,
     "domain": "typescript-react",
     "triggerGlobs": ["**/*.tsx"],
-    "description": "Typescript React for sistemAntrianQRcode. 1 gotchas, 4 conventions, 14 fixes."
+    "description": "Typescript React for sistemAntrianQRcode. 1 gotchas, 5 conventions, 14 fixes."
   },
   "convention": {
     "enabled": true,
-    "lastGenerated": "2026-04-03T09:20:48.738Z",
+    "lastGenerated": "2026-04-04T04:44:22.842Z",
     "observationCount": 0,
     "skillCount": 1,
     "domain": "convention",
     "triggerGlobs": ["**/*"],
     "description": "Convention for sistemAntrianQRcode. ."
+  },
+  "how-it-works": {
+    "enabled": true,
+    "lastGenerated": "2026-04-04T04:44:22.843Z",
+    "observationCount": 0,
+    "skillCount": 1,
+    "domain": "how-it-works",
+    "triggerGlobs": ["**/*"],
+    "description": "How It Works for sistemAntrianQRcode. ."
   }
 }

@@ -15,6 +15,13 @@
       "when": 1775181938111,
       "tag": "0001_silky_trauma",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1775277533501,
+      "tag": "0002_add-username-to-users",
+      "breakpoints": true
     }
   ]
 }

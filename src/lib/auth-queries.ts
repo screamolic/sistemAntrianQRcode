@@ -10,12 +10,23 @@ export async function getUserByEmail(email: string) {
   return results[0] || null
 }
 
+export async function getUserByUsername(username: string) {
+  const results = await db.select().from(users).where(eq(users.username, username)).limit(1)
+  return results[0] || null
+}
+
 export async function getUserById(id: string) {
   const results = await db.select().from(users).where(eq(users.id, id)).limit(1)
   return results[0] || null
 }
 
-export async function createUser(email: string, password: string, name?: string) {
+export async function createUser(
+  username: string,
+  email: string,
+  password: string,
+  name?: string,
+  role?: 'SUPER_ADMIN' | 'ADMIN' | 'STAFF'
+) {
   const hashedPassword = await bcrypt.hash(password, 10)
   const id = createId()
 
@@ -23,10 +34,11 @@ export async function createUser(email: string, password: string, name?: string)
     .insert(users)
     .values({
       id,
+      username,
       email,
       passwordHash: hashedPassword,
       name,
-      role: 'ADMIN',
+      role: role ?? 'ADMIN',
     })
     .returning()
 

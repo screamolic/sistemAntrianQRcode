@@ -15,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     Credentials({
       name: 'credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        username: { label: 'Username', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
@@ -25,7 +25,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null
         }
 
-        const { email, password } = validated.data
+        const { username, password } = validated.data
 
         try {
           const { db, users, eq } = await getDb()
@@ -34,7 +34,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           const results = await db
             .select()
             .from(users)
-            .where(eq(users.email, email.toLowerCase()))
+            .where(eq(users.username, username.toLowerCase()))
             .limit(1)
 
           const user = results[0]

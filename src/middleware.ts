@@ -31,7 +31,7 @@ export async function middleware(req: NextRequest) {
   const isDashboardRoute = nextUrl.pathname.startsWith('/dashboard')
   const isAdminRoute = nextUrl.pathname.startsWith('/admin')
   const isSuperAdminRoute = nextUrl.pathname.startsWith('/super-admin')
-  const isAuthPageRoute = nextUrl.pathname === '/login' || nextUrl.pathname === '/signup'
+  const isAuthPageRoute = nextUrl.pathname === '/login'
 
   // Allow auth API routes
   if (isAuthRoute) {

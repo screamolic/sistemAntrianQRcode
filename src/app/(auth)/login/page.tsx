@@ -29,13 +29,13 @@ export default function LoginPage() {
 
     try {
       const result = await signIn('credentials', {
-        email: data.email,
+        username: data.username,
         password: data.password,
         redirect: false,
       })
 
       if (result?.error) {
-        setServerError('Email atau password salah. Silakan coba lagi.')
+        setServerError('Username atau password salah. Silakan coba lagi.')
       } else {
         setServerError('')
         router.push('/dashboard')
@@ -53,7 +53,7 @@ export default function LoginPage() {
           <CardTitle id="login-title" className="text-2xl font-bold">
             Masuk
           </CardTitle>
-          <CardDescription>Masukkan email dan password untuk mengakses akun Anda</CardDescription>
+          <CardDescription>Masukkan username dan password untuk mengakses sistem</CardDescription>
         </CardHeader>
         <CardContent>
           <form
@@ -69,20 +69,20 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="admin@example.com"
-                autoComplete="email"
+                id="username"
+                type="text"
+                placeholder="admin"
+                autoComplete="username"
                 aria-required="true"
-                aria-invalid={!!errors.email}
-                aria-describedby={errors.email ? 'email-error' : undefined}
-                {...register('email')}
+                aria-invalid={!!errors.username}
+                aria-describedby={errors.username ? 'username-error' : undefined}
+                {...register('username')}
               />
-              {errors.email && (
-                <p id="email-error" className="text-sm text-destructive" role="alert">
-                  {errors.email.message}
+              {errors.username && (
+                <p id="username-error" className="text-sm text-destructive" role="alert">
+                  {errors.username.message}
                 </p>
               )}
             </div>
@@ -115,11 +115,8 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <div className="mt-4 text-center text-sm">
-            Belum punya akun?{' '}
-            <a href="/signup" className="text-primary hover:underline">
-              Daftar
-            </a>
+          <div className="mt-4 text-center text-sm text-muted-foreground">
+            Belum punya akun? Hubungi administrator untuk mendapatkan akses.
           </div>
         </CardContent>
       </Card>

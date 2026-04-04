@@ -27,11 +27,11 @@ test.describe('Queue Management', () => {
     test('should have get started button', async ({ page }) => {
       await page.goto('/')
 
-      const getStartedButton = page.getByRole('link', { name: /get started/i })
+      const getStartedButton = page.getByRole('link', { name: /sign in/i })
       await expect(getStartedButton).toBeVisible()
       await getStartedButton.click()
 
-      await expect(page).toHaveURL('/signup')
+      await expect(page).toHaveURL('/login')
     })
   })
 
@@ -40,9 +40,9 @@ test.describe('Queue Management', () => {
       // This test requires a valid user account
       await page.goto('/login')
 
-      await page.getByLabel('Email').fill(process.env.TEST_USER_EMAIL || 'admin@example.com')
-      await page.getByLabel('Password').fill(process.env.TEST_USER_PASSWORD || 'password123')
-      await page.getByRole('button', { name: /sign in/i }).click()
+      await page.getByLabel('Username').fill(process.env.TEST_USER_USERNAME || 'admin')
+      await page.getByLabel('Password').fill(process.env.TEST_USER_PASSWORD || 'Admin123!')
+      await page.getByRole('button', { name: /masuk/i }).click()
 
       await expect(page).toHaveURL('/dashboard')
       await expect(page.getByText(/dashboard/i)).toBeVisible()

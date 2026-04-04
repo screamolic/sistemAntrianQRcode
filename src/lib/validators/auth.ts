@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 export const loginSchema = z.object({
-  email: z.string().email('Alamat email tidak valid'),
+  username: z.string().min(3, 'Username minimal 3 karakter'),
   password: z.string().min(8, 'Password minimal 8 karakter'),
 })
 

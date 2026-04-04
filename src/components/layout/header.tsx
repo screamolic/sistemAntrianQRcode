@@ -4,8 +4,12 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { signOut } from '@/lib/auth'
 import { MobileNav } from './mobile-nav'
+import { seedDefaultSuperuser } from '@/lib/db/seed-on-first-run'
 
 export async function Header() {
+  // Auto-seed default superuser on first run (no-op if users already exist)
+  await seedDefaultSuperuser()
+
   const session = await auth()
 
   return (
@@ -88,9 +92,6 @@ export async function Header() {
             <div className="hidden md:flex items-center gap-2">
               <Button asChild variant="ghost" size="sm" aria-label="Sign in to your account">
                 <Link href="/login">Sign In</Link>
-              </Button>
-              <Button asChild size="sm" aria-label="Create a new account">
-                <Link href="/signup">Sign Up</Link>
               </Button>
             </div>
           )}

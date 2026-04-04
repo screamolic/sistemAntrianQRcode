@@ -1,8 +1,8 @@
 # sistemAntrianQRcode — Project Memory
 
-> Auto-synced | 312 observations
+> Auto-synced | 326 observations
 
-**Stack:** JavaScript/TypeScript · Next.js + React + Tailwind · DB: MongoDB, PostgreSQL, Prisma
+**Stack:** JavaScript/TypeScript · Next.js + React + Tailwind · DB: MongoDB, PostgreSQL
 
 ## 🏛️ CORE ARCHITECTURE
 
@@ -57,4 +57,4 @@ Example:
 > ℹ️ DO NOT call get_context() or get_gotchas() at startup — context above IS your context.
 
 ---
-*Auto-synced | 2026-04-03*
+*Auto-synced | 2026-04-04*

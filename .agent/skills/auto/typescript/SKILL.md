@@ -1,6 +1,6 @@
 ---
 name: typescript
-description: 'Typescript for sistemAntrianQRcode. 18 conventions, 25 fixes.'
+description: 'Typescript for sistemAntrianQRcode. 20 conventions, 25 fixes.'
 domain: typescript
 triggers:
   - glob: '**/*.ts'
@@ -11,7 +11,7 @@ enabled: true
 
 # Typescript
 
-Auto-compiled from **93 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on typescript files.
+Auto-compiled from **102 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on typescript files.
 
 ## 🔧 Problem Playbooks
 
@@ -278,9 +278,7 @@ import { eq } from 'drizzle-orm'
 
 -         expect(result.error.errors[0].message).toContain('only contain letters')
 
-*
-
-**Actionable Steps:**
+* **Actionable Steps:**
 
 1. Modified 1 files
 
@@ -657,16 +655,17 @@ import { eq, count } from 'drizzle-orm'
 
 ### Project Conventions
 
+- 📐 **what-changed in auth-queries.ts — confirmed 3x** — File updated (external): src/lib/auth-queries.ts
+
+Content summary (95 lines):
+import { db } from './
+
+- 📐 **what-changed in auth.ts — confirmed 4x** — - email: { label: 'Email', type: 'email' },
+
+*         username: { label: 'Username', type: '
+
 - 📐 **Fixed null crash in NextResponse — prevents null/undefined runtime crashes — confirmed 13x** — - import { NextResponse } from "next/server"
 
-* import { NextResponse } from 'next/server'
-
-- import
-- 📐 **Updated vitest database schema — confirmed 4x** — - import { describe, it, expect } from 'vitest'
-
-* import { describe, it, expect } from 'vitest'
-
-- i
-- 📐 **Strengthened types ClassValue — externalizes configuration for environment fl...** — - import { createId } from '@para
+* import { NextResponse } f
 
 ... [Truncated — see individual observations for full content]

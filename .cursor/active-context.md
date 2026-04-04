@@ -1,5 +1,5 @@
 > **BrainSync Context Pumper** 🧠
-> Dynamically loaded for active file: `.env.local` (Domain: **Generic Logic**)
+> Dynamically loaded for active file: `.env.example` (Domain: **Generic Logic**)
 
 ### 🔴 Generic Logic Gotchas
 
@@ -37,10 +37,10 @@ Content summary (53 lines):
 
 # dependencies
 
-/node_modules
+/node*modules
 /.pnp
-.pnp._
-.yarn/_
+.pnp.*
+.yarn/\_
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
