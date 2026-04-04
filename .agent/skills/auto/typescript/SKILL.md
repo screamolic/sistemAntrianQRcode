@@ -11,7 +11,7 @@ enabled: true
 
 # Typescript
 
-Auto-compiled from **91 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on typescript files.
+Auto-compiled from **93 real patterns** in **sistemAntrianQRcode**. This skill is auto-routed to agents when working on typescript files.
 
 ## 🔧 Problem Playbooks
 

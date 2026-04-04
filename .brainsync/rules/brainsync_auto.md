@@ -1,6 +1,6 @@
 # Project Memory — sistemAntrianQRcode
 
-> 309 notes | Score threshold: >40
+> 312 notes | Score threshold: >40
 
 ## Safety — Never Run Destructive Commands
 
@@ -15,13 +15,9 @@
 - **ALWAYS** ask the user before running commands that modify system state, install packages, or make network requests.
 - When in doubt, **show the command first** and wait for approval.
 
-**Stack:** JavaScript/TypeScript · Next.js + React + Tailwind · DB: MongoDB, PostgreSQL, Prisma
+**Stack:** JavaScript/TypeScript · Next.js + React + Tailwind · DB: MongoDB, PostgreSQL
 
 ## 📝 NOTE: 1 uncommitted file(s) in working tree.\n\n## Important Warnings
-
-- **gotcha in theme-provider.tsx** — File updated (external): src/components/theme-provider.tsx
-
-Content su
 
 - **gotcha in AGENTS.md** — File updated (external): AGENTS.md
 
@@ -33,17 +29,28 @@ Content summary (8 lines):
 Content summary (9 lines):
 {
 
+- **gotcha in theme-provider.tsx** — File updated (external): src/components/theme-provider.tsx
+
+Content su
+
+## Active: `.`
+
+- **gotcha in AGENTS.md**
+- **gotcha in .eslintrc.json**
+- **problem-fix in .gitignore — confirmed 3x**
+- **what-changed in test-results.json — confirmed 3x**
+- **Added session cookies authentication — improves module reusability — confirmed 5x**
 
 ## Project Standards
 
+- problem-fix in .gitignore — confirmed 3x
+- what-changed in test-results.json — confirmed 3x
+- Added session cookies authentication — improves module reusability — confirmed 5x
 - Fixed null crash in NextResponse — prevents null/undefined runtime crashes — confirmed 13x
 - Updated vitest database schema — confirmed 4x
 - Strengthened types ClassValue — externalizes configuration for environment fl...
 - discovery in page.tsx — confirmed 3x
 - Strengthened types Nomor — prevents brute-force and DoS attacks
-- problem-fix in route.ts — confirmed 5x
-- what-changed in route.ts — confirmed 4x
-- convention in VERCEL_DEPLOYMENT.md
 
 ## Known Fixes
 
@@ -55,10 +62,10 @@ Content summary (9 lines):
 
 ## Recent Decisions
 
-- Optimized Image — reduces initial bundle size with code splitting
-- decision in use-queue-updates.ts
-- decision in query-provider.tsx
 - decision in eslint.config.mjs
+- Optimized Property — protects against XSS and CSRF token theft
+- Optimized package — uses a proper password hashing algorithm
+- Optimized Image — reduces initial bundle size with code splitting
 
 ## Learned Patterns
 
