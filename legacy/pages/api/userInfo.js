@@ -2,29 +2,38 @@ import { ObjectId } from "mongodb";
 import { connectToDatabase } from "../../lib/mongodb";
 
 export default async function handler(req, res) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+  
   const { db } = await connectToDatabase();
   const data = req.query;
-  await db
-    .collection("Admin")
-    .find({_id:ObjectId(data.admin)})
-    .toArray((err, docs) => {
-      if (err) {
-        // if an error happens
-        res.send("Error in GET req.");
-      } else {
-        // if all works
-        // console.log(docs);
-        res.send(docs); // send back all users found with the matching username
-      }
+  
+  // Validate admin parameter
+  if (!data.admin) {
+    return res.status(400).json({ error: 'Missing admin parameter' });
+  }
+  
+  // Validate ObjectId format
+  if (!ObjectId.isValid(data.admin)) {
+    return res.status(400).json({ error: 'Invalid admin ID format' });
+  }
+  
+  try {
+    const docs = await db
+      .collection("Admin")
+      .find({ _id: new ObjectId(data.admin) })
+      .toArray();
+    
+    // Remove sensitive data before returning
+    const safeDocs = docs.map(doc => {
+      const { password, ...safeUser } = doc;
+      return safeUser;
     });
-  // .then((result)=>{
-  //     // console.log(result );
-  //     res.json(result);
-  // })
-  // .catch((err)=>{
-  //     res.json({message:"error in database"});
-  //     console.log(err);
-  // })
-  // await res.send(temp);
-  // console.log(temp);
+    
+    res.send(safeDocs);
+  } catch (err) {
+    console.error("Database error:", err);
+    res.status(500).json({ error: "Error fetching user info" });
+  }
 }

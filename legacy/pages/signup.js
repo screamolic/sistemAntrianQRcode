@@ -12,12 +12,9 @@ export default function signup({ token, date }) {
     const setDate = async () => {
         const D = new Date();
         let d = D.getDate();
-        // d = 16;
-        console.log(date + "  " + d);
         if (d != date) {
             console.log("confilct");
             Cookies.set("date", d, { expires: 24 / 24 });
-            // await fetch(`/api/deleteList`);
             console.log("deleted");
         }
     }
@@ -63,27 +60,41 @@ export default function signup({ token, date }) {
         event.preventDefault();
         if (validate()) {
             try {
-                await fetch(`/api/newAdmin?fname=${fname}&lname=${lname}&email=${email}&password=${pass}&number=${num}`, {
+                // Use POST with body instead of GET with query params (no password in URL)
+                await fetch(`/api/newAdmin`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    body: JSON.stringify({ 
+                        fname, 
+                        lname, 
+                        email, 
+                        password: pass, 
+                        number: num 
+                    }),
                 })
                     .then(async (result) => {
-                        await result.json()
-                            .then((x) => {
-                                console.log(x);
-
-                                let str = toString(x);
-                                Cookies.set("user", x, { expires: 1 / 24 });
-                                router.replace('/');
-                            })
-                            .catch((err) => {
-                                console.log(err);
-                            })
+                        if (result.ok) {
+                            await result.json()
+                                .then((x) => {
+                                    console.log(x);
+                                    Cookies.set("user", x.id, { expires: 1 / 24 });
+                                    router.replace('/');
+                                })
+                                .catch((err) => {
+                                    console.log(err);
+                                    alert("Registration failed!");
+                                })
+                        } else {
+                            await result.json().then(errData => {
+                                alert(errData.error || "Registration failed!");
+                            });
+                        }
                     })
                     .catch((err) => {
                         console.log(err);
+                        alert("Registration failed!");
                     })
             }
             catch (err) {
@@ -124,9 +135,9 @@ export default function signup({ token, date }) {
             alert("Enter password!");
             return;
         }
-        if(pass.length<6)
+        if(pass.length<8)
         {
-            alert("password too short!");
+            alert("Password must be at least 8 characters!");
             return;
         }
         if(num === "")
@@ -173,19 +184,11 @@ export default function signup({ token, date }) {
 
                 <input type="password" id="defaultRegisterFormPassword" onChange={handlePass} className="form-control" aria-label='At least 8 characters and 1 digit' placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock" />
                 <small id="defaultRegisterFormPasswordHelpBlock" className="form-text text-muted mb-4">
-                    At least 6 characters
+                    At least 8 characters
                 </small>
 
                 <br />
                 <input type="text" id="defaultRegisterPhonePassword" onChange={handleNum} className="form-control" placeholder="Phone number" aria-describedby="defaultRegisterFormPhoneHelpBlock" />
-                {/* <small id="defaultRegisterFormPhoneHelpBlock" className="form-text text-muted mb-4">
-                    Optional - for two step authentication
-                </small> */}
-
-                {/* <div className="custom-control custom-checkbox">
-                    <input type="checkbox" className="custom-control-input" id="defaultRegisterFormNewsletter" />
-                    <label className="custom-control-label" htmlFor="defaultRegisterFormNewsletter">Subscribe to our newsletter</label>
-                </div> */}
 
                 <button className="btn btn-info my-4 btn-block" type="button"
                     onClick={register}

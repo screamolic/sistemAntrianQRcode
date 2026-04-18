@@ -2,7 +2,6 @@ import React, { useState ,useEffect } from 'react'
 import Nav from '../components/Nav'
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-import { route } from 'next/dist/server/router';
 
 export default function login({token , date}) {
 
@@ -16,12 +15,9 @@ export default function login({token , date}) {
     const setDate = async()=>{
         const D = new Date();
         let d = D.getDate(); 
-        // d = 16;
-        console.log(date+"  "+d);
         if(d != date){
             console.log("confilct");
             Cookies.set("date",d,{expires:24/24});
-            // await fetch(`/api/deleteList`);
             console.log("deleted");
         }
     }
@@ -36,37 +32,39 @@ export default function login({token , date}) {
         if(validate())
         {
             try{
-                await fetch(`/api/auth?email=${email}&password=${pass}`,{
-                    method: 'GET',
+                // Use POST with body instead of GET with query params
+                await fetch(`/api/auth`,{
+                    method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    body: JSON.stringify({ email, password: pass })
                 })
                 .then(async(result)=>{
                     await result.json()
                     .then((x)=>{
-                        
-                        let id = x._id;
-                        console.log(id);
-                        if(id != null && id != undefined){
+                        if (result.ok && x._id) {
+                            let id = x._id;
+                            console.log(id);
                             Cookies.set("user",id,{expires:1/24});
+                            router.reload('/login');
+                        } else {
+                            alert(x.error || "Wrong Credentials!")
                         }
-                        else{
-                            alert("Wrong Credentials!")
-                        }
-                        
-                        router.reload('/login');
                     })
                     .catch((err)=>{
                         console.log(err);
+                        alert("Login failed!");
                     })
                 })
                 .catch((err)=>{
                     console.log(err);
+                    alert("Login failed!");
                 })
             }
             catch(err){
                 console.log(err);
+                alert("Login failed!");
             }
         }
     }
